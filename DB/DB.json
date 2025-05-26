@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "full_name": "רות כהן",
+      "email": "ruth@example.com",
+      "phone": "050-1234567",
+      "password": "ruthPass123"
+    }
+  ],
+  "classes ": [
+    {
+      "id": 1,
+      "title": "מבוא לפייתון",
+      "class_types": "קורס בסיסי בתכנות פייתון",
+      "day_of_week": "Sunday",
+      "start_time": "09:00:00",
+      "end_time": "10:00:00",
+      "date": "2025-06-01"
+    }
+  ],
+  "weekly_challenges": [
+    {
+      "id": 1,
+      "week_start_date": "2025-06-01",
+      "description": "בנו אפליקציה קטנה"
+    }
+  ],
+  "course_participants": [
+    {
+      "user_id": 1,
+      "course_id": 1,
+      "status": "נרשמה"
+    }
+  ],
+  "challenge_completions": [
+    {
+      "user_id": 1,
+      "challenge_id": 1,
+      "completed": true
+    }
+  ]
+}
