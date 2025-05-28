@@ -1,0 +1,15 @@
+.socialLogin {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.googleLogin {
+    margin-bottom: 10px;
+}
+
+.link {
+    display: block;
+    margin-top: 20px;
+    color: #0077cc;
+    text-decoration: none;
+}
