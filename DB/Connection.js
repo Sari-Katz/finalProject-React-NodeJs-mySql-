@@ -1,18 +1,18 @@
 // dbConnection.js
-import dotenv from 'dotenv';
-dotenv.config({ path: '../.env' }); // מסלול מותאם, שנה במידת הצורך
+// import dotenv from 'dotenv';
+
+// dotenv.config({ path: '../.env' }); // עדכני אם צריך
 
 import mysql from 'mysql2/promise';
+console.log(process.env.MYSQL_USER, process.env.MYSQL_PASSWORD);
 
 const pool = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+  host: "localhost",
+  user: "root",
+  password: "Sari2005",
+  database:"finalProject",
   multipleStatements: true,
 });
-
-import pool from './dbConnection.js';
 
 try {
   const connection = await pool.getConnection();
@@ -21,6 +21,5 @@ try {
 } catch (err) {
   console.error('Error connecting to MySQL:', err);
 }
-
 
 export default pool;

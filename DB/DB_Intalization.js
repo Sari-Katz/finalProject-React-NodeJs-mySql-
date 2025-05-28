@@ -17,7 +17,7 @@ async function initDb() {
         await pool.query('DROP TABLE IF EXISTS course_participants');
         await pool.query('DROP TABLE IF EXISTS user_credentials');
         await pool.query('DROP TABLE IF EXISTS weekly_challenges');
-        await pool.query('DROP TABLE IF EXISTS courses');
+        await pool.query('DROP TABLE IF EXISTS classes');
         await pool.query('DROP TABLE IF EXISTS users');
         await pool.query('SET FOREIGN_KEY_CHECKS = 1');
 
@@ -68,7 +68,7 @@ async function initDb() {
         status VARCHAR(50) DEFAULT 'נרשמה',
         PRIMARY KEY (user_id, course_id),
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+        FOREIGN KEY (course_id) REFERENCES classes(id) ON DELETE CASCADE
       )
     `);
 
@@ -99,9 +99,10 @@ async function initDb() {
         }
 
         // הכנסת קורסים
-        for (const course of db.courses) {
+        for (const course of db.classes) {
+
             await pool.query(
-                'INSERT INTO courses (id, title, description, day_of_week, start_time, date_start, duration_minutes) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                'INSERT INTO classes (id, title, description, day_of_week, start_time, date_start, duration_minutes) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [course.id, course.title, course.description, course.day_of_week, course.start_time, course.date_start, course.duration_minutes]
             );
         }
