@@ -5,14 +5,20 @@ import { Link } from 'react-router-dom'
 import './App.css'
 // import Nav from './components/Nav/Nav'
 import Register from './components/Register/Register.jsx'
+import { useContext } from 'react';
+import AuthProvider, { AuthContext } from './components/AuthContext';
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <Register/>
-     {/* < Nav/> */}
+      <AuthProvider>
+        <Register />
+      </AuthProvider>
+
+      {/* < Nav/> */}
     </>
   )
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Nav.module.css';
+import styles from './Nav.module.css'; 
+
 function Nav(){
+    const { user, logout } = useContext(AuthContext);
     // const navigate = useNavigate();
     // const { userData, setUserData } = useUserContext();
     // const handleLogout = () => {
@@ -14,7 +16,7 @@ function Nav(){
             <div className={styles.navLeft}>
                 <div className={styles.logo}></div>
                 {/* <button className={styles.personalAreaBtn}>log out</button> */}
-                <Link to="/login" className={styles.personalAreaBtn} onClick={()=>{localStorage.removeItem('currentUser')}}>log out</Link>
+                {/* <Link to="/login" className={styles.personalAreaBtn} onClick={()=>{localStorage.removeItem('currentUser')}}>log out</Link> */}
             </div>
             <div className={styles.navCenter}>
                 <Link to="/schedule" className={styles.navLink}>מערכת שעות</Link>
