@@ -2,7 +2,6 @@
 
 const mysql = require('mysql2/promise');
 // const dotenv = require('dotenv');
-
 // dotenv.config({ path: '../.env' }); // טוען את משתני הסביבה
 
 const pool = mysql.createPool({

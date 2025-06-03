@@ -11,7 +11,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState({
-        name: '',
+        full_name: '',
         email: '',
         phone: '',
     });
@@ -54,7 +54,7 @@ const userExists = await checkIfUserExists(additionalInfo.email);
         };
 
         try {
-            const user = await apiUtils.post(`http://localhost:3000/users`, newUser);
+            const user = await apiUtils.post(`http://localhost:3000/users/register`, newUser);
             login({ username: user.full_name, id: user.id, role: user.role });
             // navigate(`/user/${user.id}/home`);
         } catch (error) {
@@ -71,8 +71,8 @@ const userExists = await checkIfUserExists(additionalInfo.email);
                      <input
                         type="text"
                         placeholder="Full Name"
-                        value={additionalInfo.name}
-                        onChange={(e) => setAdditionalInfo({ ...additionalInfo, name: e.target.value })}
+                        value={additionalInfo.full_name}
+                        onChange={(e) => setAdditionalInfo({ ...additionalInfo, full_name: e.target.value })}
                     />
                        <input
                         type="email"

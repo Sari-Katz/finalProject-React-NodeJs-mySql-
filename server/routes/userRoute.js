@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-// דוגמה לראוטים על סמך קונטרולר
-
 // הרשמה של משתמש חדש
 router.post('/register', userController.registerUser);
 
 // התחברות משתמש
 router.post('/login', userController.loginUser);
-// קבלת כל המשתמשים (למנהל)
+
+// קבלת כל המשתמשים (עם אפשרות לסינון)
 router.get('/', userController.getUsers);
 
 // קבלת משתמש לפי מזהה
@@ -23,4 +22,5 @@ router.get('/:id', userController.getUserById);
 
 // // בדיקת טוקן (למשל לאימות התחברות)
 // router.post('/verify-token', userController.verifyToken);
+
 module.exports = router;

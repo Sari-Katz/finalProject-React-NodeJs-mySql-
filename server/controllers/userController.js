@@ -1,26 +1,25 @@
 const userService = require('../services/userService');
 const bcrypt = require('bcrypt');
 
+// קבלת כל המשתמשים או חיפוש עם פילטרים
 exports.getUsers = async (req, res) => {
   try {
-    
+    console.log("req.query", req.query);
     const filters = req.query;
-    console.log(`Filters received: ${JSON.stringify(filters)}`);
-    logger.info(`Searching users in controllers with filters: ${JSON.stringify(filters)}`);
     const users = Object.keys(filters).length === 0
-      ? await getAllUsersService()
-      : await searchUsersService(filters);
+      ? await userService.getAllUsers()
+      : await userService.searchUsers(filters);
 
     res.status(200).json(users);
   } catch (error) {
-    logger.error(`Error in handleUserSearch: ${error.message}`);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 // הרשמת משתמש חדש
 exports.registerUser = async (req, res) => {
     try {
-        const { username, password, email } = req.body;
+        const { full_name, password, email, phone } = req.body;
 
         // בדיקת סיסמה: לפחות 6 תווים, אות גדולה, אות קטנה, מספר
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -34,13 +33,11 @@ exports.registerUser = async (req, res) => {
             return res.status(409).json({ message: 'אימייל זה כבר קיים.' });
         }
 
-        // הצפנת סיסמה
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         // יצירת משתמש חדש
-        const newUser = await userService.createUser({ username, password: hashedPassword, email });
+        const newUser = await userService.createUser({ full_name, password, email, phone });
         res.status(201).json(newUser);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
     }
 };
@@ -54,7 +51,7 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
             return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
         }
@@ -66,19 +63,9 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-// // דוגמה לפונקציות נוספות בהתאם לסרביס
-// exports.getAllUsers = async (req, res) => {
-//     try {
-//         const users = await userService.getAllUsers();
-//         res.json(users);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
-//     }
-// };
-
+// קבלת משתמש לפי מזהה
 exports.getUserById = async (req, res) => {
     try {
-        console.log("req.params.id", req.params.id);
         const user = await userService.getUserById(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'המשתמש לא נמצא.' });

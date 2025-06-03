@@ -1,21 +1,21 @@
-const pool = require('../../DB/Connection'); // adjust the path as needed
+const pool = require('../../DB/Connection');
 const bcrypt = require('bcrypt');
 
 const userService = {
-    // Create a new user and credentials
+    // יצירת משתמש חדש
     async createUser({ full_name, email, phone, password }) {
         const conn = await pool.getConnection();
         try {
             await conn.beginTransaction();
 
-            // Insert into users table
+            // הכנסת משתמש לטבלת users
             const [userResult] = await conn.query(
                 'INSERT INTO users (full_name, email, phone) VALUES (?, ?, ?)',
                 [full_name, email, phone]
             );
             const userId = userResult.insertId;
 
-            // Hash password and insert into user_credentials
+            // הצפנת סיסמה והכנסה לטבלת user_credentials
             const password_hash = await bcrypt.hash(password, 10);
             await conn.query(
                 'INSERT INTO user_credentials (user_id, password_hash) VALUES (?, ?)',
@@ -32,7 +32,7 @@ const userService = {
         }
     },
 
-    // Get user by email (with credentials)
+    // קבלת משתמש לפי אימייל (כולל סיסמה מוצפנת)
     async getUserByEmail(email) {
         const [rows] = await pool.query(
             `SELECT u.*, uc.password_hash
@@ -44,7 +44,7 @@ const userService = {
         return rows[0];
     },
 
-    // Get user by id (without password)
+    // קבלת משתמש לפי מזהה (בלי סיסמה)
     async getUserById(id) {
         const [rows] = await pool.query(
             'SELECT id, full_name, email, phone, created_at FROM users WHERE id = ?',
@@ -52,19 +52,16 @@ const userService = {
         );
         return rows[0];
     },
-// Get all users (without passwords)
-async getAllUsers() {
-    const [rows] = await pool.query(
-        'SELECT id, full_name, email, phone, created_at FROM users'
-    );
-    return rows;
-},
-    // Delete user (will cascade to credentials)
-    async deleteUser(user_id) {
-        await pool.query('DELETE FROM users WHERE id = ?', [user_id]);
-      },
-  
-    // Search users with filters (without passwords)
+
+    // קבלת כל המשתמשים (בלי סיסמאות)
+    async getAllUsers() {
+        const [rows] = await pool.query(
+            'SELECT id, full_name, email, phone, created_at FROM users'
+        );
+        return rows;
+    },
+
+    // חיפוש משתמשים עם פילטרים (בלי סיסמאות)
     async searchUsers(filters) {
         let query = 'SELECT id, full_name, email, phone, created_at FROM users WHERE 1=1';
         const params = [];
@@ -78,8 +75,5 @@ async getAllUsers() {
         return rows;
     }
 };
-
-
-
 
 module.exports = userService;
