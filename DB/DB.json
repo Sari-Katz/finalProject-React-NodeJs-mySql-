@@ -8,15 +8,16 @@
       "password": "ruthPass123"
     }
   ],
-  "classes ": [
+  "classes": [
     {
       "id": 1,
       "title": "מבוא לפייתון",
       "class_types": "קורס בסיסי בתכנות פייתון",
-      "day_of_week": "Sunday",
+      "day_of_week": "ראשון",
       "start_time": "09:00:00",
-      "end_time": "10:00:00",
-      "date": "2025-06-01"
+      "date_start": "2025-06-01",
+      "end_time": "10:00:00"
+      
     }
   ],
   "weekly_challenges": [
@@ -26,11 +27,12 @@
       "description": "בנו אפליקציה קטנה"
     }
   ],
-  "course_participants": [
+  "classes_participants": [
     {
       "user_id": 1,
-      "course_id": 1,
+      "class_id": 1,
       "status": "נרשמה"
+
     }
   ],
   "challenge_completions": [

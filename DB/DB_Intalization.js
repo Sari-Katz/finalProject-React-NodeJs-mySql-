@@ -14,7 +14,7 @@ async function initDb() {
         logger.info('⛔ Dropping existing tables...');
         await pool.query('SET FOREIGN_KEY_CHECKS = 0');
         await pool.query('DROP TABLE IF EXISTS challenge_completions');
-        await pool.query('DROP TABLE IF EXISTS course_participants');
+        await pool.query('DROP TABLE IF EXISTS classes_participants');
         await pool.query('DROP TABLE IF EXISTS user_credentials');
         await pool.query('DROP TABLE IF EXISTS weekly_challenges');
         await pool.query('DROP TABLE IF EXISTS classes');
@@ -62,13 +62,13 @@ async function initDb() {
     `);
 
         await pool.query(`
-      CREATE TABLE course_participants (
+      CREATE TABLE classes_participants (
         user_id INT,
-        course_id INT,
+        class_id INT,
         status VARCHAR(50) DEFAULT 'נרשמה',
-        PRIMARY KEY (user_id, course_id),
+        PRIMARY KEY (user_id, class_id),
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (course_id) REFERENCES classes(id) ON DELETE CASCADE
+        FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
       )
     `);
 
@@ -97,16 +97,20 @@ async function initDb() {
                 [user.id, hash]
             );
         }
+try{
+  console.log(Object.keys(db)); // מה המודלים שטעונים באמת
 
+  console.log(typeof db.classes, db.classes)
         // הכנסת קורסים
         for (const course of db.classes) {
-
             await pool.query(
-                'INSERT INTO classes (id, title, description, day_of_week, start_time, date_start, duration_minutes) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [course.id, course.title, course.description, course.day_of_week, course.start_time, course.date_start, course.duration_minutes]
+                'INSERT INTO classes (id, title, class_types, day_of_week, start_time, date_start, end_time) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [course.id, course.title, course.class_types, course.day_of_week, course.start_time, course.date_start, course.end_time]
             );
         }
-
+}
+catch (err) {
+    logger.error('❌ Error inserting classes: ' + err.message); }
         // הכנסת אתגרים שבועיים
         for (const challenge of db.weekly_challenges) {
             await pool.query(
@@ -116,10 +120,10 @@ async function initDb() {
         }
 
         // הכנסת משתתפות בקורסים
-        for (const participant of db.course_participants) {
+        for (const participant of db.classes_participants) {
             await pool.query(
-                'INSERT INTO course_participants (user_id, course_id, joined_at, status) VALUES (?, ?, ?, ?)',
-                [participant.user_id, participant.course_id, participant.joined_at, participant.status]
+                'INSERT INTO classes_participants (user_id, class_id, status) VALUES (?, ?, ?)',
+                [participant.user_id, participant.class_id, participant.status]
             );
         }
 
