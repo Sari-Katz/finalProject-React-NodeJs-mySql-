@@ -1,86 +1,126 @@
+/* Nav.module.css */
 .navContainer {
-    width: 100%;
-    height: 64px;
-    background: #064e1d 70%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  width: 100%;
+  height: 64px;
+  background: #064e1d 70%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
 .navLeft {
-    display: flex;
-    align-items: center;
-    margin-right: 24px;
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
 }
 
-.logoPlaceholder {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    padding: 8px 20px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 8px;
+.logo {
+  width: 60px;
+  height: 50px;
+  background-image: url('../img/Logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+  display: inline-block;
+  margin: 5px 10px;
 }
 
 .navCenter {
-    display: flex;
-    gap: 32px;
+  display: flex;
+  gap: 32px;
 }
 
 .navLink {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: color 0.2s;
-    padding: 8px 14px;
-    border-radius: 6px;
-    direction: rtl;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  padding: 8px 14px;
+  border-radius: 6px;
+  direction: rtl;
 }
 
 .navLink:hover {
-    background: rgba(255,255,255,0.12);
-    color: #f85c52;
+  background: rgba(255,255,255,0.12);
+  color: #f85c52;
 }
 
 .navRight {
-    margin-left: 24px;
+  margin-left: 24px;
 }
 
 .personalAreaBtn {
-    background: #f85c52;
-    color: #fff;
-    padding: 8px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.05rem;
-    transition: background 0.2s, color 0.2s;
-    border: none;
-    outline: none;
+  background: #f85c52;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.05rem;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+  outline: none;
 }
 
 .personalAreaBtn:hover {
-    background: #fff;
-    color: #f85c52;
-    box-shadow: 0 2px 8px rgba(185,28,28,0.15);
+  background: #fff;
+  color: #f85c52;
+  box-shadow: 0 2px 8px rgba(185,28,28,0.15);
 }
-.logo {
-    width: 60px;
-    height: 50px;
-    background-image: url('../img/Logo.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 12px;
-    display: inline-block;
-    margin: 5px 10px;
+
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: 20px;
 }
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .navCenter {
+    display: none;
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background-color: #064e1d;
+    flex-direction: column;
+    width: 100%;
+    padding: 12px 0;
+    gap: 16px;
+  }
+
+  .navCenter.open {
+    display: flex;
+  }
+
+  .burger {
+    display: flex;
+  }
+.burger {
+    margin-left: 20px;
+    margin-right: 0;
+    order: 1;
+}
+.navRight {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 240px;
+    margin-right: 0;
+}
+} 
