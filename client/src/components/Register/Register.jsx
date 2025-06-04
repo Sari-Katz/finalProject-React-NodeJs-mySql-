@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import styles from './Register.module.css';
-import ApiUtils from '../../utils/ApiUtils ';
+import ApiUtils from '../../utils/ApiUtils';
 // import { GoogleLogin } from '@react-oauth/google';
 // import { FacebookLoginButton } from 'react-social-login-buttons';
 
