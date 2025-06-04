@@ -14,12 +14,12 @@ import { Route, Routes } from 'react-router-dom';
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <AuthProvider>
         <Routes>
+
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -31,7 +31,24 @@ function App() {
 
       {/* < Nav/> */}
     </>
+
   )
 }
+const PrivateRoute = ({ children, requiredRole, condition }) => {
+  const { user } = useContext(AuthContext);
 
+  if (!user) return <Navigate to="/login" />;
+
+  // בדיקת תפקיד
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  // בדיקת תנאי כללי נוסף (אם תרצה)
+  if (condition && !condition(user)) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return children;
+};
 export default App
