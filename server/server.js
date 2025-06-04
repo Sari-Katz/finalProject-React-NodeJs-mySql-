@@ -11,6 +11,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/users", userRoute);
+app.use("/classes", classRoute);
+
 
 app.use("/", (req, res) => {
     try {

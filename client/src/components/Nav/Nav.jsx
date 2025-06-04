@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, NavLink } from 'react-router-dom';
 import styles from './Nav.module.css';
 import { AuthContext } from '../AuthContext';
 import { useLocation } from 'react-router-dom';
@@ -11,9 +11,9 @@ function Nav() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-const location = useLocation();
+  const location = useLocation();
 
-const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
   return (
     <nav className={styles.navContainer}>
       <div className={styles.navLeft}>
@@ -28,13 +28,19 @@ const isActive = (path) => location.pathname === path;
       </div>
 
       <div className={`${styles.navCenter} ${isOpen ? styles.open : ''}`}>
-        <Link to="/schedule" className={styles.navLink}>מערכת שעות</Link>
-        <Link to="/posts" className={styles.navLink}>פוסטים</Link>
-        <Link to="/about" className={styles.navLink}>אודות</Link>
+        <NavLink to="/schedule" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          מערכת שעות
+        </NavLink>
+        <NavLink to="/posts" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          פוסטים
+        </NavLink>
+        <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          אודות
+        </NavLink>
       </div>
 
       <div className={styles.navRight}>
-        <Link to="/profile" className={styles.personalAreaBtn}>אזור אישי</Link>
+        <NavLink to="/profile" className={styles.personalAreaBtn}>אזור אישי</NavLink>
       </div>
     </nav>
   );

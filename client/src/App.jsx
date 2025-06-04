@@ -7,6 +7,7 @@ import './App.css'
 import Register from './components/Register/Register.jsx'
 import Login from './components/Login/Login.jsx'
 import Home from './components/Home/Home.jsx'
+import ScheduleTable from './components/Schedule/ScheduleTable.jsx'
 import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
 import { Route, Routes } from 'react-router-dom';
@@ -25,6 +26,9 @@ function App() {
           <Route path="/register" element={<Register />} />
                     <Route path="/register" element={<Register />} />
           <Route path="/user/:id/home" element={<Home />} />
+          <Route path="/schedule" element={<ScheduleTable />} />
+          <Route path="/about" element={<Home />} />
+
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </AuthProvider>
