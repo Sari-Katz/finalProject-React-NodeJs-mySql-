@@ -11,6 +11,7 @@ import ScheduleTable from './components/Schedule/ScheduleTable.jsx'
 import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
 import { Route, Routes } from 'react-router-dom';
+import Posts from './components/Posts/Posts.jsx'
 
 
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/user/:id/home" element={<Home />} />
           <Route path="/schedule" element={<ScheduleTable />} />
           <Route path="/about" element={<Home />} />
+          <Route path="/posts" element={<Posts />} />
 
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
