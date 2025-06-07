@@ -15,6 +15,7 @@ router.get('/:id', classController.getClassById);
 // עדכון פרטי כיתה
 router.put('/:id', classController.updateClass);
 
+
 // מחיקת כיתה
 router.delete('/:id', classController.deleteClass);
 
