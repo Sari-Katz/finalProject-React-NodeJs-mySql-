@@ -16,7 +16,7 @@ export default function ScheduleTable() {
   useEffect(() => {
     async function loadCourses() {
       try {
-        const data = await apiUtils.get("/api/courses");
+        const data = await apiUtils.get("http://localhost:3000/");
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
