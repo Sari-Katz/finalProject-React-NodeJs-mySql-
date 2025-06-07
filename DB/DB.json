@@ -41,5 +41,31 @@
       "challenge_id": 1,
       "completed": true
     }
+  ],
+  "subscription_plans": [
+    {
+      "id": 1,
+      "name": "חבילת בסיס",
+      "description": "גישה לשיעור אחד בשבוע",
+      "price": 99.90,
+      "duration_days": 30
+    },
+    {
+      "id": 2,
+      "name": "חבילה מורחבת",
+      "description": "גישה חופשית לכל הקורסים",
+      "price": 199.90,
+      "duration_days": 30
+    }
+  ],
+  "user_subscriptions": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "plan_id": 2,
+      "start_date": "2025-06-01",
+      "end_date": "2025-06-30"
+    }
   ]
 }
+

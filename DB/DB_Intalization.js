@@ -19,6 +19,9 @@ async function initDb() {
         await pool.query('DROP TABLE IF EXISTS weekly_challenges');
         await pool.query('DROP TABLE IF EXISTS classes');
         await pool.query('DROP TABLE IF EXISTS users');
+                await pool.query('DROP TABLE IF EXISTS subscription_plans');
+        await pool.query('DROP TABLE IF EXISTS user_subscriptions');
+
         await pool.query('SET FOREIGN_KEY_CHECKS = 1');
 
         logger.info('🛠️ Creating tables...');
@@ -31,7 +34,27 @@ async function initDb() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+await pool.query(`
+    CREATE TABLE subscription_plans (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        price DECIMAL(10, 2),
+        duration_days INT NOT NULL -- כמה ימים המנוי נמשך
+    )
+`);
 
+await pool.query(`
+    CREATE TABLE user_subscriptions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        plan_id INT NOT NULL,
+        start_date DATE NOT NULL,
+        end_date DATE NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (plan_id) REFERENCES subscription_plans(id) ON DELETE CASCADE
+    )
+`);
         await pool.query(`
             CREATE TABLE user_credentials (
                 user_id INT,
@@ -128,6 +151,24 @@ async function initDb() {
                 [cc.user_id, cc.challenge_id, cc.completed]
             );
         }
+
+        if (db.subscription_plans) {
+    for (const plan of db.subscription_plans) {
+        await pool.query(
+            'INSERT INTO subscription_plans (id, name, description, price, duration_days) VALUES (?, ?, ?, ?, ?)',
+            [plan.id, plan.name, plan.description, plan.price, plan.duration_days]
+        );
+    }
+}
+
+if (db.user_subscriptions) {
+    for (const sub of db.user_subscriptions) {
+        await pool.query(
+            'INSERT INTO user_subscriptions (id, user_id, plan_id, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
+            [sub.id, sub.user_id, sub.plan_id, sub.start_date, sub.end_date]
+        );
+    }
+}
 
         logger.info('✅ All data inserted successfully.');
         process.exit(0);
