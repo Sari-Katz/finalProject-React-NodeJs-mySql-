@@ -12,12 +12,13 @@ export default function ScheduleTable() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const apiUtils = new ApiUtils();
 
-  const times = [...new Set(courses.map((c) => c.time))].sort();
+  const times = [...new Set(courses.map((c) => c.start_time))].sort();
 
   useEffect(() => {
     async function loadCourses() {
       try {
-        const data = await apiUtils.get("http://localhost:3000/corses");
+        const data = await apiUtils.get("http://localhost:3000/classes");
+        console.log("קורסים שהתקבלו:", data);
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
@@ -41,7 +42,7 @@ export default function ScheduleTable() {
           <div className={`${styles.cell} ${styles.timeCell}`}>{time}</div>
           {days.map((day) => {
             const course = courses.find(
-              (c) => c.day === day && c.time === time
+              (c) => c.day_of_week === day && c.start_time === time
             );
             return (
               <CourseCell

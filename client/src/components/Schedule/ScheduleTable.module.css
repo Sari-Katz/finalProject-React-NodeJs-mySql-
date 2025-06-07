@@ -1,44 +1,74 @@
 .scheduleContainer {
   display: grid;
   grid-template-columns: 80px repeat(5, 1fr);
-  background-color: #e0e0e0;
+  background: #064e1d 70%;
   direction: rtl;
-  margin: 20px auto;
-  border: 2px solid #999;
+  margin: 32px auto 0 auto;
+  border-radius: 14px;
+  border: none;
   font-family: "Arial", sans-serif;
   width: max-content;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
 }
 
 .cell {
-  background-color: white;
-  padding: 16px 8px;
+  background: #fff;
+  padding: 18px 10px;
   text-align: center;
-  border: 1px solid #bbb;
-  font-size: 14px;
-  min-width: 100px;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  font-size: 15px;
+  min-width: 110px;
   min-height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: default;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cell:hover {
+  background: rgba(8, 94, 37, 0.07);
+  color: #f85c52;
 }
 
 .header {
-  background-color: #3f51b5;
-  color: white;
+  background: #064e1d;
+  color: #fff;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 17px;
+  border-right: 1px solid #fff;
+  letter-spacing: 0.5px;
 }
 
 .dayHeader {
-  background-color: #f2f2f2;
+  background: #f2f2f2;
+  color: #064e1d;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
+  border-right: 1px solid #e0e0e0;
 }
 
 .timeCell {
-  background-color: #f9f9f9;
+  background: #f9f9f9;
+  color: #064e1d;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
+  border-right: 1px solid #e0e0e0;
+}
+
+@media (max-width: 900px) {
+  .scheduleContainer {
+    grid-template-columns: 60px repeat(5, 1fr);
+    font-size: 14px;
+  }
+  .cell {
+    min-width: 80px;
+    padding: 12px 4px;
+    font-size: 13px;
+  }
+  .header, .dayHeader, .timeCell {
+    font-size: 14px;
+  }
 }

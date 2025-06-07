@@ -56,7 +56,7 @@ const userExists = await checkIfUserExists(additionalInfo.email);
         try {
             const user = await apiUtils.post(`http://localhost:3000/users/register`, newUser);
             login({ username: user.full_name, id: user.id, role: user.role });
-            // navigate(`/user/${user.id}/home`);
+            navigate(`/about`);
         } catch (error) {
             console.error('Error creating user:', error);
             setError('Failed to create user');
