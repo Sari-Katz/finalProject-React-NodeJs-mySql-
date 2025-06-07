@@ -1,32 +1,49 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Nav.module.css'; 
+import React, { useContext, useState } from 'react';
+import {Link, NavLink } from 'react-router-dom';
+import styles from './Nav.module.css';
+import { AuthContext } from '../AuthContext';
+import { useLocation } from 'react-router-dom';
 
-function Nav(){
-    const { user, logout } = useContext(AuthContext);
-    // const navigate = useNavigate();
-    // const { userData, setUserData } = useUserContext();
-    // const handleLogout = () => {
-    //     localStorage.removeItem('currentUser');
-    //     setUserData({ username: '', id: '' });
-    // };
+function Nav() {
+  const { user, logout } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <nav className={styles.navContainer}>
-            <div className={styles.navLeft}>
-                <div className={styles.logo}></div>
-                {/* <button className={styles.personalAreaBtn}>log out</button> */}
-                {/* <Link to="/login" className={styles.personalAreaBtn} onClick={()=>{localStorage.removeItem('currentUser')}}>log out</Link> */}
-            </div>
-            <div className={styles.navCenter}>
-                <Link to="/schedule" className={styles.navLink}>מערכת שעות</Link>
-                <Link to="/posts" className={styles.navLink}>פוסטים</Link>
-                <Link to="/about" className={styles.navLink}>אודות</Link>
-            </div>
-            <div className={styles.navRight}>
-                <Link to="/profile" className={styles.personalAreaBtn}>אזור אישי</Link>
-            </div>
-        </nav>
-    );
-} 
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
+  return (
+    <nav className={styles.navContainer}>
+      <div className={styles.navLeft}>
+        {/* <div className={styles.logo}></div> */}
+        <Link to="/login" className={styles.personalAreaBtn} onClick={logout}>log out</Link>
+      </div>
+
+      <div className={styles.burger} onClick={toggleMenu}>
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+      </div>
+
+      <div className={`${styles.navCenter} ${isOpen ? styles.open : ''}`}>
+        <NavLink to="/schedule" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          מערכת שעות
+        </NavLink>
+        <NavLink to="/posts" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          פוסטים
+        </NavLink>
+        <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          אודות
+        </NavLink>
+      </div>
+
+      <div className={styles.navRight}>
+        <NavLink to="/profile" className={styles.personalAreaBtn}>אזור אישי</NavLink>
+      </div>
+    </nav>
+  );
+}
+
 export default Nav;

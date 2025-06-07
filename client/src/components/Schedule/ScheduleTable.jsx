@@ -3,7 +3,8 @@ import styles from "./ScheduleTable.module.css";
 import CourseCell from "./CourseCell";
 import CourseSignupModal from "./CourseSignupModal";
 import ApiUtils from "../../utils/ApiUtils";
-
+import Nav from "../Nav/Nav";
+  
 const days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי"];
 
 export default function ScheduleTable() {
@@ -26,6 +27,8 @@ export default function ScheduleTable() {
   }, []);
 
   return (
+   <div>
+    <Nav />
     <div className={styles.scheduleContainer} dir="rtl">
       <div className={`${styles.cell} ${styles.header}`}>שעה</div>
       {days.map((day) => (
@@ -57,6 +60,7 @@ export default function ScheduleTable() {
           onClose={() => setSelectedCourse(null)}
         />
       )}
+    </div>
     </div>
   );
 }

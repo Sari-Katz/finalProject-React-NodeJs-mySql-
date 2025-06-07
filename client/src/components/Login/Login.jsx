@@ -14,29 +14,20 @@ function Login() {
 
     const handleLogin = async () => {
         try {
-            const users = await apiUtils.fetch(`http://localhost:3000/users?email=${email}`);
-            const user = users[0];
-
-            if (!user) {
-                setError('User not found');
-                return;
-            }
-
-            if (user.password !== password && user.passwordHash !== password) {
-                setError('Incorrect password');
-                return;
-            }
-
+            const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
+            let user= data.user; // Assuming the response contains a user object
+            console.log('User data:', user);
+            debugger
             login({
-                username: user.full_name,
-                id: user.id,
-                role: user.role
+            username: user.full_name,
+            id: user.id,
+            role: user.role
             });
-
+           
             navigate(`/user/${user.id}/home`);
         } catch (error) {
             console.error('Login error:', error);
-            setError('An error occurred during login');
+            setError(error.message || 'An error occurred during login');
         }
     };
 
