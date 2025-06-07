@@ -13,17 +13,46 @@ exports.createClass = async (req, res) => {
 
 // קבלת כל הכיתות (עם אפשרות לסינון)
 exports.getClasses = async (req, res) => {
-    try {
-        const filters = req.query;
-        const classes = Object.keys(filters).length === 0
+ try {
+    const { week, ...otherFilters } = req.query;
+    let filters = { ...otherFilters };
+
+    if (week) {
+      const weekFilter = addWeekFilter({ week });
+      filters = { ...filters, ...weekFilter };
+    }
+  const classes = Object.keys(filters).length === 0
             ? await classService.getAllClasses()
             : await classService.searchClasses(filters);
-
-        res.status(200).json(classes);
-    } catch (error) {
+    res.status(200).json(courses);
+  } catch (error) {
         res.status(500).json({ message: 'שגיאה בקבלת כיתות', error: error.message });
     }
 };
+
+// פונקציה פנימית לבניית פילטר שבועי לפי פרמטר week
+function addWeekFilter(query) {
+  const inputDate = new Date(query.week);
+  if (isNaN(inputDate)) return {}; // תאריך לא תקין – לא מוסיף פילטר
+
+  const dayOfWeek = inputDate.getDay(); // 0 = Sunday
+  const diffToSunday = (dayOfWeek + 6) % 7;
+  const startOfWeek = new Date(inputDate);
+  startOfWeek.setDate(inputDate.getDate() - diffToSunday);
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  endOfWeek.setHours(23, 59, 59, 999);
+
+  return {
+    courseDate: {
+      $gte: startOfWeek,
+      $lte: endOfWeek
+    }
+  };
+}
+
 
 // קבלת כיתה לפי מזהה
 exports.getClassById = async (req, res) => {
