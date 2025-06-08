@@ -35,6 +35,7 @@ async function initDb() {
                 full_name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 phone VARCHAR(20),
+    role ENUM('user', 'admin', 'guide') DEFAULT 'user',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
