@@ -8,6 +8,7 @@ import Register from './components/Register/Register.jsx'
 import Login from './components/Login/Login.jsx'
 import Home from './components/Home/Home.jsx'
 import ScheduleTable from './components/Schedule/ScheduleTable.jsx'
+import UserProfile from './components/UserProfile/UserProfile.jsx'
 import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
 import { Route, Routes } from 'react-router-dom';
@@ -30,7 +31,7 @@ function App() {
           <Route path="/schedule" element={<ScheduleTable />} />
           <Route path="/about" element={<Home />} />
           <Route path="/posts" element={<Posts />} />
-
+          <Route path="/profile" element={<UserProfile />} />
           {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </AuthProvider>

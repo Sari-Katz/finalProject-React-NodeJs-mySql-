@@ -1,0 +1,12 @@
+.profileContainer {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.section {
+  margin-bottom: 30px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+}
