@@ -1,5 +1,7 @@
 const userService = require('../services/userService');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // קבלת כל המשתמשים או חיפוש עם פילטרים
 exports.getUsers = async (req, res) => {
@@ -51,13 +53,30 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
         }
 
+try {
+  const token = jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '3h' }
+  );
+  console.log("Token:", token);
+  res.json({ message: 'התחברת בהצלחה', user, token });
+} catch (err) {
+  console.error("JWT Error:", err);
+  return res.status(500).json({ message: 'שגיאה ביצירת טוקן', error: err.message });
+}
+
+// שליחת תגובה עם טוקן
+
         const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) {
             return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
         }
-
-        // כאן אפשר להחזיר טוקן או פרטי משתמש
-        res.json({ message: 'התחברת בהצלחה', user });
+res.json({
+  message: 'התחברת בהצלחה',
+  user,
+  token
+});
     } catch (error) {
         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
     }

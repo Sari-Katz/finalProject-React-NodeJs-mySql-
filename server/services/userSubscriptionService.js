@@ -10,13 +10,16 @@ exports.getById = async (id) => {
   return rows[0];
 };
 
-exports.getByUserId = async (userId) => {
+exports.getActiveByUserId = async (userId) => {
   const [rows] = await pool.query(`
     SELECT * FROM user_subscriptions 
-    WHERE user_id = ? AND CURRENT_DATE BETWEEN start_date AND end_date
+    WHERE user_id = ? AND end_date >= CURRENT_DATE
+    ORDER BY end_date DESC
+    LIMIT 1
   `, [userId]);
-  return rows[0]; // או rows אם רוצים את כל ההיסטוריה
+  return rows[0] || null;
 };
+
 
 exports.create = async (data) => {
   const { user_id, plan_id, start_date, end_date } = data;
