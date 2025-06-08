@@ -16,11 +16,15 @@ async function initDb() {
         await pool.query('DROP TABLE IF EXISTS challenge_completions');
         await pool.query('DROP TABLE IF EXISTS classes_participants');
         await pool.query('DROP TABLE IF EXISTS user_credentials');
+         await pool.query('DROP TABLE IF EXISTS subscription_plans');
+        await pool.query('DROP TABLE IF EXISTS user_subscriptions');
         await pool.query('DROP TABLE IF EXISTS weekly_challenges');
         await pool.query('DROP TABLE IF EXISTS classes');
         await pool.query('DROP TABLE IF EXISTS users');
         await pool.query('DROP TABLE IF EXISTS subscription_plans');
         await pool.query('DROP TABLE IF EXISTS user_subscriptions');
+     
+
         await pool.query('SET FOREIGN_KEY_CHECKS = 1');
 
         
