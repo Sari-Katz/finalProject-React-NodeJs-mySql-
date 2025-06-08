@@ -17,8 +17,8 @@ function Login() {
             const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
             let user= data.user; // Assuming the response contains a user object
             console.log('User data:', user);
-            const activeSubscription = await apiUtils.get(`http://localhost:3000/subscriptions?user_id=${user.id}`);
-            
+            const activeSubscription = await apiUtils.get(`http://localhost:3000/userSubscription/byUser/${user.id}`);
+            console.log(activeSubscription)
             login({
             username: user.full_name,
             id: user.id,

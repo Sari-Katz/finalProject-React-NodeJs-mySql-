@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const userRoute = require('./routes/userRoute');
 const classRoute = require('./routes/classRoute');
+const userSubscriptionRoute = require('./routes/userSubscriptionRoute');
+
 const app = express();
 
 app.use(cors({
@@ -12,7 +14,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/users", userRoute);
 app.use("/classes", classRoute);
-app.use("/subscriptions", subscriptionRoute);
+app.use("/userSubscription", userSubscriptionRoute);
 
 
 app.use("/", (req, res) => {
