@@ -57,6 +57,10 @@
   font-size: 15px;
   border-right: 1px solid #e0e0e0;
 }
+centeredContent {
+  width: 100%;
+  max-width: 1000px;
+}
 
 @media (max-width: 900px) {
   .scheduleContainer {

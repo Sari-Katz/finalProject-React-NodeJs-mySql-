@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./UserProfile.module.css"; // תיצור קובץ CSS מתאים
 
-const api = new ApiUtils();
+const apiUtils = new ApiUtils();
 
  function UserProfile({ userId }) {
   const [recentClasses, setRecentClasses] = useState([]);
   const [pastChallenges, setPastChallenges] = useState([]);
   const [weeklyChallenge, setWeeklyChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [classes, challenges, weekly] = await Promise.all([
-          api.get(`/api/users/${userId}/recent-classes`),
-          api.get(`/api/users/${userId}/past-challenges`),
-          api.get(`/api/users/${userId}/weekly-challenge`),
+          apiUtils.get(`http://localhost:3000/classes?userId=${userId}&recent=true`),
+          apiUtils.get(`http://localhost:3000/users/${userId}/past-challenges`),
+          apiUtils.get(`http://localhost:3000/weekly-challenge?userId=${userId}`),
         ]);
 
         setRecentClasses(classes);
@@ -34,7 +33,7 @@ const api = new ApiUtils();
 
   const handleCompleteWeeklyChallenge = async () => {
     try {
-      await api.patch(`/api/users/${userId}/weekly-challenge/complete`, {
+      await apiUtils.patch(`http://localhost:3000/weekly-challenge/${challengeId}/complete`, {
         completed: true,
       });
       setWeeklyChallenge({ ...weeklyChallenge, completed: true });
@@ -46,6 +45,7 @@ const api = new ApiUtils();
   if (loading) return <p>Loading...</p>;
 
   return (
+
     <div className={styles.profileContainer}>
       <h2>הפרופיל האישי שלי</h2>
 

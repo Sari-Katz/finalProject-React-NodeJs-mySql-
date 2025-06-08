@@ -40,7 +40,9 @@ function Nav() {
       </div>
 
       <div className={styles.navRight}>
-        <NavLink to="/profile" className={styles.personalAreaBtn}>אזור אישי</NavLink>
+        {location.pathname !== "/profile" && (
+          <NavLink to="/profile" className={styles.personalAreaBtn}>אזור אישי</NavLink>
+        )}
       </div>
     </nav>
   );

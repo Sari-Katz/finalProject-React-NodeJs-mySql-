@@ -29,8 +29,7 @@ export default function ScheduleTable() {
 
   return (
    <div>
-    <Nav />
-    <div className={styles.scheduleContainer} dir="rtl">
+    <div className={`${styles.scheduleContainer} ${styles.centeredContent}`} dir="rtl">
       <div className={`${styles.cell} ${styles.header}`}>שעה</div>
       {days.map((day) => (
         <div key={day} className={`${styles.cell} ${styles.dayHeader}`}>

@@ -13,34 +13,73 @@ import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
 import { Route, Routes } from 'react-router-dom';
 import Posts from './components/Posts/Posts.jsx'
-
+import Nav from './components/Nav/Nav.jsx';
+import Footer from './components/Footer/Footer.jsx';
 
 
 function App() {
+  // Helper to wrap routes that need Nav and Footer
+  const WithLayout = ({ children }) => (
+    <>
+      <Nav />
+      {children}
+      <Footer />
+    </>
+  );
 
   return (
-    <>
-      <AuthProvider>
-        <Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-                    <Route path="/register" element={<Register />} />
-          <Route path="/user/:id/home" element={<Home />} />
-          <Route path="/schedule" element={<ScheduleTable />} />
-          <Route path="/about" element={<Home />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/profile" element={<UserProfile />} />
-          {/* <Route path="*" element={<PageNotFound />} /> */}
-        </Routes>
-      </AuthProvider>
-
-      {/* < Nav/> */}
-    </>
-
-  )
+        <Route
+          path="/user/:id/home"
+          element={
+            <WithLayout>
+              <Home />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/schedule"
+          element={
+            <WithLayout>
+              <ScheduleTable />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <WithLayout>
+              <Home />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/posts"
+          element={
+            <WithLayout>
+              <Posts />
+            </WithLayout>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <WithLayout>
+              <UserProfile />
+            </WithLayout>
+          }
+        />
+        {/* <Route path="*" element={<PageNotFound />} /> */}
+      </Routes>
+    </AuthProvider>
+  );
 }
+
 const PrivateRoute = ({ children, requiredRole, condition }) => {
   const { user } = useContext(AuthContext);
 
@@ -58,4 +97,5 @@ const PrivateRoute = ({ children, requiredRole, condition }) => {
 
   return children;
 };
+
 export default App

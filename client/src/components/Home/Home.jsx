@@ -6,7 +6,7 @@ import Nav from '../Nav/Nav';
 const Home = () => {
     return (
         <div className={styles.homeContainer}>
-            <Nav />
+           
             <div className={styles.content}>
                 <h1>ברוכים הבאים לאתר שלנו!</h1>
                 <p>כאן תוכלו למצוא מידע נוסף ולהתחיל לגלוש.</p>
