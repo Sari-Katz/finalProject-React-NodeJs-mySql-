@@ -9,6 +9,7 @@ export default function CourseSignupModal({ course, onClose }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      
       signupToCourse();
     }, 500); // אפשרות לעיכוב קצר להדמיה
 
@@ -17,7 +18,8 @@ export default function CourseSignupModal({ course, onClose }) {
 
   async function signupToCourse() {
     try {
-      await api.post("/api/signup", { courseId: course.id });
+      
+      await api.post("http://localhost:3000/classes_participants", { courseId: course.id });
       setStatus("success");
 
       // סגור את המודאל אחרי 2 שניות

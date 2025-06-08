@@ -28,6 +28,7 @@ function AuthProvider({ children }) {
 
   // מאחזר תפקיד נוכחי בצורה נוחה
   const role = user?.role || "guest";
+  const activeSubscription = user?.activeSubscription || false;
 
   const login = (userData) => {
     setUser(userData);
@@ -44,7 +45,7 @@ function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, role, login, logout }}>
+    <AuthContext.Provider value={{ user, role, login, logout,activeSubscription }}>
       {children}
     </AuthContext.Provider>
   );

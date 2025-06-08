@@ -21,10 +21,11 @@ exports.getClasses = async (req, res) => {
       const weekFilter = addWeekFilter({ week });
       filters = { ...filters, ...weekFilter };
     }
+    console.log(filters);
   const classes = Object.keys(filters).length === 0
             ? await classService.getAllClasses()
             : await classService.searchClasses(filters);
-    res.status(200).json(courses);
+    res.status(200).json(classes);
   } catch (error) {
         res.status(500).json({ message: 'שגיאה בקבלת כיתות', error: error.message });
     }
