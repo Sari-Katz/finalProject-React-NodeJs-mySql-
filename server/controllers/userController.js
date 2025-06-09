@@ -83,11 +83,16 @@ exports.getUserDashboard = async (req, res) => {
 // עבור משתמש פרטי
 
 exports.completeWeeklyChallenge = async (req, res) => {
-  const { userId, challengeId } = req.params;
-
+const userId = req.params.id;
+  const challengeId = req.params.weeklyChallenge;
   try {
+    // const result = 
     await userService.markChallengeAsCompleted(userId, challengeId);
-    res.status(200).json({ message: 'האתגר סומן כהושלם בהצלחה' });
+    res.status(200).json({
+      message: 'Challenge completion status updated successfully'
+      // , result
+    });
+    // console.log(result)
   } catch (error) {
     console.error('Error completing challenge:', error);
     res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });

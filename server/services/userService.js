@@ -175,7 +175,8 @@ console.log(currentChallenge[0].description);
       [userId, challengeId]
     );
   }
-   
+//    return { inserted: true, insertId: result.insertId };
+ 
 }
 
 };
