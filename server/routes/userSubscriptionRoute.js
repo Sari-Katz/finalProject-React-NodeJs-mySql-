@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userSubscriptionController = require('../controllers/userSubscriptionController');
+const {authenticateToken} = require("../middlewares/authMiddleware");
 
 // כל המנויים
 router.get('/', userSubscriptionController.getAllSubscriptions);
@@ -9,7 +10,7 @@ router.get('/', userSubscriptionController.getAllSubscriptions);
 router.get('/:id', userSubscriptionController.getSubscriptionById);
 
 // בדיקת מנוי לפי מזהה משתמש
-router.get('/byUser/:userId', userSubscriptionController.getSubscriptionByUserId);
+router.get('/byUser/:userId',  authenticateToken,userSubscriptionController.getSubscriptionByUserId);
 
 // יצירת מנוי חדש
 router.post('/create', userSubscriptionController.createSubscription);

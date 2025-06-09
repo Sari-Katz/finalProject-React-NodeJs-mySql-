@@ -19,13 +19,14 @@ function Login() {
             console.log('User data:', user);
          const token = data.token;
 
-const subscriptionData = await apiUtils.get(`http://localhost:3000/userSubscription/byUser/${user.id}`)
-    // , {
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-// });
-            console.log(subscriptionData);
+const subscriptionData = await apiUtils.get(
+  `http://localhost:3000/userSubscription/byUser/${user.id}`,
+  {
+    Authorization: `Bearer ${token}`
+  }
+);
+
+console.log(subscriptionData);
 login({
   username: user.full_name,
   id: user.id,

@@ -22,13 +22,18 @@ class ApiUtils {
             });
             return await this.checkResponseStatus(response);
     }
-    async get(url) {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        return await this.checkResponseStatus(response);
-    }
+  async get(url, headers = {}) {
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers, // ✅ עכשיו זה בטוח
+        },
+    });
+    return await this.checkResponseStatus(response);
+}
+
+
     async post(url,newData) {
             const response = await fetch(url, {
                 method: 'POST',
