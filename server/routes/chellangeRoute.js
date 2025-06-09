@@ -34,5 +34,8 @@ router.get('/:challengeId/completions', controller.getChallengeCompletions); // 
 router.get('/user/:userId', controller.getUserChallengeStatuses); // מה המשתמש השלים
 router.post('/:challengeId/complete/:userId', controller.markCompleted);
 router.delete('/:challengeId/complete/:userId', controller.unmarkCompleted);
+// // אתגרים שהמשתמש השלים, אחרונים קודם
+// router.get('/user/:userId/recent-completed', controller.getRecentCompletedChallenges);
+
 
 module.exports = router;

@@ -32,7 +32,7 @@ login({
   id: user.id,
   role: user.role,
   token,
-  activeSubscription: subscriptionData,
+  activeSubscription: subscriptionData.isActive,
 });
  navigate(`/user/${user.id}/home`);
         } catch (error) {

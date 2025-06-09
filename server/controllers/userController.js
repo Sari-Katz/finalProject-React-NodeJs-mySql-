@@ -69,6 +69,30 @@ exports.loginUser = async (req, res) => {
     return res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
   }
 };
+// עבור משתמש פרטי
+exports.getUserDashboard = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const dashboardData = await userService.getUserDashboard(userId);
+    res.json(dashboardData);
+  } catch (error) {
+    console.error('Error fetching user dashboard:', error);
+    res.status(500).json({ error: 'Failed to fetch dashboard data' });
+  }
+};
+// עבור משתמש פרטי
+
+exports.completeWeeklyChallenge = async (req, res) => {
+  const { userId, challengeId } = req.params;
+
+  try {
+    await userService.markChallengeAsCompleted(userId, challengeId);
+    res.status(200).json({ message: 'האתגר סומן כהושלם בהצלחה' });
+  } catch (error) {
+    console.error('Error completing challenge:', error);
+    res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
+  }
+};
 
 // קבלת משתמש לפי מזהה
 exports.getUserById = async (req, res) => {

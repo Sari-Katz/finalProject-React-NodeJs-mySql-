@@ -10,7 +10,7 @@ router.get('/', userSubscriptionController.getAllSubscriptions);
 router.get('/:id', userSubscriptionController.getSubscriptionById);
 
 // בדיקת מנוי לפי מזהה משתמש
-router.get('/byUser/:userId',  authenticateToken,userSubscriptionController.getSubscriptionByUserId);
+router.get('/byUser/:userId', authenticateToken,userSubscriptionController.getSubscriptionByUserId);
 
 // יצירת מנוי חדש
 router.post('/create', userSubscriptionController.createSubscription);

@@ -5,8 +5,18 @@
       "full_name": "רות כהן",
       "email": "ruth@example.com",
       "phone": "050-1234567",
-      "password": "ruthPass123"
+      "password": "ruthPass123",
+       "role":"user"
+
+    },{
+      "id":2,
+      "full_name": "טובה הלוי",
+      "email": "jjj@gmail.com",
+      "phone": "050-1234567",
+      "password": "admin123",
+      "role":"admin"
     }
+    
   ],
   "classes": [
     {
@@ -15,7 +25,7 @@
       "class_types": "קורס בסיסי בתכנות פייתון",
       "day_of_week": "ראשון",
       "start_time": "09:00:00",
-      "date_start": "2025-06-01",
+      "date_start": "2025-06-09",
       "end_time": "10:00:00"
       
     }
@@ -23,7 +33,7 @@
   "weekly_challenges": [
     {
       "id": 1,
-      "week_start_date": "2025-06-01",
+      "week_start_date": "2025-06-09",
       "description": "בנו אפליקציה קטנה"
     }
   ],
