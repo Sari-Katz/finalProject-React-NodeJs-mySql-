@@ -15,7 +15,7 @@ const apiUtils = new ApiUtils();
         const [classes, challenges, weekly] = await Promise.all([
           apiUtils.get(`http://localhost:3000/classes?userId=${userId}&recent=true`),
           apiUtils.get(`http://localhost:3000/users/${userId}/past-challenges`),
-          apiUtils.get(`http://localhost:3000/weekly-challenge?userId=${userId}`),
+          apiUtils.get(`http://localhost:3000/challenge?userId=${userId}`),
         ]);
 
         setRecentClasses(classes);
