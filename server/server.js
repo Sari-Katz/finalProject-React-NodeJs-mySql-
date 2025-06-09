@@ -4,6 +4,7 @@ require('dotenv').config();
 const userRoute = require('./routes/userRoute');
 const classRoute = require('./routes/classRoute');
 const userSubscriptionRoute = require('./routes/userSubscriptionRoute');
+const chellangeRoute = require('./routes/chellangeRoute');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/users", userRoute);
 app.use("/classes", classRoute);
+app.use("/challenge",chellangeRoute );
 app.use("/userSubscription", userSubscriptionRoute);
 
 

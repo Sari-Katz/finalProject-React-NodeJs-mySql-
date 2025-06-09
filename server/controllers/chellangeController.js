@@ -1,0 +1,179 @@
+// const challengeService = require('../services/challengeService');
+
+// // יצירת אתגר שבועי חדש
+// exports.createChallenge = async (req, res) => {
+//     try {
+//         const challengeData = req.body;
+//         const newChallenge = await challengeService.createChallenge(challengeData);
+//         res.status(201).json(newChallenge);
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה ביצירת אתגר', error: error.message });
+//     }
+// };
+
+// // קבלת כל האתגרים השבועיים (עם אפשרות לסינון)
+// exports.getChallenges = async (req, res) => {
+//     try {
+//         const { week, ...otherFilters } = req.query;
+//         console.log("otherFilters", otherFilters);
+//         let filters = { ...otherFilters };
+
+//         if (week) {
+//             const weekFilter = addWeekFilter({ week });
+//             filters = { ...filters, ...weekFilter };
+//         }
+
+//         const challenges = Object.keys(filters).length === 0
+//             ? await challengeService.getAllChallenges()
+//             : await challengeService.searchChallenges(filters);
+
+//         res.status(200).json(challenges);
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה בקבלת אתגרים', error: error.message });
+//     }
+// };
+
+// // פונקציה פנימית לבניית פילטר שבועי לפי פרמטר week
+// function addWeekFilter(query) {
+//     const inputDate = new Date(query.week);
+//     if (isNaN(inputDate)) return {};
+
+//     const dayOfWeek = inputDate.getDay();
+//     const diffToSunday = (dayOfWeek + 6) % 7;
+//     const startOfWeek = new Date(inputDate);
+//     startOfWeek.setDate(inputDate.getDate() - diffToSunday);
+//     startOfWeek.setHours(0, 0, 0, 0);
+
+//     const endOfWeek = new Date(startOfWeek);
+//     endOfWeek.setDate(startOfWeek.getDate() + 6);
+//     endOfWeek.setHours(23, 59, 59, 999);
+
+//     return {
+//         challengeDate: {
+//             $gte: startOfWeek,
+//             $lte: endOfWeek
+//         }
+//     };
+// }
+
+// // קבלת אתגר לפי מזהה
+// exports.getChallengeById = async (req, res) => {
+//     try {
+//         const challenge = await challengeService.getChallengeById(req.params.id);
+//         if (!challenge) {
+//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
+//         }
+//         res.json(challenge);
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה בקבלת אתגר', error: error.message });
+//     }
+// };
+
+// // קבלת אתגרים לפי מזהה משתמש
+// exports.getChallengeByUserId = async (req, res) => {
+//     try {
+//         const challenges = await challengeService.getChallengeByUserId(req.params.id);
+//         if (!challenges || challenges.length === 0) {
+//             return res.status(404).json({ message: 'לא נמצאו אתגרים למשתמש.' });
+//         }
+//         res.json(challenges);
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה בקבלת אתגרים למשתמש', error: error.message });
+//     }
+// };
+
+// // עדכון פרטי אתגר
+// exports.updateChallenge = async (req, res) => {
+//     try {
+//         const updatedChallenge = await challengeService.updateChallenge(req.params.id, req.body);
+//         if (!updatedChallenge) {
+//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
+//         }
+//         res.json(updatedChallenge);
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה בעדכון אתגר', error: error.message });
+//     }
+// };
+
+// // מחיקת אתגר
+// exports.deleteChallenge = async (req, res) => {
+//     try {
+//         const deleted = await challengeService.deleteChallenge(req.params.id);
+//         if (!deleted) {
+//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
+//         }
+//         res.json({ message: 'האתגר נמחק בהצלחה.' });
+//     } catch (error) {
+//         res.status(500).json({ message: 'שגיאה במחיקת אתגר', error: error.message });
+//     }
+// };
+const service = require('../services/challengeService');
+
+exports.getAllChallenges = async (req, res) => {
+    const { userId, completed } = req.query;
+    try {
+        if (userId && typeof completed !== 'undefined') {
+            const result = await service.getUserChallengesByStatus(userId, completed);
+            return res.json(result);
+        }
+
+        const result = await service.getAllChallenges();
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.createChallenge = async (req, res) => {
+    try {
+        const result = await service.createChallenge(req.body);
+        res.status(201).json(result);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.deleteChallenge = async (req, res) => {
+    try {
+        await service.deleteChallenge(req.params.id);
+        res.sendStatus(204);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getChallengeCompletions = async (req, res) => {
+    try {
+        const users = await service.getCompletedUsers(req.params.challengeId);
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.getUserChallengeStatuses = async (req, res) => {
+    try {
+        const challenges = await service.getUserCompletedChallenges(req.params.userId);
+        res.json(challenges);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.markCompleted = async (req, res) => {
+    try {
+        await service.markCompleted(req.params.userId, req.params.challengeId);
+        res.sendStatus(200);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.unmarkCompleted = async (req, res) => {
+    try {
+        await service.unmarkCompleted(req.params.userId, req.params.challengeId);
+        res.sendStatus(200);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
