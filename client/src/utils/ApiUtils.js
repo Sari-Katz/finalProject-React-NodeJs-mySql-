@@ -27,9 +27,11 @@ class ApiUtils {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            ...headers, // ✅ עכשיו זה בטוח
+            ...headers, 
         },
     });
+    console.log()
+    console.log(response);
     return await this.checkResponseStatus(response);
 }
 

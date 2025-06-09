@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./UserProfile.module.css"; // תיצור קובץ CSS מתאים
+import { AuthContext } from "../AuthContext";
 
 const apiUtils = new ApiUtils();
 
- function UserProfile({ userId }) {
+ function UserProfile() {
+    const { user } = useContext(AuthContext);
+ const userId=user.id;
   const [recentClasses, setRecentClasses] = useState([]);
   const [pastChallenges, setPastChallenges] = useState([]);
   const [weeklyChallenge, setWeeklyChallenge] = useState(null);
@@ -13,8 +17,8 @@ const apiUtils = new ApiUtils();
     const fetchData = async () => {
       try {
         const [classes, challenges, weekly] = await Promise.all([
-          apiUtils.get(`http://localhost:3000/classes?userId=${userId}&recent=true`),
-          apiUtils.get(`http://localhost:3000/users/${userId}/past-challenges`),
+apiUtils.get(`http://localhost:3000/classes/recent?userId=${userId}`),
+             apiUtils.get(`http://localhost:3000/users/${userId}/past-challenges`),
           apiUtils.get(`http://localhost:3000/challenge?userId=${userId}`),
         ]);
 

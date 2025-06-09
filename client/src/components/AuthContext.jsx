@@ -31,8 +31,12 @@ function AuthProvider({ children }) {
   const activeSubscription = user?.activeSubscription || false;
 
   const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+    const { token, ...user} = userData;
+  setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+     if (token) {
+    localStorage.setItem("token", token);
+  }
   };
 
   const logout = () => {

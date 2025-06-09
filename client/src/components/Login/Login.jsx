@@ -34,9 +34,7 @@ login({
   token,
   activeSubscription: subscriptionData,
 });
-
-           
-            navigate(`/user/${user.id}/home`);
+ navigate(`/user/${user.id}/home`);
         } catch (error) {
             console.error('Login error:', error);
             setError(error.message || 'An error occurred during login');

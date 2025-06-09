@@ -9,6 +9,8 @@ router.post('/create', classController.createClass);
 // קבלת כל הכיתות (עם אפשרות לסינון)
 router.get('/', classController.getClasses);
 
+router.get('/recent', classController.getRecentClassesByUser);
+
 // קבלת כיתה לפי מזהה
 router.get('/:id', classController.getClassById);
 
