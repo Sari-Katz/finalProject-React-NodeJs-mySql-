@@ -27,5 +27,11 @@ router.get('/:id', userController.getUserById);
 // router.get('/:id/challenges/current/completed', controller.didUserCompleteCurrentChallenge);
 router.get('/:id/dashboard', userController.getUserDashboard);
 router.patch('/:id/weekly-challenge/:weeklyChallenge/complete', userController.completeWeeklyChallenge);
+router.post('/classes_participants/:classId/register', authenticateToken, userController.registerToClass);
 
+// ביטול רישום לקורס
+router.delete('/classes_participants/:classId/unregister', authenticateToken, userController.unregisterFromClass);
+
+// בדיקה אם המשתמש רשום לקורס
+router.get('/classes_participants/:classId/isRegistered', authenticateToken, userController.isUserRegistered);
 module.exports = router;

@@ -105,7 +105,7 @@ function UserProfile() {
              <button onClick={()=>handleCompleteWeeklyChallenge(false)}>רוצה לבטל ?</button>
                </>
             ) : (
-              <button onClick={handleCompleteWeeklyChallenge}>סמן כהושלם</button>
+              <button onClick={()=>handleCompleteWeeklyChallenge(true)}>סמן כהושלם</button>
             )}
           </div>
         ) : (

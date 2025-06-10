@@ -175,6 +175,39 @@ console.log(currentChallenge[0].description);
       [userId, challengeId, completed]
     );
   }
+},
+async registerUserToClass(userId, classId){
+  const [existing] = await pool.query(
+    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+  console.log(existing);
+  if (existing.length > 0) {
+    await pool.query(
+      'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
+      ['נרשמה', userId, classId]
+    );
+  } else {
+    await pool.query(
+      'INSERT INTO classes_participants (user_id, class_id, status) VALUES (?, ?, ?)',
+      [userId, classId, 'נרשמה']
+    );
+  }
+},
+
+ async unregisterUserFromClass(userId, classId){
+  await pool.query(
+    'DELETE FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+},
+
+async isUserRegisteredToClass(userId, classId){
+  const [result] = await pool.query(
+    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+  return result.length > 0;
 }
 
 
