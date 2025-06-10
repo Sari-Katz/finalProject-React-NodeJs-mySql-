@@ -1,13 +1,16 @@
 const express = require('express');
 const classController = require('../controllers/classController');
+const { authenticateToken, requireRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 // יצירת כיתה חדשה
-router.post('/create', classController.createClass);
+router.post('/create', authenticateToken, requireRole('admin'), classController.createClass);
 
 // קבלת כל הכיתות (עם אפשרות לסינון)
 router.get('/', classController.getClasses);
+
+router.get('/recent', authenticateToken, classController.getRecentClassesByUser);
 
 // קבלת כיתה לפי מזהה
 router.get('/:id', classController.getClassById);

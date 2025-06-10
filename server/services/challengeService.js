@@ -151,6 +151,41 @@ exports.getUserChallengesByStatus = async (userId, completed) => {
 
         return rows;
 };
+exports.getRecentCompletedChallenges = async (userId, limit = 10) => {
+    const [rows] = await pool.query(
+        `SELECT c.*
+         FROM weekly_challenges c
+         JOIN challenge_completions cc ON c.id = cc.challenge_id
+         WHERE cc.user_id = ? AND cc.completed = true
+         ORDER BY c.week_start_date DESC
+         LIMIT ?`,
+        [userId, Number(limit)]
+    );
+    return rows;
+};
+exports.didUserCompleteCurrentChallenge = async (userId) => {
+  // מוצא את אתגר השבוע לפי תאריך התחלה שמתאים לשבוע הנוכחי
+  const [currentChallenge] = await pool.query(`
+    SELECT id FROM weekly_challenges
+    WHERE week_start_date <= CURDATE()
+      AND DATE_ADD(week_start_date, INTERVAL 6 DAY) >= CURDATE()
+    LIMIT 1
+  `);
+
+  if (currentChallenge.length === 0) {
+    return { completed: false, message: "אין אתגר לשבוע הנוכחי" };
+  }
+
+  const challengeId = currentChallenge[0].id;
+
+  // בדיקה אם המשתמש השלים את האתגר הזה
+  const [rows] = await pool.query(`
+    SELECT * FROM challenge_completions
+    WHERE user_id = ? AND challenge_id = ? AND completed = true
+  `, [userId, challengeId]);
+
+  return { completed: rows.length > 0, challengeId };
+};
 
 exports.markCompleted = async (userId, challengeId) => {
     await pool.query(`

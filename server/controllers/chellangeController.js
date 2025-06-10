@@ -132,6 +132,26 @@ exports.createChallenge = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+exports.getRecentCompletedChallenges = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const limit = req.query.limit || 10; // אפשר לשלוח limit מהקליינט
+        const challenges = await service.getRecentCompletedChallenges(userId, limit);
+        res.json(challenges);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+exports.didUserCompleteCurrentChallenge = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const result = await service.didUserCompleteCurrentChallenge(userId);
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err.message });
+    }
+};
 
 exports.deleteChallenge = async (req, res) => {
     try {

@@ -1,26 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./UserProfile.module.css"; // תיצור קובץ CSS מתאים
+import { AuthContext } from "../AuthContext";
 
 const apiUtils = new ApiUtils();
 
- function UserProfile({ userId }) {
+ function UserProfile() {
+    const { user } = useContext(AuthContext);
+ const userId=user.id;
   const [recentClasses, setRecentClasses] = useState([]);
   const [pastChallenges, setPastChallenges] = useState([]);
-  const [weeklyChallenge, setWeeklyChallenge] = useState(null);
+  const [weeklyChallenge, setWeeklyChallenge] = useState("");
+  const [completedWeeklyChallenge, setCompletedWeeklyChallenge] = useState(null);
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [classes, challenges, weekly] = await Promise.all([
-          apiUtils.get(`http://localhost:3000/classes?userId=${userId}&recent=true`),
-          apiUtils.get(`http://localhost:3000/users/${userId}/past-challenges`),
-          apiUtils.get(`http://localhost:3000/challenge?userId=${userId}`),
-        ]);
+        const {
+        recentClasses,
+        recentCompletedChallenges,
+        completedWeeklyChallenge,
+        weeklyChallenge
+      } = await apiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
 
-        setRecentClasses(classes);
-        setPastChallenges(challenges);
-        setWeeklyChallenge(weekly);
+      setRecentClasses(recentClasses);
+      setPastChallenges(recentCompletedChallenges);
+      setCompletedWeeklyChallenge(completedWeeklyChallenge);
+      setWeeklyChallenge(weeklyChallenge)
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -33,7 +41,7 @@ const apiUtils = new ApiUtils();
 
   const handleCompleteWeeklyChallenge = async () => {
     try {
-      await apiUtils.patch(`http://localhost:3000/weekly-challenge/${challengeId}/complete`, {
+      await apiUtils.patch(`http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`, {
         completed: true,
       });
       setWeeklyChallenge({ ...weeklyChallenge, completed: true });
@@ -57,7 +65,7 @@ const apiUtils = new ApiUtils();
           <ul>
             {recentClasses.map((cls) => (
               <li key={cls.id}>
-                {cls.name} - {new Date(cls.date).toLocaleDateString()}
+                {cls.title} - {new Date(cls.class_types).toLocaleDateString()}
               </li>
             ))}
           </ul>
@@ -72,7 +80,7 @@ const apiUtils = new ApiUtils();
           <ul>
             {pastChallenges.map((challenge) => (
               <li key={challenge.id}>
-                {challenge.title} -{" "}
+                {challenge.description} -{" "}
                 {challenge.completed ? "הושלם" : "לא הושלם"}
               </li>
             ))}
@@ -84,7 +92,7 @@ const apiUtils = new ApiUtils();
         <h3>אתגר שבועי</h3>
         {weeklyChallenge ? (
           <div>
-            <p>{weeklyChallenge.title}</p>
+            <p>{weeklyChallenge.description}</p>
             {weeklyChallenge.completed ? (
               <p>הושלם ✅</p>
             ) : (

@@ -22,19 +22,16 @@ exports.getUsers = async (req, res) => {
 exports.registerUser = async (req, res) => {
     try {
         const { full_name, password, email, phone } = req.body;
-
         // בדיקת סיסמה: לפחות 6 תווים, אות גדולה, אות קטנה, מספר
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({ message: 'הסיסמה חייבת להכיל לפחות 6 תווים, אות גדולה, אות קטנה ומספר.' });
         }
-
         // בדיקה אם המשתמש כבר קיים לפי אימייל
         const existingUser = await userService.getUserByEmail(email);
         if (existingUser) {
             return res.status(409).json({ message: 'אימייל זה כבר קיים.' });
         }
-
         // יצירת משתמש חדש
         const newUser = await userService.createUser({ full_name, password, email, phone });
         res.status(201).json(newUser);
@@ -46,40 +43,60 @@ exports.registerUser = async (req, res) => {
 
 // התחברות משתמש
 exports.loginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await userService.getUserByEmail(email);
-        if (!user) {
-            return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
-        }
-
-try {
-  const token = jwt.sign(
-    { id: user.id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: '3h' }
-  );
-  console.log("Token:", token);
-  res.json({ message: 'התחברת בהצלחה', user, token });
-} catch (err) {
-  console.error("JWT Error:", err);
-  return res.status(500).json({ message: 'שגיאה ביצירת טוקן', error: err.message });
-}
-
-// שליחת תגובה עם טוקן
-
-        const isMatch = await bcrypt.compare(password, user.password_hash);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
-        }
-res.json({
-  message: 'התחברת בהצלחה',
-  user,
-  token
-});
-    } catch (error) {
-        res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
+  try {
+    const { email, password } = req.body;
+    const user = await userService.getUserByEmail(email);
+    if (!user) {
+      return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '3h' }
+    );
+    console.log("Token:", token);
+
+    return res.json({ message: 'התחברת בהצלחה', user, token });
+
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
+  }
+};
+// עבור משתמש פרטי
+exports.getUserDashboard = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const dashboardData = await userService.getUserDashboard(userId);
+    res.json(dashboardData);
+  } catch (error) {
+    console.error('Error fetching user dashboard:', error);
+    res.status(500).json({ error: 'Failed to fetch dashboard data' });
+  }
+};
+// עבור משתמש פרטי
+
+exports.completeWeeklyChallenge = async (req, res) => {
+const userId = req.params.id;
+  const challengeId = req.params.weeklyChallenge;
+  try {
+    // const result = 
+    await userService.markChallengeAsCompleted(userId, challengeId);
+    res.status(200).json({
+      message: 'Challenge completion status updated successfully'
+      // , result
+    });
+    // console.log(result)
+  } catch (error) {
+    console.error('Error completing challenge:', error);
+    res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
+  }
 };
 
 // קבלת משתמש לפי מזהה

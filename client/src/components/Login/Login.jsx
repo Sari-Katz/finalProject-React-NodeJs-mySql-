@@ -19,23 +19,22 @@ function Login() {
             console.log('User data:', user);
          const token = data.token;
 
-const subscriptionData = await apiUtils.get(`http://localhost:3000/userSubscription/byUser/${user.id}`)
-    // , {
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-// });
-            console.log(subscriptionData);
+const subscriptionData = await apiUtils.get(
+  `http://localhost:3000/userSubscription/byUser/${user.id}`,
+  {
+    Authorization: `Bearer ${token}`
+  }
+);
+
+console.log(subscriptionData);
 login({
   username: user.full_name,
   id: user.id,
   role: user.role,
   token,
-  activeSubscription: subscriptionData,
+  activeSubscription: subscriptionData.isActive,
 });
-
-           
-            navigate(`/user/${user.id}/home`);
+ navigate(`/user/${user.id}/home`);
         } catch (error) {
             console.error('Login error:', error);
             setError(error.message || 'An error occurred during login');

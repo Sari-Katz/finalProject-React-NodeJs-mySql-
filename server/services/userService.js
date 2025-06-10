@@ -47,7 +47,7 @@ const userService = {
     // קבלת משתמש לפי מזהה (בלי סיסמה)
     async getUserById(id) {
         const [rows] = await pool.query(
-            'SELECT id, full_name, email, phone, created_at FROM users WHERE id = ?',
+            'SELECT id, full_name, email, phone,role, created_at FROM users WHERE id = ?',
             [id]
         );
         return rows[0];
@@ -56,14 +56,14 @@ const userService = {
     // קבלת כל המשתמשים (בלי סיסמאות)
     async getAllUsers() {
         const [rows] = await pool.query(
-            'SELECT id, full_name, email, phone, created_at FROM users'
+            'SELECT id, full_name, email, phone,role, created_at FROM users'
         );
         return rows;
     },
 
     // חיפוש משתמשים עם פילטרים (בלי סיסמאות)
     async searchUsers(filters) {
-        let query = 'SELECT id, full_name, email, phone, created_at FROM users WHERE 1=1';
+        let query = 'SELECT id, full_name, email, phone,role, created_at FROM users WHERE 1=1';
         const params = [];
 
         for (const [key, value] of Object.entries(filters)) {
@@ -73,7 +73,112 @@ const userService = {
 
         const [rows] = await pool.query(query, params);
         return rows;
-    }
+    },
+
+  async getUserDashboard(userId) {
+  // שליפת האתגרים שהושלמו
+  const [completedChallenges] = await pool.query(
+    // `SELECT cc.*, wc.description
+    //  FROM challenge_completions cc
+    //  JOIN weekly_challenges wc ON cc.challenge_id = wc.id
+    //  WHERE cc.user_id = ?
+    //  ORDER BY cc.challenge_id DESC`,
+     `SELECT c.*
+         FROM weekly_challenges c
+         JOIN challenge_completions cc ON c.id = cc.challenge_id
+         WHERE cc.user_id = ? AND cc.completed = true
+         ORDER BY c.week_start_date DESC
+         LIMIT 10`,
+    [userId]
+  );
+
+
+    // שליפת השיעורים שהמשתמש היה בהם בחודש האחרון
+
+ const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const isoDate = oneMonthAgo.toISOString().split('T')[0];
+
+  const query = `
+    SELECT c.id, c.title, c.class_types, c.day_of_week, c.start_time, c.date_start, c.end_time
+    FROM classes c
+    JOIN classes_participants cp ON c.id = cp.class_id
+    WHERE cp.user_id = ? AND c.date_start >= ?
+  `;
+
+  const [classes] = await pool.query(query, [userId, isoDate]);
+  
+  // שליפת השיעורים שהמשתמש היה בהם
+//   const [classes] = await pool.query(
+//     // `SELECT c.*
+//     //  FROM classes_participants cp
+//     //  JOIN classes c ON cp.class_id = c.id
+//     //  WHERE cp.user_id = ?
+//     //  ORDER BY c.date_start DESC`,
+//     `
+//     SELECT c.id, c.title, c.class_types, c.day_of_week, c.start_time, c.date_start, c.end_time
+//     FROM classes c
+//     JOIN classes_participants cp ON c.id = cp.class_id
+//     WHERE cp.user_id = ? AND c.date_start >= ?
+//   `,[userId]
+//   );
+
+  // בדיקה אם השלים את אתגר השבוע הנוכחי
+  const [currentChallenge] = await pool.query(
+    `SELECT id,description FROM weekly_challenges
+    WHERE week_start_date <= CURDATE()
+    AND DATE_ADD(week_start_date, INTERVAL 6 DAY) >= CURDATE()
+    LIMIT 1`
+  );
+console.log(currentChallenge[0].description);
+  let hasCompletedCurrent = false;
+
+  if (currentChallenge.length > 0) {
+    const challengeId = currentChallenge[0].id;
+    const [completion] = await pool.query(
+      `SELECT * FROM challenge_completions
+       WHERE user_id = ? AND challenge_id = ? AND completed = true`,
+      [userId, challengeId]
+    );
+     console.log(completion);
+
+    hasCompletedCurrent = completion.length > 0;
+  }
+ console.log(hasCompletedCurrent);
+ 
+// console.log(`classes+${classes}+recentCompletedChallenges${completedChallenges}+hasCompletedCurrent${hasCompletedCurrent}`)
+  return {
+    recentClasses: classes,
+    recentCompletedChallenges: completedChallenges,
+    completedWeeklyChallenge: hasCompletedCurrent,
+    weeklyChallenge:currentChallenge[0]
+  };
+},
+//עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
+ async markChallengeAsCompleted(userId, challengeId){
+  // נבדוק אם כבר יש שורה
+  const [existing] = await pool.query(
+    'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
+    [userId, challengeId]
+  );
+
+  if (existing.length > 0) {
+    // אם קיים – נעדכן
+    await pool.query(
+      'UPDATE challenge_completions SET completed = true WHERE user_id = ? AND challenge_id = ?',
+      [userId, challengeId]
+    );
+  } else {
+    // אחרת – נכניס חדשה
+    await pool.query(
+      'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, true)',
+      [userId, challengeId]
+    );
+  }
+//    return { inserted: true, insertId: result.insertId };
+ 
+}
+
 };
 
 module.exports = userService;

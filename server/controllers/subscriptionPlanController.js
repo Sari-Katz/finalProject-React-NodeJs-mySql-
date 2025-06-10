@@ -20,9 +20,9 @@ exports.getPlanById = async (req, res) => {
 };
 
 exports.createPlan = async (req, res) => {
-    if  (req.user?.role !== 'admin'){
-        return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
-    }
+    // if  (req.user?.role !== 'admin'){
+    //     return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
+    // }
     try {
         const newPlan = await subscriptionPlanService.createPlan(req.body);
         res.status(201).json(newPlan);
@@ -32,10 +32,10 @@ exports.createPlan = async (req, res) => {
 };
 
 exports.updatePlan = async (req, res) => {
-   if (req.user?.role !== 'admin')
-{
-        return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
-    }
+//    if (req.user?.role !== 'admin')
+// {
+//         return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
+//     }
     try {
         const updated = await subscriptionPlanService.updatePlan(req.params.id, req.body);
         res.json(updated);
@@ -45,9 +45,9 @@ exports.updatePlan = async (req, res) => {
 };
 
 exports.deletePlan = async (req, res) => {
-if (req.user?.role !== 'admin'){
-        return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
-    }
+// if (req.user?.role !== 'admin'){
+//         return res.status(403).json({ error: 'גישה נדחתה - רק מנהלים רשאים' });
+//     }
     try {
         await subscriptionPlanService.deletePlan(req.params.id);
         res.json({ message: 'חבילה נמחקה' });

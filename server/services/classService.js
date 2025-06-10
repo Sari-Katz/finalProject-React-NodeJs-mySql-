@@ -45,6 +45,22 @@ const classService = {
         return rows;
     },
 
+    async getRecentClassesByUser(userId) {
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const isoDate = oneMonthAgo.toISOString().split('T')[0];
+
+  const query = `
+    SELECT c.id, c.title, c.class_types, c.day_of_week, c.start_time, c.date_start, c.end_time
+    FROM classes c
+    JOIN classes_participants cp ON c.id = cp.class_id
+    WHERE cp.user_id = ? AND c.date_start >= ?
+  `;
+
+  const [rows] = await pool.query(query, [userId, isoDate]);
+  return rows;
+},
+
     // קבלת כיתה לפי מזהה
     async getClassById(id) {
         const [rows] = await pool.query(

@@ -115,8 +115,8 @@ await pool.query(`
 
         for (const user of db.users) {
             await pool.query(
-                'INSERT INTO users (id, full_name, email, phone) VALUES (?, ?, ?, ?)',
-                [user.id, user.full_name, user.email, user.phone]
+                'INSERT INTO users (id, full_name, email, phone,role) VALUES (?, ?, ?, ?,?)',
+                [user.id, user.full_name, user.email, user.phone,user.role]
             );
             const hash = await bcrypt.hash(user.password, saltRounds);
             await pool.query(
