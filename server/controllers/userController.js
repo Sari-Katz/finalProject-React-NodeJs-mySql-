@@ -85,9 +85,11 @@ exports.getUserDashboard = async (req, res) => {
 exports.completeWeeklyChallenge = async (req, res) => {
 const userId = req.params.id;
   const challengeId = req.params.weeklyChallenge;
+    const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
+console.log(completed);
   try {
     // const result = 
-    await userService.markChallengeAsCompleted(userId, challengeId);
+    await userService.markChallengeCompletion(userId, challengeId,completed);
     res.status(200).json({
       message: 'Challenge completion status updated successfully'
       // , result

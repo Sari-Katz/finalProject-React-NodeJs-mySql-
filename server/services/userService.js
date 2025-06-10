@@ -154,30 +154,29 @@ console.log(currentChallenge[0].description);
     weeklyChallenge:currentChallenge[0]
   };
 },
+
 //עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
- async markChallengeAsCompleted(userId, challengeId){
-  // נבדוק אם כבר יש שורה
+ async markChallengeCompletion(userId, challengeId, completed) {
   const [existing] = await pool.query(
     'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
     [userId, challengeId]
   );
 
   if (existing.length > 0) {
-    // אם קיים – נעדכן
+    // אם כבר יש שורה, נעשה UPDATE עם הערך שנשלח
     await pool.query(
-      'UPDATE challenge_completions SET completed = true WHERE user_id = ? AND challenge_id = ?',
-      [userId, challengeId]
+      'UPDATE challenge_completions SET completed = ? WHERE user_id = ? AND challenge_id = ?',
+      [completed, userId, challengeId]
     );
   } else {
-    // אחרת – נכניס חדשה
+    // אחרת, INSERT עם הערך שנשלח
     await pool.query(
-      'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, true)',
-      [userId, challengeId]
+      'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, ?)',
+      [userId, challengeId, completed]
     );
   }
-//    return { inserted: true, insertId: result.insertId };
- 
 }
+
 
 };
 
