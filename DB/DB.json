@@ -1,3 +1,4 @@
+
 {
   "users": [
     {
@@ -6,35 +7,94 @@
       "email": "ruth@example.com",
       "phone": "050-1234567",
       "password": "ruthPass123",
-       "role":"user"
-
-    },{
-      "id":2,
+      "role": "user"
+    },
+    {
+      "id": 2,
       "full_name": "טובה הלוי",
       "email": "jjj@gmail.com",
       "phone": "050-1234567",
       "password": "admin123",
-      "role":"admin"
+      "role": "admin"
+    },
+    {
+      "id": 3,
+      "full_name": "דנה ישראלי",
+      "email": "dana@gmail.com",
+      "phone": "050-7654321",
+      "password": "danaPass123",
+      "role": "user"
+    },
+    {
+      "id": 4,
+      "full_name": "נועה רון",
+      "email": "noa@gmail.com",
+      "phone": "050-8765432",
+      "password": "noaPass123",
+      "role": "user"
+    },
+    {
+      "id": 5,
+      "full_name": "שיר פרץ",
+      "email": "shirp@gmail.com",
+      "phone": "050-9998887",
+      "password": "shirPass123",
+      "role": "user"
     }
-    
   ],
   "classes": [
     {
       "id": 1,
-      "title": "מבוא לפייתון",
-      "class_types": "קורס בסיסי בתכנות פייתון",
+      "title": "פילאטיס",
+      "class_types": "שיעור פילאטיס קלאסי",
       "day_of_week": "ראשון",
-      "start_time": "09:00:00",
-      "date_start": "2025-06-09",
-      "end_time": "10:00:00"
-      
+      "start_time": "20:00:00",
+      "date_start": "2025-06-15",
+      "end_time": "21:00:00"
+    },
+    {
+      "id": 2,
+      "title": "פילאטיס",
+      "class_types": "פילאטיס עם דגש על נשימה",
+      "day_of_week": "שני",
+      "start_time": "21:00:00",
+      "date_start": "2025-06-16",
+      "end_time": "22:00:00"
+    },
+    {
+      "id": 3,
+      "title": "היט",
+      "class_types": "אימון אינטרוולים בעצימות גבוהה",
+      "day_of_week": "שלישי",
+      "start_time": "21:00:00",
+      "date_start": "2025-06-17",
+      "end_time": "22:00:00"
+    },
+    {
+      "id": 4,
+      "title": "היפופילאטיס",
+      "class_types": "שילוב של היפ הופ ופילאטיס",
+      "day_of_week": "רביעי",
+      "start_time": "20:00:00",
+      "date_start": "2025-06-18",
+      "end_time": "21:00:00"
     }
   ],
   "weekly_challenges": [
     {
       "id": 1,
       "week_start_date": "2025-06-09",
-      "description": "בנו אפליקציה קטנה"
+      "description": "לשתות 8 כוסות מים ביום, במשך 5 ימים השבוע."
+    },
+    {
+      "id": 2,
+      "week_start_date": "2025-06-09",
+      "description": "לאכול ארוחת בוקר בריאה, מזינה ומסודרת – לפחות 3 פעמים השבוע."
+    },
+    {
+      "id": 3,
+      "week_start_date": "2025-06-09",
+      "description": "5 דקות ביום של נשימות עמוקות – רק לנשום ולהיות נוכחת."
     }
   ],
   "classes_participants": [
@@ -42,7 +102,6 @@
       "user_id": 1,
       "class_id": 1,
       "status": "נרשמה"
-
     }
   ],
   "challenge_completions": [
@@ -78,4 +137,5 @@
     }
   ]
 }
+
 
