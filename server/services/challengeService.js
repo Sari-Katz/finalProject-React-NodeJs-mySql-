@@ -148,8 +148,8 @@ exports.getUserChallengesByStatus = async (userId, completed) => {
          JOIN challenge_completions cc ON c.id = cc.challenge_id
          WHERE cc.user_id = ? AND cc.completed = ?`,
         [userId, completed === 'true']
-    );
-    return rows;
+
+        return rows;
 };
 
 exports.markCompleted = async (userId, challengeId) => {
