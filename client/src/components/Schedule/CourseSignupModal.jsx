@@ -1,43 +1,125 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState } from "react";
+// import styles from "./CourseSignupModal.module.css";
+// import ApiUtils from "../../utils/ApiUtils";
+
+// const api = new ApiUtils();
+
+// export default function CourseSignupModal({ course, onClose }) {
+//   const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
+//   const handleSignup = async () => {
+//     setStatus("loading");
+//     try {
+//       await api.post("http://localhost:3000/users/classes_participants", {
+//         courseId: course.id,
+//       });
+//       setStatus("success");
+//       setTimeout(() => {
+//         onClose();
+//       }, 2000);
+//     } catch (err) {
+//       console.error("שגיאה בהרשמה:", err);
+//       setStatus("error");
+//     }
+//   };
+
+//   return (
+//     <div className={styles.modalOverlay}>
+//       <div className={styles.modalContent}>
+//         <button onClick={onClose} className={styles.closeButton}>×</button>
+
+//         {status === "idle" && (
+//           <div>
+//             <h3>רישום לשיעור</h3>
+//             <p>לשיעור: <strong>{course.title}</strong></p>
+//             <p>כדי להירשם לחץ על הכפתור למטה</p>
+//             <button onClick={handleSignup}>הרשמה לשיעור</button>
+//           </div>
+//         )}
+
+//         {status === "loading" && <div className={styles.spinner}></div>}
+//         {status === "success" && <div className={styles.checkmark}>✓ נרשמת בהצלחה!</div>}
+//         {status === "error" && <div className={styles.errorText}>שגיאה בהרשמה 😞</div>}
+//       </div>
+//     </div>
+//   );
+// }
+import React, { useEffect, useState } from "react";
 import styles from "./CourseSignupModal.module.css";
 import ApiUtils from "../../utils/ApiUtils";
 
 const api = new ApiUtils();
 
 export default function CourseSignupModal({ course, onClose }) {
-  const [status, setStatus] = useState("loading"); // "loading" | "success" | "error"
+  const [status, setStatus] = useState("loading");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      
-      signupToCourse();
-    }, 500); // אפשרות לעיכוב קצר להדמיה
+    const checkRegistration = async () => {
+      try {
+        const res = await api.get(`http://localhost:3000/users/classes_participants/${course.id}/isRegistered`);
+        setIsRegistered(res);
+        setStatus("idle");
+      } catch (err) {
+        console.error("שגיאה בבדיקת הרשמה:", err);
+        setStatus("error");
+      }
+    };
+    checkRegistration();
+  }, [course.id]);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  async function signupToCourse() {
+  const handleSignup = async () => {
+    setStatus("signingUp");
     try {
-      
-      await api.post("http://localhost:3000/classes_participants", { courseId: course.id });
+      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/register`);
       setStatus("success");
-
-      // סגור את המודאל אחרי 2 שניות
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      setIsRegistered(true);
     } catch (err) {
       console.error("שגיאה בהרשמה:", err);
       setStatus("error");
     }
-  }
+  };
+
+  const handleUnregister = async () => {
+    setStatus("canceling");
+    try {
+      await api.delete(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
+      setStatus("success");
+      setIsRegistered(false);
+    } catch (err) {
+      console.error("שגיאה בביטול הרשמה:", err);
+      setStatus("error");
+    }
+  };
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        {status === "loading" && <div className={styles.spinner}></div>}
-        {status === "success" && <div className={styles.checkmark}>✓</div>}
-        {status === "error" && <div className={styles.errorText}>שגיאה בהרשמה</div>}
+        <button onClick={onClose} className={styles.closeButton}>×</button>
+
+        {status === "loading" && <div className={styles.spinner}>טוען...</div>}
+
+        {status === "idle" && (
+          <div>
+            <h3>{isRegistered ? "ביטול רישום לשיעור" : "רישום לשיעור"}</h3>
+            <p>שיעור: <strong>{course.title}</strong></p>
+            {isRegistered ? (
+              <button onClick={handleUnregister} className={styles.cancelBtn}>בטל הרשמה</button>
+            ) : (
+              <button onClick={handleSignup} className={styles.signupBtn}>הרשמה לשיעור</button>
+            )}
+          </div>
+        )}
+
+        {(status === "signingUp" || status === "canceling") && <div className={styles.spinner}>שולח בקשה...</div>}
+        {status === "success" && (
+          <div className={styles.successText}>
+            {isRegistered ? "נרשמת בהצלחה!" : "ההרשמה בוטלה בהצלחה"}
+            <br />
+            <button onClick={onClose}>סגור</button>
+          </div>
+        )}
+        {status === "error" && <div className={styles.errorText}>שגיאה בתהליך 😞</div>}
       </div>
     </div>
   );

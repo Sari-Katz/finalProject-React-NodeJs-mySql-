@@ -25,6 +25,8 @@ class ApiUtils {
 
     async get(url, customHeaders = {}) {
         console.log(url);
+                console.log(this.getAuthHeaders(customHeaders));
+
         const response = await fetch(url, {
             method: 'GET',
             headers: this.getAuthHeaders(customHeaders)

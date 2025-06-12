@@ -85,9 +85,11 @@ exports.getUserDashboard = async (req, res) => {
 exports.completeWeeklyChallenge = async (req, res) => {
 const userId = req.params.id;
   const challengeId = req.params.weeklyChallenge;
+    const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
+console.log(completed);
   try {
     // const result = 
-    await userService.markChallengeAsCompleted(userId, challengeId);
+    await userService.markChallengeCompletion(userId, challengeId,completed);
     res.status(200).json({
       message: 'Challenge completion status updated successfully'
       // , result
@@ -110,4 +112,41 @@ exports.getUserById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
     }
+};
+exports.registerToClass = async (req, res) => {
+  const userId = req.user.id;
+  const classId = req.params.classId;
+  console.log(userId);
+  try {
+    await userService.registerUserToClass(userId, classId);
+    res.status(200).json({ message: 'נרשמת בהצלחה לשיעור' });
+  } catch (error) {
+    console.error('שגיאה בהרשמה:', error);
+    res.status(500).json({ message: 'שגיאה בהרשמה' });
+  }
+};
+
+exports.unregisterFromClass = async (req, res) => {
+  const userId = req.user.id;
+  const classId = req.params.classId;
+  try {
+    await userService.unregisterUserFromClass(userId, classId);
+    res.status(200).json({ message: 'הרישום בוטל בהצלחה' });
+  } catch (error) {
+    console.error('שגיאה בביטול הרשמה:', error);
+    res.status(500).json({ message: 'שגיאה בביטול הרשמה' });
+  }
+};
+
+exports.isUserRegistered = async (req, res) => {
+
+  const userId = req.user.id;
+  const classId = req.params.classId;
+  try {
+    const isRegistered = await userService.isUserRegisteredToClass(userId, classId);
+    res.status(200).json(isRegistered );
+  } catch (error) {
+    console.error('שגיאה בבדיקת רישום:', error);
+    res.status(500).json({ message: 'שגיאה בבדיקת רישום' });
+  }
 };

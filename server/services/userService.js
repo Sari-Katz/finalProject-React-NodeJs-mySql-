@@ -154,30 +154,62 @@ console.log(currentChallenge[0].description);
     weeklyChallenge:currentChallenge[0]
   };
 },
+
 //עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
- async markChallengeAsCompleted(userId, challengeId){
-  // נבדוק אם כבר יש שורה
+ async markChallengeCompletion(userId, challengeId, completed) {
   const [existing] = await pool.query(
     'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
     [userId, challengeId]
   );
 
   if (existing.length > 0) {
-    // אם קיים – נעדכן
+    // אם כבר יש שורה, נעשה UPDATE עם הערך שנשלח
     await pool.query(
-      'UPDATE challenge_completions SET completed = true WHERE user_id = ? AND challenge_id = ?',
-      [userId, challengeId]
+      'UPDATE challenge_completions SET completed = ? WHERE user_id = ? AND challenge_id = ?',
+      [completed, userId, challengeId]
     );
   } else {
-    // אחרת – נכניס חדשה
+    // אחרת, INSERT עם הערך שנשלח
     await pool.query(
-      'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, true)',
-      [userId, challengeId]
+      'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, ?)',
+      [userId, challengeId, completed]
     );
   }
-//    return { inserted: true, insertId: result.insertId };
- 
+},
+async registerUserToClass(userId, classId){
+  const [existing] = await pool.query(
+    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+  console.log(existing);
+  if (existing.length > 0) {
+    await pool.query(
+      'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
+      ['נרשמה', userId, classId]
+    );
+  } else {
+    await pool.query(
+      'INSERT INTO classes_participants (user_id, class_id, status) VALUES (?, ?, ?)',
+      [userId, classId, 'נרשמה']
+    );
+  }
+},
+
+ async unregisterUserFromClass(userId, classId){
+  await pool.query(
+    'DELETE FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+},
+
+async isUserRegisteredToClass(userId, classId){
+  const [result] = await pool.query(
+    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
+    [userId, classId]
+  );
+  return result.length > 0;
 }
+
 
 };
 
