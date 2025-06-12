@@ -4,7 +4,7 @@ import { AuthContext } from "../AuthContext";
 import { useNavigate } from 'react-router-dom';
 import ViewPost from './ViewPost';
 import styles from './Posts.module.css';
-import ApiService from '../../utils/ApiUtils';
+import ApiUtils from '../../utils/ApiUtils';
 
 function Posts() {
     const navigate = useNavigate();
@@ -18,7 +18,11 @@ function Posts() {
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(userId);
-    const apiService = new ApiService();
+    const apiService = new ApiUtils();
+
+    useEffect(() => {
+    fetchPosts();
+    }, []);
 
     // useEffect(() => {
     //     if (isInitialized) {
@@ -26,35 +30,30 @@ function Posts() {
     //     }
     // }, [isInitialized]);
 
-    // useEffect(() => {
-    //     if (isInitialized) {
-    //         fetchPosts();
-    //     }
-    // }, [isInitialized, selectedUserId]);
-
     const fetchPosts = async () => {
         try {
             console.log(userId)
             const data = await apiService.get(`http://localhost:3000/posts`);
+            console.log('Fetched posts:', data);
             setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     };
 
-    const fetchUsers = async () => {
-        try {
-            const data = await apiService.get(`http://localhost:3000/users`);
-            setUsers(data);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-        }
-    };
+    // const fetchUsers = async () => {
+    //     try {
+    //         const data = await apiService.get(`http://localhost:3000/users`);
+    //         setUsers(data);
+    //     } catch (error) {
+    //         console.error('Error fetching users:', error);
+    //     }
+    // };
 
     const handleAddPost = async () => {
         if (newPostTitle.trim() && newPostBody.trim()) {
             const newPost = {
-                userId: userId,
+                user_id: userId,
                 title: newPostTitle,
                 content: newPostBody,
             };
@@ -132,11 +131,10 @@ function Posts() {
             <ul className={styles.postList}>
 
                 {posts
-                 
-                    .map((post, index) => (
-                        <li key={post.PostID} className={styles.postItem}>
+                 .map((post, index) => (
+                        <li key={post.post_id} className={styles.postItem}>
                             <div className={styles.postHeader}>
-                                <span className={styles.postTitle}>{post.PostID} - {post.Title}</span>
+                                <span className={styles.post_title}>{post.post_id} - {post.title}</span>
                                 <div className={styles.actions}>
                                     <button className={styles.button} onClick={() => setSelectedPost(post)}>View Post</button>
                                     <button className={styles.button} onClick={() => navigate(`/user/${userId}/post/${post.PostID}/comments`)}>Comments</button>
@@ -148,7 +146,7 @@ function Posts() {
                                     )}
                                 </div>
                             </div>
-                            {selectedPost && selectedPost.PostID === post.PostID && (
+                            {selectedPost && selectedPost.post_id === post.post_id && (
                                 <ViewPost
                                     post={post}
                                     index={index}
