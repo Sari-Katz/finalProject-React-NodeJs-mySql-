@@ -1,18 +1,37 @@
+// SubscriptionList.jsx
 import React, { useEffect, useState } from 'react';
 import styles from './SubscriptionList.module.css';
 import ApiUtils from '../../utils/ApiUtils';
+import PaymentComponent from './PaymentComponent';
 
 export default function SubscriptionList() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedId, setSelectedId] = useState(null);
+  const [paymentSubscription, setPaymentSubscription] = useState(null);
   const apiUtils = new ApiUtils();
+
+  // בטעינת הקומפוננטה נבדוק אם ב-URL יש id של מנוי לתשלום ונפתח את התשלום
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get('paymentId');
+    if (paymentId) {
+      // מחפשים את המנוי לפי id מתוך הרשימה, אם כבר טעונה
+      // או נשאיר את paymentSubscription ל-null ונעדכן אחרי הטעינה
+      setPaymentSubscription({ id: paymentId });
+    }
+  }, []);
 
   useEffect(() => {
     async function loadSubscriptions() {
       try {
-        const data = await apiUtils.get("http://localhost:3000/subscriptions");
+        const data = await apiUtils.get("http://localhost:3000/subscription/plans");
         setSubscriptions(data);
+
+        // אם יש paymentSubscription עם id, נעדכן את המנוי המלא מתוך הרשימה
+        if (paymentSubscription?.id) {
+          const sub = data.find(s => String(s.id) === String(paymentSubscription.id));
+          if (sub) setPaymentSubscription(sub);
+        }
       } catch (error) {
         console.error("שגיאה בטעינת חבילות:", error);
       } finally {
@@ -21,18 +40,35 @@ export default function SubscriptionList() {
     }
 
     loadSubscriptions();
-  }, []);
+  }, [paymentSubscription?.id]);
 
-  const handleSubscribe = async (subscriptionId) => {
-    setSelectedId(subscriptionId);
+  const openPayment = (sub) => {
+    // מוסיף את מזהה המנוי ל-URL
+    const params = new URLSearchParams(window.location.search);
+    params.set('paymentId', sub.id);
+    const newUrl = window.location.pathname + '?' + params.toString();
+    window.history.replaceState(null, '', newUrl);
+    setPaymentSubscription(sub);
+  };
+
+  const closePayment = () => {
+    // מסיר את מזהה התשלום מה-URL
+    const params = new URLSearchParams(window.location.search);
+    params.delete('paymentId');
+    const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+    window.history.replaceState(null, '', newUrl);
+    setPaymentSubscription(null);
+  };
+
+  const handlePaymentSuccess = async (subscriptionId) => {
     try {
-      await api.post('/api/subscribe', { subscriptionId });
+      await apiUtils.post(`http://localhost:3000/subscription/${subscriptionId}/register`);
       alert('נרשמת בהצלחה!');
     } catch (error) {
       console.error("שגיאה בהרשמה:", error);
       alert('ההרשמה נכשלה');
     } finally {
-      setSelectedId(null);
+      closePayment();
     }
   };
 
@@ -57,17 +93,20 @@ export default function SubscriptionList() {
               <td>{sub.price} ₪</td>
               <td>{sub.description}</td>
               <td>
-                <button
-                  onClick={() => handleSubscribe(sub.id)}
-                  disabled={selectedId === sub.id}
-                >
-                  {selectedId === sub.id ? 'נרשם...' : 'הרשם'}
-                </button>
+                <button onClick={() => openPayment(sub)}>לתשלום</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {paymentSubscription && (
+        <PaymentComponent
+          price={paymentSubscription.price}
+          onSuccess={() => handlePaymentSuccess(paymentSubscription.id)}
+          onClose={closePayment}
+        />
+      )}
     </div>
   );
 }
