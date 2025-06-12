@@ -37,6 +37,9 @@ function Nav() {
         <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           אודות
         </NavLink>
+           {user.role=='admin'&&<NavLink to="/AddCourse" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          הוספת קורס
+        </NavLink>}
       </div>
 
       <div className={styles.navRight}>

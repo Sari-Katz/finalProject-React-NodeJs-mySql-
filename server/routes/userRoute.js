@@ -30,7 +30,7 @@ router.patch('/:id/weekly-challenge/:weeklyChallenge/complete', userController.c
 router.post('/classes_participants/:classId/register', authenticateToken, userController.registerToClass);
 
 // ביטול רישום לקורס
-router.delete('/classes_participants/:classId/unregister', authenticateToken, userController.unregisterFromClass);
+router.post('/classes_participants/:classId/unregister', authenticateToken, userController.unregisterFromClass);
 
 // בדיקה אם המשתמש רשום לקורס
 router.get('/classes_participants/:classId/isRegistered', authenticateToken, userController.isUserRegistered);

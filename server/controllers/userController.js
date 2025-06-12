@@ -45,7 +45,9 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log({ email, password });
     const user = await userService.getUserByEmail(email);
+    console.log(user);
     if (!user) {
       return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
     }
@@ -60,7 +62,6 @@ exports.loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '3h' }
     );
-    console.log("Token:", token);
 
     return res.json({ message: 'התחברת בהצלחה', user, token });
 
@@ -74,7 +75,7 @@ exports.getUserDashboard = async (req, res) => {
   try {
     const userId = req.params.id;
     const dashboardData = await userService.getUserDashboard(userId);
-    res.json(dashboardData);
+    res.status(201).json(dashboardData);
   } catch (error) {
     console.error('Error fetching user dashboard:', error);
     res.status(500).json({ error: 'Failed to fetch dashboard data' });
@@ -88,13 +89,10 @@ const userId = req.params.id;
     const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
 console.log(completed);
   try {
-    // const result = 
     await userService.markChallengeCompletion(userId, challengeId,completed);
     res.status(200).json({
       message: 'Challenge completion status updated successfully'
-      // , result
     });
-    // console.log(result)
   } catch (error) {
     console.error('Error completing challenge:', error);
     res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
@@ -129,6 +127,7 @@ exports.registerToClass = async (req, res) => {
 exports.unregisterFromClass = async (req, res) => {
   const userId = req.user.id;
   const classId = req.params.classId;
+
   try {
     await userService.unregisterUserFromClass(userId, classId);
     res.status(200).json({ message: 'הרישום בוטל בהצלחה' });

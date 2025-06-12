@@ -3,7 +3,6 @@ require('dotenv').config();
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // "Bearer xyz"
-console.log(token);
   if (!token) return res.status(401).json({ message: "Missing token" });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, userData) => {
@@ -14,7 +13,11 @@ console.log(token);
 };
 
 const requireRole = (role) => {
+  console.log("i am on check");
+
   return (req, res, next) => {
+      console.log(`role${req.user.role}`);
+
     if (!req.user || req.user.role !== role) {
       return res.status(403).json({ message: "Permission denied" });
     }

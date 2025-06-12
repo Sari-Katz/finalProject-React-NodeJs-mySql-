@@ -8,10 +8,12 @@ import Register from './components/Register/Register.jsx'
 import Login from './components/Login/Login.jsx'
 import Home from './components/Home/Home.jsx'
 import ScheduleTable from './components/Schedule/ScheduleTable.jsx'
+import AddCourseForm from './components/admin/AddCourseForm.jsx'
+
 import UserProfile from './components/UserProfile/UserProfile.jsx'
 import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Posts from './components/Posts/Posts.jsx'
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
@@ -37,41 +39,65 @@ function App() {
         <Route
           path="/user/:id/home"
           element={
-            <WithLayout>
-              <Home />
-            </WithLayout>
+            <PrivateRoute>
+              <WithLayout>
+                <Home />
+              </WithLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/schedule"
           element={
-            <WithLayout>
-              <ScheduleTable />
-            </WithLayout>
+            <PrivateRoute>
+              <WithLayout>
+                <ScheduleTable />
+              </WithLayout>
+            </PrivateRoute>
+
           }
         />
         <Route
           path="/about"
           element={
-            <WithLayout>
-              <Home />
-            </WithLayout>
+            <PrivateRoute>
+              <WithLayout>
+                <Home />
+              </WithLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/posts"
           element={
-            <WithLayout>
-              <Posts />
-            </WithLayout>
+            <PrivateRoute>
+              <WithLayout>
+                <Posts />
+              </WithLayout>
+            </PrivateRoute>
+
+          }
+        />
+        <Route
+          path="/AddCourse"
+          element={
+            <PrivateRoute>
+              <WithLayout>
+                <AddCourseForm />
+              </WithLayout>
+            </PrivateRoute>
+
           }
         />
         <Route
           path="/profile"
           element={
-            <WithLayout>
-              <UserProfile />
-            </WithLayout>
+            <PrivateRoute>
+              <WithLayout>
+                <UserProfile />
+              </WithLayout>
+            </PrivateRoute>
+
           }
         />
         {/* <Route path="*" element={<PageNotFound />} /> */}

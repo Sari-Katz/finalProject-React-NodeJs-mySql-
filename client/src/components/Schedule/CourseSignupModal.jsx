@@ -83,7 +83,7 @@ export default function CourseSignupModal({ course, onClose }) {
   const handleUnregister = async () => {
     setStatus("canceling");
     try {
-      await api.delete(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
+      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
       setStatus("success");
       setIsRegistered(false);
     } catch (err) {
