@@ -9,6 +9,7 @@ function ViewPost(props) {
     const { post, index, setPosts, posts, setSelectedPost } = props;
     const [editPostBody, setEditPostBody] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const { user} = useContext(AuthContext);
     const apiService = new ApiService();
 
     const handleUpdatePost = async (id, newBody) => {
@@ -45,7 +46,7 @@ function ViewPost(props) {
                 ) : (
                     <div>
                         <p>{post.content}</p>
-                        {(
+                        {(user.role=='admin') && (
                             <span className={styles.editIcon}
                                 onClick={() => {
                                     setEditPostBody(post.Content);
