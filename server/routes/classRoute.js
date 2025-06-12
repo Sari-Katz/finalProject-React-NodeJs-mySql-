@@ -8,9 +8,10 @@ const router = express.Router();
 router.post('/create', authenticateToken, requireRole('admin'), classController.createClass);
 
 // קבלת כל הכיתות (עם אפשרות לסינון)
-router.get('/', classController.getClasses);
+router.get('/', authenticateToken,classController.getClasses);
 
 router.get('/recent', authenticateToken, classController.getRecentClassesByUser);
+// router.get('/', authenticateToken, classController.getRecentClassesByUser);
 
 // קבלת כיתה לפי מזהה
 router.get('/:id', classController.getClassById);

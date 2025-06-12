@@ -3,10 +3,30 @@ const classService = require('../services/classService');
 // יצירת כיתה חדשה
 exports.createClass = async (req, res) => {
     try {
-        const classData = req.body;
-        const newClass = await classService.createClass(classData);
+        const { title, class_types, day_of_week, start_time, end_time, date_start } = req.body;
+
+    // בדיקות בסיסיות
+    if (!title || !class_types || !day_of_week || !start_time || !end_time || !date_start) {
+      return res.status(400).json({ message: "יש למלא את כל השדות" });
+    }
+
+    // בדיקת שעת התחלה < שעת סיום
+    if (start_time >= end_time) {
+      return res.status(400).json({ message: "שעת ההתחלה חייבת להיות לפני שעת הסיום" });
+    }
+
+    // בדיקה שיום בשבוע תקין
+    const validDays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+    if (!validDays.includes(day_of_week)) {
+      return res.status(400).json({ message: "יום בשבוע לא תקין" });
+    }
+
+    const newClass = await classService.createClass({ title, class_types, day_of_week, start_time, end_time, date_start });
+     console.log(newClass)
+
         res.status(201).json(newClass);
     } catch (error) {
+      console.log(error)
         res.status(500).json({ message: 'שגיאה ביצירת כיתה', error: error.message });
     }
 };
@@ -14,19 +34,25 @@ exports.createClass = async (req, res) => {
 // קבלת כל הכיתות (עם אפשרות לסינון)
 exports.getClasses = async (req, res) => {
  try {
+  let classes;
     const { week, ...otherFilters } = req.query;
     let filters = { ...otherFilters };
+  console.log(week);
 
     if (week) {
       const weekFilter = addWeekFilter({ week });
-      filters = { ...filters, ...weekFilter };
+      classes =classService.getClassesByWeek(weekFilter);
+        console.log(weekFilter);
+
     }
-    console.log(filters);
-  const classes = Object.keys(filters).length === 0
+    else{
+        classes = Object.keys(filters).length === 0
             ? await classService.getAllClasses()
             : await classService.searchClasses(filters);
+     }
     res.status(200).json(classes);
   } catch (error) {
+    console.log(error)
         res.status(500).json({ message: 'שגיאה בקבלת כיתות', error: error.message });
     }
 };
@@ -47,9 +73,9 @@ function addWeekFilter(query) {
   endOfWeek.setHours(23, 59, 59, 999);
 
   return {
-    courseDate: {
-      $gte: startOfWeek,
-      $lte: endOfWeek
+    classDate: {
+     gte: startOfWeek.toISOString().slice(0, 10), // "2025-06-08"
+    lte: endOfWeek.toISOString().slice(0, 10)    // "2025-06-14"
     }
   };
 }

@@ -41,6 +41,7 @@ const userService = {
              WHERE u.email = ?`,
             [email]
         );
+        console.log({rows});
         return rows[0];
     },
 
@@ -176,12 +177,12 @@ console.log(currentChallenge[0].description);
     );
   }
 },
-async registerUserToClass(userId, classId){
+async registerUserToClass(userId, classId) {
   const [existing] = await pool.query(
     'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
     [userId, classId]
   );
-  console.log(existing);
+
   if (existing.length > 0) {
     await pool.query(
       'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
@@ -195,17 +196,16 @@ async registerUserToClass(userId, classId){
   }
 },
 
- async unregisterUserFromClass(userId, classId){
+async unregisterUserFromClass(userId, classId) {
   await pool.query(
-    'DELETE FROM classes_participants WHERE user_id = ? AND class_id = ?',
-    [userId, classId]
+    'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
+    ['בוטלה', userId, classId]
   );
 },
-
 async isUserRegisteredToClass(userId, classId){
   const [result] = await pool.query(
-    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
-    [userId, classId]
+    'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ? AND status =?',
+    [userId, classId,'נרשמה']
   );
   return result.length > 0;
 }

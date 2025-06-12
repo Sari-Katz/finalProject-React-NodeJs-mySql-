@@ -20,7 +20,10 @@ export default function ScheduleTable() {
   useEffect(() => {
     async function loadCourses() {
       try {
-        const data = await apiUtils.get("http://localhost:3000/classes");
+        const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+        const data = await apiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+        console.log(data)
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
