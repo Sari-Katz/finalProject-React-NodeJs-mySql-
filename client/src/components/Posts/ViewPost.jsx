@@ -9,9 +9,9 @@ function ViewPost(props) {
     const { post, index, setPosts, posts, setSelectedPost } = props;
     const [editPostBody, setEditPostBody] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const { user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const apiService = new ApiService();
-
+    console.log(user)
     const handleUpdatePost = async (id, newBody) => {
         console.log(posts[index]);
         const updatedPost = { ...posts[index], content: newBody };
@@ -29,6 +29,7 @@ function ViewPost(props) {
 
     return (
         <>
+        
             <div>
                 {isEditing ? (
                     <div>
@@ -36,7 +37,7 @@ function ViewPost(props) {
                             value={editPostBody}
                             onChange={(e) => setEditPostBody(e.target.value)}
                         />
-                        <button onClick={() => handleUpdatePost(post.PostID, editPostBody)}>
+                        <button onClick={() => handleUpdatePost(post.post_id, editPostBody)}>
                             Save
                         </button>
                         <button onClick={() => setIsEditing(false)}>
@@ -46,15 +47,20 @@ function ViewPost(props) {
                 ) : (
                     <div>
                         <p>{post.content}</p>
-                        {(user.role=='admin') && (
+                        {(user.role == 'admin') && (
                             <span className={styles.editIcon}
                                 onClick={() => {
-                                    setEditPostBody(post.Content);
+                                    setEditPostBody(post.content);
                                     setIsEditing(true);
                                 }}>
                             </span>
                         )}
-                        <button onClick={() => setSelectedPost(null)}>Close</button>
+                        <button
+                            className={`${styles.closeBtn} ${styles.active}`}
+                            onClick={() => setSelectedPost(null)}
+                        >
+                            סגור
+                        </button>
                     </div>
                 )}
             </div>

@@ -1,5 +1,5 @@
-import React, { useState,useContext, useEffect } from 'react';
-// import { useUserContext } from '../UserContext';   
+
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from 'react-router-dom';
 import ViewPost from './ViewPost';
@@ -9,46 +9,26 @@ import ApiUtils from '../../utils/ApiUtils';
 function Posts() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
-    // const { userData, isInitialized } = useUserContext();
     const userId = user.id;
     const [posts, setPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostBody, setNewPostBody] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [users, setUsers] = useState([]);
-    const [selectedUserId, setSelectedUserId] = useState(userId);
+    const [truncatedPosts, setTruncatedPosts] = useState({});
     const apiService = new ApiUtils();
 
     useEffect(() => {
-    fetchPosts();
+        fetchPosts();
     }, []);
-
-    // useEffect(() => {
-    //     if (isInitialized) {
-    //         fetchUsers();
-    //     }
-    // }, [isInitialized]);
 
     const fetchPosts = async () => {
         try {
-            console.log(userId)
             const data = await apiService.get(`http://localhost:3000/posts`);
-            console.log('Fetched posts:', data);
             setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     };
-
-    // const fetchUsers = async () => {
-    //     try {
-    //         const data = await apiService.get(`http://localhost:3000/users`);
-    //         setUsers(data);
-    //     } catch (error) {
-    //         console.error('Error fetching users:', error);
-    //     }
-    // };
 
     const handleAddPost = async () => {
         if (newPostTitle.trim() && newPostBody.trim()) {
@@ -59,8 +39,7 @@ function Posts() {
             };
             try {
                 const post = await apiService.post('http://localhost:3000/posts', newPost);
-                if (selectedUserId == userId)
-                    setPosts([post, ...posts]);
+                setPosts([post, ...posts]);
                 setNewPostTitle('');
                 setNewPostBody('');
             } catch (error) {
@@ -76,44 +55,15 @@ function Posts() {
             updatedAllPosts.splice(index, 1);
             setPosts(updatedAllPosts);
         } catch (error) {
-            console.error('Error deleting todo:', error);
+            console.error('Error deleting post:', error);
         }
     };
 
-    // const handleChangeUser = (userId) => {
-    //     setSelectedUserId(userId);
-    //     setSelectedPost(null);
-    // };
-
     return (
-
         <div className={styles.container}>
-            <div className={styles.topBar}>
-                {/* <div className={styles.searchBar}>
-                    <input
-                        type="text"
-                        placeholder="Search posts..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-                <div className={styles.userSelect}>
-                    <label>Select User: </label>
-                    <select
-                        className={styles.select}
-                        value={selectedUserId}
-                        onChange={(e) => handleChangeUser(e.target.value)}
-                    >
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>
-                                {user.username}
-                            </option>
-                        ))}
-                    </select>
-                </div> */}
-            </div>
             <h1 className={styles.title}>Posts</h1>
-            <div className={styles.newPost}>
+
+            {(user.role == 'admin') && <div className={styles.newPost}>
                 <h3>Add New Post</h3>
                 <input
                     type="text"
@@ -127,39 +77,81 @@ function Posts() {
                     onChange={(e) => setNewPostBody(e.target.value)}
                 />
                 <button className={styles.addbutton} onClick={handleAddPost}>Add Post</button>
-            </div>
-            <ul className={styles.postList}>
+            </div>}
 
-                {posts
-                 .map((post, index) => (
+            <div className={styles.postGrid}>
+                {posts.map((post, index) => {
+                    const isSelected = selectedPost && selectedPost.post_id === post.post_id;
+                    const isTruncated = truncatedPosts[post.post_id];
+
+                    return (
                         <li key={post.post_id} className={styles.postItem}>
                             <div className={styles.postHeader}>
-                                <span className={styles.post_title}>{post.post_id} - {post.title}</span>
+                                <span className={styles.post_title}>
+                                    {post.post_id} - {post.title}
+                                </span>
                                 <div className={styles.actions}>
-                                    <button className={styles.button} onClick={() => setSelectedPost(post)}>View Post</button>
-                                    <button className={styles.button} onClick={() => navigate(`/user/${userId}/post/${post.PostID}/comments`)}>Comments</button>
-                                    {selectedUserId == userId && (
+
+                                    {user.role === 'admin' && (
                                         <button
                                             className={styles.deleteButton}
-                                            onClick={() => handleDeletePost(index, post.PostID)}
-                                        ></button>
+                                            onClick={() => handleDeletePost(index, post.post_id)}
+                                        >
+                                        מחיקה🗑️
+                                        </button>
                                     )}
                                 </div>
                             </div>
-                            {selectedPost && selectedPost.post_id === post.post_id && (
-                                <ViewPost
-                                    post={post}
-                                    index={index}
-                                    setPosts={setPosts}
-                                    posts={posts}
-                                    setSelectedPost={setSelectedPost}
-                                />
-                            )}
+
+                            <div className={styles.postContentWrapper}>
+                                {!isSelected && (
+                                    <>
+                                        <div
+                                            className={`${styles.postContent} ${isTruncated ? styles.truncated : ''}`}
+                                            ref={(el) => {
+                                                if (el && el.scrollHeight > 100 && !truncatedPosts[post.post_id]) {
+                                                    setTruncatedPosts(prev => ({
+                                                        ...prev,
+                                                        [post.post_id]: true
+                                                    }));
+                                                }
+                                            }}
+                                        >
+                                            {post.content}
+                                        </div>
+
+                                        {isTruncated && (
+                                            <button
+                                                className={`${styles.readMore} ${isSelected ? styles.active : ''}`}
+                                                onClick={() => setSelectedPost(post)}
+                                            >
+                                                המשך קריאה...
+                                            </button>
+
+                                        )}
+                                    </>
+                                )}
+
+                                {isSelected && (
+                                    <ViewPost
+                                        post={post}
+                                        index={index}
+                                        setPosts={setPosts}
+                                        posts={posts}
+                                        setSelectedPost={setSelectedPost}
+                                    />
+                                )}
+                            </div>
+                            <button onClick={() => navigate(`/user/${userId}/post/${post.post_id}/comments`)}>
+                                Comments
+                            </button>
                         </li>
-                    ))}
-            </ul>
+                    );
+                })}
+            </div>
         </div>
     );
 }
 
 export default Posts;
+

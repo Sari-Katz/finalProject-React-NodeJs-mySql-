@@ -1,252 +1,192 @@
 .container {
-    width: 1000px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-    color: #333;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  font-family: Arial, sans-serif;
 }
-
 .title {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #064e1d;
+  font-size: 2rem;
+  margin-bottom: 30px;
 }
-
-.topBar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.searchBar input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.userSelect {
-    display: flex;
-    align-items: center;
-}
-
-.select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .newPost {
-    margin-bottom: 20px;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
 }
-
-.newPost input,
-.newPost textarea {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.newPost h3 { color: #064e1d; }
+.newPost input, .newPost textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
-
-.newPost button {
-    padding: 8px 16px;
-    background-color:#39CDCD;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 300px;
+.addButton {
+  background: #f85c52;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
+.addButton:hover { background: #e24e45; }
 
-.newPost button:hover {
-    background-color: #828385;
+.postGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
-
-.postList {
-    list-style-type: none;
-    padding: 0;
+.postCard {
+  background: #f9f9f9;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+.postCard h3 { color: #064e1d; margin-bottom: 10px; }
+.postCard p { color: #333; font-size: 0.95rem; margin-bottom: 12px; }
 
-.postItem {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+.actions {
+  display: flex;
+  align-items: center;
 }
-
-.postHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.postTitle {
-    font-weight: bold;
-}
-
 .actions button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #39CDCD;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  background: #064e1d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background 0.3s;
 }
+.actions button:hover { background: #053d16; }
 
-.actions button:hover {
-    background-color: #858686;
+.editIcon, .deleteButton {
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 28px;
+  border: none;
+  cursor: pointer;
 }
+.editIcon { background-image: url('../../img/edit.png'); }
+.deleteButton { background-image: url('../../img/delete.png'); }
 
-.deleteButton {
-    background: url('../../img/delete.png') no-repeat center center;
-    background-size: contain;
-    border: none;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+.closeBtn {
+  margin-top: 10px;
+  background: #f85c52;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }
-
-.deleteButton:hover {
-    opacity: 0.8;
-}
-
-.button
-{
-    width: 120px;
-    color:  #39CDCD;
-    
-}
-.addbutton{
-    width: 300px;
-}
-
-/* uiuyugyt */
-
-.container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.commentList {
-    list-style: none;
-    padding: 0;
-}
-
-.commentItem {
-    background-color: #fff;
-    margin-bottom: 10px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.actions {
+.postContentWrapper {
+    position: relative;
     margin-top: 10px;
 }
 
-.container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.postContent {
+    max-height: 100px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    white-space: pre-wrap;
+    line-height: 1.5;
 }
 
-.title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.commentList {
-    list-style: none;
-    padding: 0;
-}
-
-.commentItem {
-    background-color: #fff;
-    margin-bottom: 10px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.actions {
-    margin-top: 10px;
-}
-
-.deleteButton, .editButton, .addButton, .saveButton {
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    margin-right: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-
-
-.textarea {
-    width: 100%;
-    min-height: 80px;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.editSection, .addCommentSection {
-    margin-top: 20px;
-}
-
-.textarea {
-    width: 100%;
-    min-height: 80px;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.editSection, .addCommentSection {
-    margin-top: 20px;
-}
-.addButton
-{
-    width: 150px;
-}
-.btn
-{
-    margin-bottom: 10px;
-}
-.editIcon {
-    background-image: url('../../img/edit.png');
-    background-size: contain;
-    border: none;
-    width: 30px;
+.truncated::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     height: 30px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+}
+
+.readMore {
+    background: none;
+    border: none;
+    color: #064e1d;
+    font-weight: bold;
     cursor: pointer;
-    background-repeat: no-repeat;
-    padding: 6px 12px;
-    font-size: 1rem;
-    border-radius: 4px;
+    margin-top: 5px;
 }
-.back{
-    float: right;
-    width: 120px;
-    margin-top: 13px;
+.truncatedContent {
+  max-height: 80px; /* או גובה אחר שתבחר */
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.3s ease;
 }
+
+.fullContent {
+  max-height: none;
+}
+
+.readMoreBtn {
+  background-color: transparent;
+  color: #f85c52;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+/* ביטול נקודה ליד פוסטים */
+.postGrid li {
+  list-style: none;
+}
+
+/* כפתור המשך קריאה - צבע ירוק רגיל */
+.readMore {
+  background: none;
+  border: none;
+  color: #064e1d;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: color 0.3s;
+}
+
+/* כאשר לוחצים על המשך קריאה (post פתוח) – בצבע אדום */
+.readMore.active {
+  color: #f85c52;
+}
+
+/* גם כפתור סגירה – תואם */
+.closeBtn {
+  margin-top: 10px;
+  background: none;
+  color: #064e1d;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.closeBtn.active {
+  color: #f85c52;
+}
+.readMoreBtn {
+  outline: none;
+}
+
+.readMoreBtn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
