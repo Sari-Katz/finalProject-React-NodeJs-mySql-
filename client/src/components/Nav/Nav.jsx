@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styles from './Nav.module.css';
 import { AuthContext } from '../AuthContext';
 import { useLocation } from 'react-router-dom';
@@ -37,7 +37,10 @@ function Nav() {
         <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           אודות
         </NavLink>
-           {user.role=='admin'&&<NavLink to="/AddCourse" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+        <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          מנוים
+        </NavLink>
+        {user.role == 'admin' && <NavLink to="/AddCourse" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           הוספת קורס
         </NavLink>}
       </div>

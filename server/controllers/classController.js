@@ -41,8 +41,9 @@ exports.getClasses = async (req, res) => {
 
     if (week) {
       const weekFilter = addWeekFilter({ week });
-      classes =classService.getClassesByWeek(weekFilter);
+       classes = await classService.getClassesByWeek(weekFilter);
         console.log(weekFilter);
+        console.log(classes)
 
     }
     else{
@@ -74,8 +75,8 @@ function addWeekFilter(query) {
 
   return {
     classDate: {
-     gte: startOfWeek.toISOString().slice(0, 10), // "2025-06-08"
-    lte: endOfWeek.toISOString().slice(0, 10)    // "2025-06-14"
+     gte: startOfWeek.toISOString().slice(0, 10), 
+    lte: endOfWeek.toISOString().slice(0, 10)  
     }
   };
 }

@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const userRoute = require('./routes/userRoute');
 const classRoute = require('./routes/classRoute');
-const userSubscriptionRoute = require('./routes/userSubscriptionRoute');
+const SubscriptionRoute = require('./routes/subscriptionPlanRoute');
 const chellangeRoute = require('./routes/chellangeRoute');
 const postRoute = require('./routes/postRoute');
 const commentRoute = require('./routes/commentRoute');
@@ -20,7 +20,7 @@ app.use("/classes", classRoute);
 app.use("/challenge",chellangeRoute );
 app.use("/comments", commentRoute);
 app.use("/posts", postRoute);
-app.use("/userSubscription", userSubscriptionRoute);
+app.use("/Subscription", userSubscriptionRoute);
 
 
 app.use("/", (req, res) => {

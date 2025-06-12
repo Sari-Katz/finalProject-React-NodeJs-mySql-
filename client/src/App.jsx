@@ -9,7 +9,7 @@ import Login from './components/Login/Login.jsx'
 import Home from './components/Home/Home.jsx'
 import ScheduleTable from './components/Schedule/ScheduleTable.jsx'
 import AddCourseForm from './components/admin/AddCourseForm.jsx'
-
+import SubscriptionList from './components/Subscription/SubscriptionList.jsx'
 import UserProfile from './components/UserProfile/UserProfile.jsx'
 import { useContext } from 'react';
 import AuthProvider, { AuthContext } from './components/AuthContext';
@@ -63,6 +63,16 @@ function App() {
             <PrivateRoute>
               <WithLayout>
                 <Home />
+              </WithLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Subscription"
+          element={
+            <PrivateRoute>
+              <WithLayout>
+                <SubscriptionList />
               </WithLayout>
             </PrivateRoute>
           }
