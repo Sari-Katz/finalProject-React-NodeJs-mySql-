@@ -23,6 +23,8 @@ async function initDb() {
         await pool.query('DROP TABLE IF EXISTS users');
         await pool.query('DROP TABLE IF EXISTS subscription_plans');
         await pool.query('DROP TABLE IF EXISTS user_subscriptions');
+        await pool.query('DROP TABLE IF EXISTS posts');
+        await pool.query('DROP TABLE IF EXISTS comments');
      
 
         await pool.query('SET FOREIGN_KEY_CHECKS = 1');
@@ -35,7 +37,7 @@ async function initDb() {
                 full_name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 phone VARCHAR(20),
-    role ENUM('user', 'admin', 'guide') DEFAULT 'user',
+                role ENUM('user', 'admin', 'guide') NOT NULL DEFAULT 'user',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -111,6 +113,29 @@ await pool.query(`
             )
         `);
 
+            await pool.query(`
+      CREATE TABLE posts (
+        post_id INT PRIMARY KEY AUTO_INCREMENT,
+        user_id INT NOT NULL,
+        title VARCHAR(100) NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+
+    await pool.query(`
+      CREATE TABLE comments (
+        comment_id INT PRIMARY KEY AUTO_INCREMENT,
+        post_id INT NOT NULL,
+        user_id INT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+
         logger.info('✅ Inserting data...');
 
         for (const user of db.users) {
@@ -173,7 +198,26 @@ if (db.user_subscriptions) {
             [sub.id, sub.user_id, sub.plan_id, sub.start_date, sub.end_date]
         );
     }
+}// Insert posts
+if (db.posts) {
+    for (const post of db.posts) {
+        await pool.query(
+            'INSERT INTO posts (user_id, title, content, created_at) VALUES (?, ?, ?, ?)',
+            [post.user_id, post.title, post.content, post.created_at]
+        );
+    }
 }
+
+// Insert comments
+if (db.comments) {
+    for (const comment of db.comments) {
+        await pool.query(
+            'INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, ?)',
+            [comment.post_id, comment.user_id, comment.content, comment.created_at]
+        );
+    }
+}
+
 
         logger.info('✅ All data inserted successfully.');
         process.exit(0);

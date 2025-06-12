@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./UserProfile.module.css"; // תיצור קובץ CSS מתאים
 import { AuthContext } from "../AuthContext";
