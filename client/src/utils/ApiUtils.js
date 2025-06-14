@@ -1,74 +1,45 @@
 class ApiUtils {
-    async checkResponseStatus(response) {
-        if (!response.ok) {
-            throw new Error(`HTTP Error! Status: ${response.status}`);
-        }
-        return response.json();
+  // 1) בדיקת סטטוס — ללא שינוי
+  async checkResponseStatus(response) {
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
     }
+    // אם יש תגובת ‎204‎ ללא גוף, אל תנסי json()
+    return response.status === 204 ? null : response.json();
+  }
 
-    getAuthHeaders(customHeaders = {}) {
-        const token = localStorage.getItem('token');
-        return {
-            'Content-Type': 'application/json',
-            ...(token && { Authorization: `Bearer ${token}` }),
-            ...customHeaders,
-        };
-    }
+  // 2) כותרות ברירת‑מחדל — אין יותר Authorization
+  getAuthHeaders(customHeaders = {}) {
+    return {
+      'Content-Type': 'application/json',
+      ...customHeaders,
+    };
+  }
 
-    async fetch(url) {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: this.getAuthHeaders()
-        });
-        return await this.checkResponseStatus(response);
-    }
+  // === פונקציות עזר פנימית לאיחוד קוד ===
+  _options(method = 'GET', body, customHeaders = {}) {
+    const options = {
+      method,
+      headers: this.getAuthHeaders(customHeaders),
+      credentials: 'include',          // ⬅️ מצרף את העוגיות אוטומטית
+    };
+    if (body) options.body = JSON.stringify(body);
+    return options;
+  }
 
-    async get(url, customHeaders = {}) {
-        console.log(url);
-                console.log(this.getAuthHeaders(customHeaders));
+  // === קריאות ציבוריות (שם־API לא השתנה) ===
+  async fetch(url)                         { return this._request(url, this._options('GET')); }
+  async get(url, headers = {})             { return this._request(url, this._options('GET',  null, headers)); }
+  async post(url, data, headers = {})      { return this._request(url, this._options('POST', data, headers)); }
+  async put(url, data, headers = {})       { return this._request(url, this._options('PUT',  data, headers)); }
+  async patch(url, data, headers = {})     { return this._request(url, this._options('PATCH', data, headers)); }
+  async delete(url, headers = {})          { return this._request(url, this._options('DELETE', null, headers)); }
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: this.getAuthHeaders(customHeaders)
-        });
-        // console.log(headers||response);
-        return await this.checkResponseStatus(response);
-    }
-
-    async post(url, newData, customHeaders = {}) {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: this.getAuthHeaders(customHeaders),
-            body: JSON.stringify(newData),
-        });
-        return await this.checkResponseStatus(response);
-    }
-
-    async put(url, newData, customHeaders = {}) {
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: this.getAuthHeaders(customHeaders),
-            body: JSON.stringify(newData),
-        });
-        return await this.checkResponseStatus(response);
-    }
-
-    async delete(url, customHeaders = {}) {
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: this.getAuthHeaders(customHeaders),
-        });
-        await this.checkResponseStatus(response);
-    }
-
-    async patch(url, newData, customHeaders = {}) {
-        const response = await fetch(url, {
-            method: 'PATCH',
-            headers: this.getAuthHeaders(customHeaders),
-            body: JSON.stringify(newData),
-        });
-        return await this.checkResponseStatus(response);
-    }
+  // === פונקציה פרטית אחת לביצוע בפועל ===
+  async _request(url, options) {
+    const response = await fetch(url, options);
+    return this.checkResponseStatus(response);
+  }
 }
 
 export default ApiUtils;

@@ -9,6 +9,8 @@ router.post('/register', userController.registerUser);
 // התחברות משתמש
 router.post('/login', userController.loginUser);
 
+router.post('/logout', userController.logoutUser);
+
 // קבלת כל המשתמשים (עם אפשרות לסינון)
 router.get('/', authenticateToken, requireRole('admin'), userController.getUsers);
 
