@@ -148,10 +148,10 @@ exports.updateClass = async (req, res) => {
 
 // מחיקת כיתה
 exports.deleteClass = async (req, res) => {
+
    const classId = req.params.id;
-  const notify = req.query.notify === true || req.query.notify === 'true'; // בדיקה עבור בודיס שנשלחים מ-JSON או טופס
+  const notify = req.query.notify === true || req.query.notify  === 'true'; // בדיקה עבור בודיס שנשלחים מ-JSON או טופס
 console.log(notify);
-console.log(req.body.notify);
 
   try {
     if (notify) {
@@ -176,6 +176,7 @@ console.log(req.body.notify);
 
     res.json({ message: 'הכיתה נמחקה בהצלחה.' });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: 'שגיאה במחיקת כיתה', error: error.message });
   }
 };

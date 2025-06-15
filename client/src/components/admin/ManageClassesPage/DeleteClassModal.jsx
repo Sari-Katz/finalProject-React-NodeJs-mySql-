@@ -11,9 +11,7 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
     const handleDelete = async () => {
         setSending(true);
         try {
-            await api.delete(`http://localhost:3000/classes/${classData.id}`, {
-                data: { notify: notifyParticipants },
-            });
+            await api.delete(`http://localhost:3000/classes/${classData.id}?notify=${notifyParticipants}`);
             onDeleteSuccess();
         } catch (err) {
             console.error("שגיאה במחיקת שיעור", err);
