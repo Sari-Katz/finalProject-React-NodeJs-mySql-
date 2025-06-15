@@ -155,6 +155,10 @@ exports.logoutUser = (req, res) => {
   });
   return res.status(200).json({ message: "Logout successful" });
 };
+exports.checkSession = (req, res) => {
+  const { id, role } = req.user;
+  res.json({ id, role }); // שליחת פרטי המשתמש
+};
 
 exports.isUserRegistered = async (req, res) => {
 

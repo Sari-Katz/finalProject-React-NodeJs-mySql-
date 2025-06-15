@@ -34,7 +34,7 @@ function Nav() {
         <NavLink to="/posts" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           פוסטים
         </NavLink>
-        <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+        <NavLink to="/user/home" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           אודות
         </NavLink>
         <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>

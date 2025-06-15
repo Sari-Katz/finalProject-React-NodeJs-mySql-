@@ -15,14 +15,19 @@ function Login() {
   const handleLogin = async () => {
     try {
       const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
-      const user = data.user;  // user מכיל id, role ועוד
-      const token = data.token; // אם יש, אבל לא נשמור בJS כי נניח קוקי HttpOnly
+      if (data && data.user) {
+        const minimalUser = {
+          id: data.user.id,
+          role: data.user.role
+        };
 
-      // שומרים בלוקאל סטורג רק מזהה ותפקיד
-      login({ id: user.id, role: user.role });
-
-      // נווט לדף הבית או כל דף אחר
-      navigate(`/user/${user.id}/home`);
+        login(minimalUser);
+        // שומרים בלוקאל סטורג רק מזהה ותפקי
+        // נווט לדף הבית או כל דף אחר
+        navigate(`/user/home`);
+      } else {
+        setError(error.message || 'אירעה שגיאה במהלך ההתחברות');
+      }
     } catch (error) {
       console.error('Login error:', error);
       setError(error.message || 'אירעה שגיאה במהלך ההתחברות');
