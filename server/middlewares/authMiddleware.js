@@ -1,28 +1,30 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // "Bearer xyz"
-  if (!token) return res.status(401).json({ message: "Missing token" });
+  // ❶ קוראים קודם מה-Cookie
+  let token = req.cookies?.token;
+
+  // ❷ Fallback: Authorization Header (נוח ל‑Postman / בדיקות)
+  if (!token) {
+    const authHeader = req.headers['authorization'];
+    token = authHeader && authHeader.split(' ')[1]; // "Bearer xyz"
+  }
+
+  if (!token) return res.status(401).json({ message: 'Missing token' });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, userData) => {
-    if (err) return res.status(403).json({ message: "Invalid token" });
-    req.user = userData; // כולל id ו-role
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+    req.user = userData; // { id, role }
     next();
   });
 };
 
-const requireRole = (role) => {
-  console.log("i am on check");
-
-  return (req, res, next) => {
-      console.log(`role${req.user.role}`);
-
-    if (!req.user || req.user.role !== role) {
-      return res.status(403).json({ message: "Permission denied" });
-    }
-    next();
-  };
+const requireRole = (role) => (req, res, next) => {
+  if (!req.user || req.user.role !== role) {
+    return res.status(403).json({ message: 'Permission denied' });
+  }
+  next();
 };
 
 module.exports = { authenticateToken, requireRole };

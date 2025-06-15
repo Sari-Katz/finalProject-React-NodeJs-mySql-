@@ -45,9 +45,8 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log({ email, password });
     const user = await userService.getUserByEmail(email);
-    console.log(user);
+
     if (!user) {
       return res.status(401).json({ message: 'אימייל או סיסמה שגויים.' });
     }
@@ -63,13 +62,24 @@ exports.loginUser = async (req, res) => {
       { expiresIn: '3h' }
     );
 
-    return res.json({ message: 'התחברת בהצלחה', user, token });
+    // שליחת העוגייה המאובטחת
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // true בשרת בפרודקשן
+      sameSite: 'Strict',
+      maxAge: 1000 * 60 * 60 * 3 // 3 שעות
+    });
+
+    // נשלח את פרטי המשתמש בלי סיסמה ובלי הטוקן
+    const { password_hash, ...safeUser } = user;
+    return res.json({ message: 'התחברת בהצלחה', user: safeUser });
 
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
   }
 };
+
 // עבור משתמש פרטי
 exports.getUserDashboard = async (req, res) => {
   try {
@@ -135,6 +145,15 @@ exports.unregisterFromClass = async (req, res) => {
     console.error('שגיאה בביטול הרשמה:', error);
     res.status(500).json({ message: 'שגיאה בביטול הרשמה' });
   }
+};
+exports.logoutUser = (req, res) => {
+  // בצד שרת, אם אנחנו משתמשים ב־HTTP-only cookies, פשוט שולחים תגובה שמוחקת את העוגייה
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict',
+  });
+  return res.status(200).json({ message: "Logout successful" });
 };
 
 exports.isUserRegistered = async (req, res) => {

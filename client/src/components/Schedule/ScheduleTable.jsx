@@ -1,29 +1,169 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import styles from "./ScheduleTable.module.css";
-import CourseCell from "./CourseCell";
+// import React, { useEffect, useState, useContext } from "react";
+// import { useSearchParams } from "react-router-dom";
+// import { AuthContext } from "../AuthContext";  // נתיב מדויק לפי המיקום שלך
+// import SubscriptionList from "../Subscription/SubscriptionList";
+// import CourseSignupModal from "./CourseSignupModal";
+// import ApiUtils from "../../utils/ApiUtils";
+// import styles from "./ScheduleTable.module.css";
+// import CourseCell from "./CourseCell";
+
+// const days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי"];
+
+// export default function ScheduleTable() {
+//   const { user } = useContext(AuthContext);
+//   const userId = user?.id;
+//   const [activeSubscription, setActiveSubscription] = useState(null);
+
+//   const [courses, setCourses] = useState([]);
+//   const [selectedCourse, setSelectedCourse] = useState(null);
+//   const [showSubscriptionList, setShowSubscriptionList] = useState(false);
+//   // const [me, setMe] = useState(null); // לפרטי המשתמש עם מנוי פעיל
+//   const [searchParams, setSearchParams] = useSearchParams();
+
+//   const apiUtils = new ApiUtils();
+
+//   const times = [...new Set(courses.map((c) => c.start_time))].sort();
+
+//   // טען קורסים
+//   useEffect(() => {
+//     async function loadCourses() {
+//       try {
+//         const currentDate = new Date().toISOString().split("T")[0];
+//         const data = await apiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+//         setCourses(data);
+//       } catch (err) {
+//         console.error("שגיאה בטעינת קורסים:", err);
+//       }
+//     }
+//     loadCourses();
+//   }, []);
+
+//   // טען פרטי משתמש עם מנוי פעיל ברגע שיש userId
+//   useEffect(() => {
+//     if (!userId) return;
+
+//     async function fetchUserSubscription() {
+//       try {
+//         const subscriptionData = await apiUtils.get(
+//           `http://localhost:3000/userSubscription/byUser/${userId}`
+//         );
+//         setActiveSubscription(subscriptionData.isActive);
+
+//       } catch (err) {
+//         console.error("שגיאה בטעינת מנוי המשתמש:", err);
+//       }
+//     }
+
+//     fetchUserSubscription();
+//   }, [userId, user]);
+
+//   // בדיקת פרמטר URL כדי לפתוח מודאל קורס
+//   useEffect(() => {
+//     const courseId = searchParams.get("signup");
+//     if (courseId && courses.length > 0) {
+//       const course = courses.find((c) => c.id.toString() === courseId);
+//       if (course) setSelectedCourse(course);
+//     }
+//   }, [courses, searchParams]);
+
+//   const openModal = (course) => {
+
+//     if (!activeSubscription) {
+//       setShowSubscriptionList(true);
+//       setSelectedCourse(null);
+//       setSearchParams({});
+//       return;
+//     }
+//     setSelectedCourse(course);
+//     setSearchParams({ signup: course.id });
+//   };
+
+//   const closeModal = () => {
+//     setSelectedCourse(null);
+//     setSearchParams({});
+//   };
+
+//   const closeSubscriptionList = () => {
+//     setShowSubscriptionList(false);
+//   };
+
+//   return (
+//     <div>
+//       <div className={`${styles.scheduleContainer} ${styles.centeredContent}`} dir="rtl">
+//         <div className={`${styles.cell} ${styles.header}`}>שעה</div>
+//         {days.map((day) => (
+//           <div key={day} className={`${styles.cell} ${styles.dayHeader}`}>
+//             {day}
+//           </div>
+//         ))}
+//         {times.map((time) => (
+//           <React.Fragment key={time}>
+//             <div className={`${styles.cell} ${styles.timeCell}`}>{time}</div>
+//             {days.map((day) => {
+//               const course = courses.find(
+//                 (c) => c.day_of_week === day && c.start_time === time
+//               );
+//               return (
+//                 <CourseCell
+//                   key={`${day}-${time}`}
+//                   course={course}
+//                   onClick={() => course && openModal(course)}
+//                 />
+//               );
+//             })}
+//           </React.Fragment>
+//         ))}
+
+//         {selectedCourse && !showSubscriptionList && (
+//           <CourseSignupModal course={selectedCourse} onClose={closeModal} />
+//         )}
+//       </div>
+
+//       {showSubscriptionList && (
+//         <div className={styles.modalOverlay}>
+//           <div className={styles.modalContent}>
+//             <button onClick={closeSubscriptionList}>×</button>
+
+//             <div> אין לך מנוי בתוקף לחידוש המנוי בחר את החבילה הרצויה</div>
+
+//             <SubscriptionList />
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+import React, { useEffect, useState, useContext } from "react";
+import { useSearchParams } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
+import SubscriptionList from "../Subscription/SubscriptionList";
 import CourseSignupModal from "./CourseSignupModal";
 import ApiUtils from "../../utils/ApiUtils";
-import Nav from "../Nav/Nav";
+import styles from "./ScheduleTable.module.css";
+import CourseCell from "./CourseCell";
 
 const days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי"];
 
 export default function ScheduleTable() {
+  const { user } = useContext(AuthContext);
+  const userId = user?.id;
+
+  const [activeSubscription, setActiveSubscription] = useState(null);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showSubscriptionList, setShowSubscriptionList] = useState(false);
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const apiUtils = new ApiUtils();
 
   const times = [...new Set(courses.map((c) => c.start_time))].sort();
 
+  /* ─────────────────────────────── קורסים ─────────────────────────────── */
   useEffect(() => {
     async function loadCourses() {
       try {
-        const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-
+        const currentDate = new Date().toISOString().split("T")[0];
         const data = await apiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
-        console.log(data)
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
@@ -32,7 +172,25 @@ export default function ScheduleTable() {
     loadCourses();
   }, []);
 
-  // בדיקה אם יש courseId ב-URL
+  /* ───────────────────── מנוי פעיל (משתמש) ───────────────────── */
+  useEffect(() => {
+    if (!userId) return;
+
+    async function fetchUserSubscription() {
+      try {
+        const { isActive } = await apiUtils.get(
+          `http://localhost:3000/userSubscription/byUser/${userId}`
+        );
+        setActiveSubscription(isActive);
+      } catch (err) {
+        console.error("שגיאה בטעינת מנוי המשתמש:", err);
+      }
+    }
+
+    fetchUserSubscription();
+  }, [userId]);
+
+  /* ───────────────────── פתח מודאל קורס לפי פרמטר signup ───────────────────── */
   useEffect(() => {
     const courseId = searchParams.get("signup");
     if (courseId && courses.length > 0) {
@@ -41,16 +199,49 @@ export default function ScheduleTable() {
     }
   }, [courses, searchParams]);
 
-  const openModal = (course) => {
+  /* ───────────────────── בדיקה אוטומטית לפרמטר subscription ───────────────────── */
+  useEffect(() => {
+    if (searchParams.get("subscription") === "true") {
+      setShowSubscriptionList(true);
+    }
+  }, [searchParams]);
+
+  /* ───────────────────── פונקציות עזר למודאלים ───────────────────── */
+  const openSubscriptionModal = () => {
+    setShowSubscriptionList(true);
+    setSelectedCourse(null);
+    setSearchParams({ subscription: "true" });
+  };
+
+  const closeSubscriptionModal = () => {
+    setShowSubscriptionList(false);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("subscription");
+    setSearchParams(params);
+  };
+
+  const openCourseModal = (course) => {
     setSelectedCourse(course);
     setSearchParams({ signup: course.id });
   };
 
-  const closeModal = () => {
+  const closeCourseModal = () => {
     setSelectedCourse(null);
-    setSearchParams({});
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("signup");
+    setSearchParams(params);
   };
 
+  /* ───────────────────── לחיצה על תא קורס ───────────────────── */
+  const handleCellClick = (course) => {
+    if (!activeSubscription) {
+      openSubscriptionModal();
+      return;
+    }
+    openCourseModal(course);
+  };
+
+  /* ─────────────────────────────── UI ─────────────────────────────── */
   return (
     <div>
       <div className={`${styles.scheduleContainer} ${styles.centeredContent}`} dir="rtl">
@@ -71,17 +262,29 @@ export default function ScheduleTable() {
                 <CourseCell
                   key={`${day}-${time}`}
                   course={course}
-                  onClick={() => course && openModal(course)}
+                  onClick={() => course && handleCellClick(course)}
                 />
               );
             })}
           </React.Fragment>
         ))}
 
-        {selectedCourse && (
-          <CourseSignupModal course={selectedCourse} onClose={closeModal} />
+        {/* מודאל הרשמה לקורס */}
+        {selectedCourse && !showSubscriptionList && (
+          <CourseSignupModal course={selectedCourse} onClose={closeCourseModal} />
         )}
       </div>
+
+      {/* מודאל חבילות מנוי */}
+      {showSubscriptionList && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <button onClick={closeSubscriptionModal}>×</button>
+            <div>אין לך מנוי בתוקף. לחידוש המנוי בחר את החבילה הרצויה:</div>
+            <SubscriptionList />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
