@@ -12,7 +12,7 @@ import UserProfile from './components/UserProfile/UserProfile.jsx';
 import Posts from './components/Posts/Posts.jsx';
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
-
+import ViewComments from './components/Posts/ViewComments';
 
 function App() {
   return (
