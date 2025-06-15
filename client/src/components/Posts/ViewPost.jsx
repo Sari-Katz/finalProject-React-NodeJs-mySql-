@@ -1,5 +1,3 @@
-
-// import { useUserContext } from '../UserContext';
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../AuthContext";
 import styles from './Posts.module.css';

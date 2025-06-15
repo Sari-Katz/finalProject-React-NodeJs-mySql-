@@ -2,12 +2,17 @@ const subscriptionService = require('../services/subscriptionService');
 
 exports.getAllPlans = async (req, res) => {
     try {
+
+              console.log("plans");
+
         const plans = await subscriptionService.getAllPlans();
         res.json(plans);
+        console.log(plans);
     } catch (err) {
         res.status(500).json({ error: 'שגיאה בקבלת חבילות' });
     }
 };
+
 exports.registerToSubscription = async (req, res) => {
   const userId = req.user.id;
   const subscriptionId = req.params.subscriptionId;

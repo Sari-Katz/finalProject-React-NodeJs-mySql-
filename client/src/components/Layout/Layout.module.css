@@ -7,8 +7,8 @@
 .main {
   flex-grow: 1;
   display: flex;
-  justify-content: center; /* מרכז אופקית */
-  align-items: center;     /* מרכז אנכית */
+  justify-content: center; 
+  align-items: center; 
   padding: 20px;
 }
 
