@@ -6,7 +6,7 @@ import Login from './components/Login/Login.jsx';
 import Register from './components/Register/Register.jsx';
 import Home from './components/Home/Home.jsx';
 import ScheduleTable from './components/Schedule/ScheduleTable.jsx';
-import AddCourseForm from './components/admin/AddCourseForm.jsx';
+import ManageClassesPage from './components/admin/ManageClassesPage/ManageClassesPage.jsx';
 import SubscriptionList from './components/Subscription/SubscriptionList.jsx';
 import UserProfile from './components/UserProfile/UserProfile.jsx';
 import Posts from './components/Posts/Posts.jsx';
@@ -42,89 +42,96 @@ function AppRoutes() {
   };
 
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          user ? <Navigate to={`/user/home`} /> : <Login />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          user ? <Navigate to={`/user/home`} /> : <Login />
+        }
+      />
+      <Route path="/register" element={<Register />} />
+      <Route
+        path="/user/home"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <Home />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/schedule"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <ScheduleTable />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/Subscription"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <SubscriptionList />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
 
-        <Route
-          path="/user/:id/home"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <Home />
-              </WithLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/schedule"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <ScheduleTable />
-              </WithLayout>
-            </PrivateRoute>
+      <Route
+        path="/ManageClasses"
+        element={
+          <PrivateRoute requiredRole="admin">
+            <WithLayout>
+              <ManageClassesPage />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <UserProfile />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+      {/* <Route path="*" element={<PageNotFound />} /> */}
+      <Route
+        path="/posts"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <Posts />
+            </WithLayout>
+          </PrivateRoute>
 
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <Home />
-              </WithLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/Subscription"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <SubscriptionList />
-              </WithLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/posts"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <Posts />
-              </WithLayout>
-            </PrivateRoute>
+        }
+      />
+      <Route
+        path="/post/:postId/comments"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <ViewComments />
+            </WithLayout>
+          </PrivateRoute>
 
-          }
-        />
-        <Route
-          path="/AddCourse"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <AddCourseForm />
-              </WithLayout>
-            </PrivateRoute>
+        }
+      />
+    </Routes>
 
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <WithLayout>
-                <UserProfile />
-              </WithLayout>
-            </PrivateRoute>
-
-          }
-        />
-        {/* <Route path="*" element={<PageNotFound />} /> */}
-      </Routes>
-    </AuthProvider>
   );
 }
 

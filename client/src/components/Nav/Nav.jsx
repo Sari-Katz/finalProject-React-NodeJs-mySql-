@@ -40,7 +40,7 @@ function Nav() {
         <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           הרשמה למנוי
         </NavLink>
-        {user.role == 'admin' && <NavLink to="/AddCourse" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+        {user.role == 'admin' && <NavLink to="/ManageClasses" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           הוספת קורס
         </NavLink>}
       </div>

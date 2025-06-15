@@ -31,19 +31,43 @@ const classService = {
         return rows;
     },
 
-    // חיפוש כיתות עם פילטרים
-    async searchClasses(filters) {
-        let query = 'SELECT id, title, class_types, day_of_week, start_time, date_start, end_time FROM classes WHERE 1=1';
-        const params = [];
+  // classService.js
+async searchClasses(filters) {
+    let query = `
+        SELECT id, title, class_types, day_of_week, start_time, date_start, end_time
+        FROM classes
+        WHERE 1=1
+    `;
+    const params = [];
 
-        for (const [key, value] of Object.entries(filters)) {
-            query += ` AND ${key} = ?`;
-            params.push(value);
-        }
+    // חילוץ פרמטרים מיוחדים
+    const { search, limit, offset, ...otherFilters } = filters;
 
-        const [rows] = await pool.query(query, params);
-        return rows;
-    },
+    // חיפוש כללי לפי כותרת, אם יש search
+    if (search) {
+        query += ' AND title LIKE ?';
+        params.push(`%${search}%`);
+    }
+
+    // פילטרים רגילים לפי עמודות אחרות
+    for (const [key, value] of Object.entries(otherFilters)) {
+        query += ` AND ${key} = ?`;
+        params.push(value);
+    }
+
+    // הוספת limit ו-offset אם קיימים
+    if (limit) {
+        query += ' LIMIT ?';
+        params.push(Number(limit));
+    }
+    if (offset) {
+        query += ' OFFSET ?';
+        params.push(Number(offset));
+    }
+
+    const [rows] = await pool.query(query, params);
+    return rows;
+},
 
     async getRecentClassesByUser(userId) {
   const oneMonthAgo = new Date();
@@ -90,13 +114,31 @@ async getClassesByWeek(weekFilter){
     },
 
     // מחיקת כיתה
-    async deleteClass(id) {
-        const [result] = await pool.query(
-            'DELETE FROM classes WHERE id = ?',
-            [id]
-        );
-        return result.affectedRows > 0;
-    }
+  async deleteClassAndParticipants(classId) {
+  // מחק קודם את המשתתפים
+  await pool.query(
+    'DELETE FROM classes_participants WHERE class_id = ?',
+    [classId]
+  );
+
+  // אחר כך מחק את הכיתה עצמה
+  const [result] = await pool.query(
+    'DELETE FROM classes WHERE id = ?',
+    [classId]
+  );
+
+  return result.affectedRows > 0;
+},
+    // קבלת משתתפים לפי מזהה שיעור
+async getParticipantsByClassId(classId) {
+    const [rows] = await pool.query(
+        `SELECT user_id, class_id, status 
+         FROM classes_participants 
+         WHERE class_id = ?`,
+        [classId]
+    );
+    return rows;
+}
 };
 
 module.exports = classService;

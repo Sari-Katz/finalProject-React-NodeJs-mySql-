@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ApiUtils from "../../utils/ApiUtils";
+import ApiUtils from "../../../utils/ApiUtils";
 const api = new ApiUtils();
 
-const AddCourseForm = () => {
+const AddClassForm = () => {
   const [formData, setFormData] = useState({
     title: "",
     class_types: "",
@@ -157,4 +157,4 @@ const AddCourseForm = () => {
   );
 };
 
-export default AddCourseForm;
+export default AddClassForm;
