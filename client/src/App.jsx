@@ -17,6 +17,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import Posts from './components/Posts/Posts.jsx'
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
+import ViewComments from './components/Posts/ViewComments';
 
 
 function App() {
@@ -83,6 +84,17 @@ function App() {
             <PrivateRoute>
               <WithLayout>
                 <Posts />
+              </WithLayout>
+            </PrivateRoute>
+
+          }
+        />
+        <Route
+          path="/post/:postId/comments"
+          element={
+            <PrivateRoute>
+              <WithLayout>
+                <ViewComments />
               </WithLayout>
             </PrivateRoute>
 

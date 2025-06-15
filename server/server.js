@@ -5,7 +5,6 @@ const userRoute = require('./routes/userRoute');
 const classRoute = require('./routes/classRoute');
 const userSubscriptionRoute = require('./routes/userSubscriptionRoute');
 const subscriptionRoute = require('./routes/subscriptionRoute');
-
 const chellangeRoute = require('./routes/chellangeRoute');
 const postRoute = require('./routes/postRoute');
 const commentRoute = require('./routes/commentRoute');

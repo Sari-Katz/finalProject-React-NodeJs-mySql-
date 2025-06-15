@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 // כל חבילות המנוי
 
-router.get('/plans', subscriptionController.getAllPlans);
+router.get('/plans', authenticateToken,subscriptionController.getAllPlans);
 
 // // חבילה לפי מזהה
 // router.get('/:id', subscriptionPlanController.getPlanById);

@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from 'react-router-dom';
@@ -61,10 +60,10 @@ function Posts() {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Posts</h1>
+            <h1 className={styles.title}>פוסטים</h1>
 
             {(user.role == 'admin') && <div className={styles.newPost}>
-                <h3>Add New Post</h3>
+                <h3> הוספת פוסט חדש</h3>
                 <input
                     type="text"
                     placeholder="Post Title"
@@ -76,7 +75,7 @@ function Posts() {
                     value={newPostBody}
                     onChange={(e) => setNewPostBody(e.target.value)}
                 />
-                <button className={styles.addbutton} onClick={handleAddPost}>Add Post</button>
+                <button className={styles.addbutton} onClick={handleAddPost}>הוסף </button>
             </div>}
 
             <div className={styles.postGrid}>
@@ -88,7 +87,7 @@ function Posts() {
                         <li key={post.post_id} className={styles.postItem}>
                             <div className={styles.postHeader}>
                                 <span className={styles.post_title}>
-                                    {post.post_id} - {post.title}
+                                    {post.title}
                                 </span>
                                 <div className={styles.actions}>
 
@@ -142,8 +141,8 @@ function Posts() {
                                     />
                                 )}
                             </div>
-                            <button onClick={() => navigate(`/user/${userId}/post/${post.post_id}/comments`)}>
-                                Comments
+                            <button onClick={() => navigate(`/post/${post.post_id}/comments`)}>
+                                תגובות
                             </button>
                         </li>
                     );
