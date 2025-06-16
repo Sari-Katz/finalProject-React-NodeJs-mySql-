@@ -7,6 +7,7 @@ import Register from './components/Register/Register.jsx';
 import Home from './components/Home/Home.jsx';
 import ScheduleTable from './components/Schedule/ScheduleTable.jsx';
 import ManageClassesPage from './components/admin/ManageClassesPage/ManageClassesPage.jsx';
+import ManageChallangesPage from './components/admin/ManageChallengePage/ManageChallangesPage.jsx';
 import SubscriptionList from './components/Subscription/SubscriptionList.jsx';
 import UserProfile from './components/UserProfile/UserProfile.jsx';
 import Posts from './components/Posts/Posts.jsx';
@@ -93,6 +94,16 @@ function AppRoutes() {
           <PrivateRoute requiredRole="admin">
             <WithLayout>
               <ManageClassesPage />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+        <Route
+        path="/ManageChallanges"
+        element={
+          <PrivateRoute requiredRole="admin">
+            <WithLayout>
+              <ManageChallangesPage />
             </WithLayout>
           </PrivateRoute>
         }

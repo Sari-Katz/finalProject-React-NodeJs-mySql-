@@ -41,7 +41,10 @@ function Nav() {
           הרשמה למנוי
         </NavLink>
         {user.role == 'admin' && <NavLink to="/ManageClasses" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          הוספת קורס
+          ניהול קורסים
+        </NavLink>}
+           {user.role == 'admin' && <NavLink to="/ManageChallanges" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          ניהול אתגרים
         </NavLink>}
       </div>
 

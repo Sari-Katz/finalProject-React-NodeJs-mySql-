@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.use("/users", userRoute);
 app.use("/classes", classRoute);
-app.use("/challenge",chellangeRoute );
+app.use("/challenges",chellangeRoute );
 app.use("/comments", commentRoute);
 app.use("/posts", postRoute);
 app.use("/userSubscription", userSubscriptionRoute);

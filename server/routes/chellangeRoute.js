@@ -26,11 +26,12 @@ const controller = require('../controllers/chellangeController');
 
 // אתגרים שבועיים
 router.get('/', controller.getAllChallenges); // כל האתגרים או עם סינון
-router.post('/', controller.createChallenge);
+router.post('/create', controller.createChallenge);
 router.delete('/:id', controller.deleteChallenge);
+router.get('/:challengeId/completions', controller.getChallengeCompletions); // כל מי שהשלים את האתגר
 
 // השלמות
-router.get('/:challengeId/completions', controller.getChallengeCompletions); // כל מי שהשלים את האתגר
+// router.get('/:challengeId/completions', controller.getChallengeCompletions); // כל מי שהשלים את האתגר
 router.get('/user/:userId', controller.getUserChallengeStatuses); // מה המשתמש השלים
 router.post('/:challengeId/complete/:userId', controller.markCompleted);
 router.delete('/:challengeId/complete/:userId', controller.unmarkCompleted);

@@ -105,8 +105,11 @@
 // module.exports = challengeService;
 const pool = require('../../DB/Connection');
 
-exports.getAllChallenges = async () => {
-    const [rows] = await pool.query('SELECT * FROM weekly_challenges');
+exports.getAllChallenges = async (limit, offset) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM weekly_challenges LIMIT ? OFFSET ?',
+        [limit, offset]
+    );
     return rows;
 };
 
@@ -124,9 +127,8 @@ exports.deleteChallenge = async (id) => {
 
 exports.getCompletedUsers = async (challengeId) => {
     const [rows] = await pool.query(
-        `SELECT u.* FROM challenge_completions cc
-         JOIN users u ON cc.user_id = u.id
-         WHERE cc.challenge_id = ? AND cc.completed = true`,
+        `SELECT user_id FROM challenge_completions 
+         WHERE challenge_id = ? AND completed = true`,
         [challengeId]
     );
     return rows;

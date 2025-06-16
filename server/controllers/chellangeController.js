@@ -107,26 +107,25 @@
 //         res.status(500).json({ message: 'שגיאה במחיקת אתגר', error: error.message });
 //     }
 // };
-const service = require('../services/challengeService');
-
+const challengeService = require('../services/challengeService');
+const userService = require('../services/userService');
 exports.getAllChallenges = async (req, res) => {
-    const { userId, completed } = req.query;
     try {
-        if (userId && typeof completed !== 'undefined') {
-            const result = await service.getUserChallengesByStatus(userId, completed);
-            return res.json(result);
-        }
+        const limit = parseInt(req.query.limit) || 20; // ברירת מחדל
+        const offset = parseInt(req.query.offset) || 0;
 
-        const result = await service.getAllChallenges();
+        const result = await challengeService.getAllChallenges(limit, offset);
+        console.log(result);
         res.json(result);
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
 
 exports.createChallenge = async (req, res) => {
     try {
-        const result = await service.createChallenge(req.body);
+        const result = await challengeService.createChallenge(req.body);
         res.status(201).json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -136,7 +135,7 @@ exports.getRecentCompletedChallenges = async (req, res) => {
     try {
         const userId = req.params.userId;
         const limit = req.query.limit || 10; // אפשר לשלוח limit מהקליינט
-        const challenges = await service.getRecentCompletedChallenges(userId, limit);
+        const challenges = await challengeService.getRecentCompletedChallenges(userId, limit);
         res.json(challenges);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -145,7 +144,7 @@ exports.getRecentCompletedChallenges = async (req, res) => {
 exports.didUserCompleteCurrentChallenge = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const result = await service.didUserCompleteCurrentChallenge(userId);
+        const result = await challengeService.didUserCompleteCurrentChallenge(userId);
         res.json(result);
     } catch (err) {
         console.log(err);
@@ -155,7 +154,7 @@ exports.didUserCompleteCurrentChallenge = async (req, res) => {
 
 exports.deleteChallenge = async (req, res) => {
     try {
-        await service.deleteChallenge(req.params.id);
+        await challengeService.deleteChallenge(req.params.id);
         res.sendStatus(204);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -164,16 +163,20 @@ exports.deleteChallenge = async (req, res) => {
 
 exports.getChallengeCompletions = async (req, res) => {
     try {
-        const users = await service.getCompletedUsers(req.params.challengeId);
-        res.json(users);
+   
+    const participants = await challengeService.getCompletedUsers(req.params.challengeId);
+     const userIds = participants.map((p) => p.user_id);
+    const users = await userService.getUsersByIds(userIds);
+    res.json(users);
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
 
 exports.getUserChallengeStatuses = async (req, res) => {
     try {
-        const challenges = await service.getUserCompletedChallenges(req.params.userId);
+        const challenges = await challengeService.getUserCompletedChallenges(req.params.userId);
         res.json(challenges);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -182,7 +185,7 @@ exports.getUserChallengeStatuses = async (req, res) => {
 
 exports.markCompleted = async (req, res) => {
     try {
-        await service.markCompleted(req.params.userId, req.params.challengeId);
+        await challengeService.markCompleted(req.params.userId, req.params.challengeId);
         res.sendStatus(200);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -191,7 +194,7 @@ exports.markCompleted = async (req, res) => {
 
 exports.unmarkCompleted = async (req, res) => {
     try {
-        await service.unmarkCompleted(req.params.userId, req.params.challengeId);
+        await challengeService.unmarkCompleted(req.params.userId, req.params.challengeId);
         res.sendStatus(200);
     } catch (err) {
         res.status(500).json({ error: err.message });

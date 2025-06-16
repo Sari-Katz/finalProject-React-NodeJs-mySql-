@@ -54,28 +54,31 @@ const userService = {
     return rows[0];
   },
   async getUsersByIds(userIds) {
+
     if (userIds.length === 0) return [];
+
     const [rows] = await pool.query(
       `SELECT id, full_name, email, phone FROM users WHERE id IN (?)`,
       [userIds]
     );
+
     return rows;
   },
   // services/userService.js
 
-async getEmailsByUserIds(userIds) {
-  if (userIds.length === 0) return [];
+  async getEmailsByUserIds(userIds) {
+    if (userIds.length === 0) return [];
 
-  const placeholders = userIds.map(() => '?').join(',');
-  const [rows] = await pool.query(
-    `SELECT email FROM users WHERE id IN (${placeholders})`,
-    userIds
-  );
+    const placeholders = userIds.map(() => '?').join(',');
+    const [rows] = await pool.query(
+      `SELECT email FROM users WHERE id IN (${placeholders})`,
+      userIds
+    );
 
-  return rows.map(row => row.email).filter(Boolean);
-},
-    // קבלת כל המשתמשים (בלי סיסמאות)
-    async getAllUsers() {
+    return rows.map(row => row.email).filter(Boolean);
+  },
+  // קבלת כל המשתמשים (בלי סיסמאות)
+  async getAllUsers() {
     const [rows] = await pool.query(
       'SELECT id, full_name, email, phone,role, created_at FROM users'
     );
