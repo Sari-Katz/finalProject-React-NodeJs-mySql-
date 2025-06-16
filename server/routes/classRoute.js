@@ -16,6 +16,8 @@ router.get('/recent', authenticateToken, classController.getRecentClassesByUser)
 // קבלת כיתה לפי מזהה
 router.get('/:id', classController.getClassById);
 
+// קבלת  לפי מזהה
+router.get('/:id/participants', classController.getParticipantsByClassId);
 // עדכון פרטי כיתה
 router.put('/:id', classController.updateClass);
 

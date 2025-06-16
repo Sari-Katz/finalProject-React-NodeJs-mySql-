@@ -11,6 +11,7 @@ const chellangeRoute = require('./routes/chellangeRoute');
 const postRoute = require('./routes/postRoute');
 const commentRoute = require('./routes/commentRoute');
 const app = express();
+app.use(express.json());
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -18,7 +19,6 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
-app.use(express.json());
 app.use("/users", userRoute);
 app.use("/classes", classRoute);
 app.use("/challenge",chellangeRoute );

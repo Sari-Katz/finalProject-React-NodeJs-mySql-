@@ -1,4 +1,6 @@
 const classService = require('../services/classService');
+const userService = require('../services/userService');
+const mailer = require('../utils/mailer'); // תראה הסבר בהמשך
 
 // יצירת כיתה חדשה
 exports.createClass = async (req, res) => {
@@ -47,9 +49,12 @@ exports.getClasses = async (req, res) => {
 
     }
     else{
+      console.log(filters)
         classes = Object.keys(filters).length === 0
             ? await classService.getAllClasses()
             : await classService.searchClasses(filters);
+                   console.log(classes)
+ 
      }
     res.status(200).json(classes);
   } catch (error) {
@@ -57,7 +62,26 @@ exports.getClasses = async (req, res) => {
         res.status(500).json({ message: 'שגיאה בקבלת כיתות', error: error.message });
     }
 };
+exports.getParticipantsByClassId = async (req, res) =>{
+   const classId = req.params.id;
+  try {
+    const participants = await classService.getParticipantsByClassId(classId);
+    const userIds = participants.map((p) => p.user_id);
+    const users = await userService.getUsersByIds(userIds);
 
+    // מיזוג לפי user_id
+    const usersMap = Object.fromEntries(users.map(u => [u.id, u]));
+    const enriched = participants.map(p => ({
+      ...usersMap[p.user_id],
+      status: p.status
+    }));
+
+    res.json(enriched);
+  } catch (err) {
+    console.error("שגיאה:", err);
+    res.status(500).json({ error: "שגיאה בקבלת משתתפים" });
+  }
+    };
 // פונקציה פנימית לבניית פילטר שבועי לפי פרמטר week
 function addWeekFilter(query) {
   const inputDate = new Date(query.week);
@@ -124,13 +148,35 @@ exports.updateClass = async (req, res) => {
 
 // מחיקת כיתה
 exports.deleteClass = async (req, res) => {
-    try {
-        const deleted = await classService.deleteClass(req.params.id);
-        if (!deleted) {
-            return res.status(404).json({ message: 'הכיתה לא נמצאה.' });
-        }
-        res.json({ message: 'הכיתה נמחקה בהצלחה.' });
-    } catch (error) {
-        res.status(500).json({ message: 'שגיאה במחיקת כיתה', error: error.message });
+
+   const classId = req.params.id;
+  const notify = req.query.notify === true || req.query.notify  === 'true'; // בדיקה עבור בודיס שנשלחים מ-JSON או טופס
+console.log(notify);
+
+  try {
+    if (notify) {
+      // שלב 1: הבא את כל user_id של המשתתפים בכיתה
+       const participants = await classService.getParticipantsByClassId(classId);
+
+      const userIds = participants.map(p => p.user_id);
+      if (userIds.length > 0) {
+        // שלב 2: הבא את כתובות האימייל של המשתמשים
+        const emails = await userService.getEmailsByUserIds(userIds);
+
+        // שלב 3: שלח מיילים
+        await mailer.sendCancellationEmails(emails, classId);
+      }
     }
+
+    const deleted = await classService.deleteClassAndParticipants(classId);
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'הכיתה לא נמצאה.' });
+    }
+
+    res.json({ message: 'הכיתה נמחקה בהצלחה.' });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'שגיאה במחיקת כיתה', error: error.message });
+  }
 };
