@@ -72,8 +72,8 @@ function AuthProvider({ children }) {
     const checkSession = async () => {
       try {
         const response = await apiUtils.get("http://localhost:3000/users/check-session");
-        if (response && response.user) {
-          setUser(response.user);
+        if (response && response.id) {
+          setUser(response);
         }
       } catch (error) {
         console.warn("Session check failed:", error);

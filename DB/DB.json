@@ -9,6 +9,7 @@
       "password": "ruthPass123",
       "role": "user"
     },
+
     {
       "id": 2,
       "full_name": "טובה הלוי",
@@ -39,6 +40,14 @@
       "email": "shirp@gmail.com",
       "phone": "050-9998887",
       "password": "shirPass123",
+      "role": "user"
+    },
+     {
+      "id": 6,
+      "full_name": "נחמי זינגר",
+      "email": "nechama191@gmail.com",
+      "phone": "0583200806",
+      "password": "Bjnh123",
       "role": "user"
     }
   ],
@@ -102,6 +111,11 @@
       "user_id": 1,
       "class_id": 1,
       "status": "נרשמה"
+    },
+     {
+      "user_id": 6,
+      "class_id": 1,
+      "status": "נרשמה"
     }
   ],
   "challenge_completions": [
@@ -131,6 +145,13 @@
     {
       "id": 1,
       "user_id": 1,
+      "plan_id": 2,
+      "start_date": "2025-06-01",
+      "end_date": "2025-06-30"
+    },
+     {
+      "id": 2,
+      "user_id": 6,
       "plan_id": 2,
       "start_date": "2025-06-01",
       "end_date": "2025-06-30"
