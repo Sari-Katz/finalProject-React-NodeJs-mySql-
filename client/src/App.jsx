@@ -11,6 +11,8 @@ import ManageChallangesPage from './components/admin/ManageChallengePage/ManageC
 import SubscriptionList from './components/Subscription/SubscriptionList.jsx';
 import UserProfile from './components/UserProfile/UserProfile.jsx';
 import Posts from './components/Posts/Posts.jsx';
+import Info from './components/UserProfile/Info.jsx';
+
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import ViewComments from './components/Posts/ViewComments';
@@ -48,6 +50,16 @@ function AppRoutes() {
         path="/"
         element={
           user ? <Navigate to={`/user/home`} /> : <Login />
+        }
+      />
+       <Route
+        path="/Info"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <Info />
+            </WithLayout>
+          </PrivateRoute>
         }
       />
       <Route

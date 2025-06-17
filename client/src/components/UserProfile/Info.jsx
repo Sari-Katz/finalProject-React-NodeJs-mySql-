@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useUser } from "../UserContext";
+import React, { useEffect,useContext, useState } from "react";
+// import { useUser } from "../UserContext";
+import { AuthContext } from "../AuthContext";
+
 import ApiUtils from "../../utils/ApiUtils";
 import { Container, Typography, Box, Avatar, Paper, Stack, TextField, Button } from "@mui/material";
 import {
@@ -7,7 +9,7 @@ import {
     EmojiEvents as CrownIcon, Edit as EditIcon, Save as SaveIcon, Cancel as CancelIcon
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useGlobalMessage } from "../GlobalMessageContext";
+// import { useGlobalMessage } from "../GlobalMessageContext";
 import InfoRow from "./InfoRow";
 const apiUtils = new ApiUtils();
 
@@ -15,24 +17,31 @@ const Info = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [editData, setEditData] = useState({});
     const [editMode, setEditMode] = useState(false);
-    const { currentUser, setCurrentUser } = useUser();
-    const { showMessage } = useGlobalMessage();
+          const { user } = useContext(AuthContext);
+
+    const { currentUser, setCurrentUser } = useState(user);
+    // const {ntUser, ntUser } = useUser();
+console.log(user);
+console.log(currentUser);
+
+    // const { showMessage } = useGlobalMessage();
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (currentUser.id == "") {
-            navigate("/login");
-            return;
-        }
+        // if (currentUser.id == "") {
+        //     navigate("/login");
+        //     return;
+        // }
 
         const fetchUserInfo = async () => {
             try {
-                const data = await apiUtils.get(`http://localhost:3000/users/${userId}`);
+                const data = await apiUtils.get(`http://localhost:3000/users/${user.id}`);
                 setUserInfo(data);
                 setEditData(data);
             } catch (err) {
                 console.error("Error fetching user info:", err);
-                showMessage(err.message, "error");
+                // showMessage(err.message, "error");
             }
         };
         fetchUserInfo();
@@ -45,7 +54,7 @@ const Info = () => {
     const handleSave = async () => {
         try {
             const updated = await apiUtils.put(
-                `http://localhost:3000/users/${currentUser.id}`,
+                `http://localhost:3000/users/${user.id}`,
                 { body: editData }
             );
             setUserInfo({ ...editData });
@@ -57,7 +66,7 @@ const Info = () => {
             setEditMode(false);
         } catch (err) {
             console.error("Error saving user info:", err);
-            showMessage("שגיאה בשמירת פרטי החשבון", "error");
+            // showMessage("שגיאה בשמירת פרטי החשבון", "error");
         }
     };
 
