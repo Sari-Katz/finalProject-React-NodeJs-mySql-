@@ -96,10 +96,6 @@ function UserProfile() {
         {weeklyChallenge ? (
           <div>
             <p>{weeklyChallenge.description}</p>
-            {/* <p>
-              שבוע: {new Date(weeklyChallenge.week_start_date).toLocaleDateString()} -{" "}
-              {new Date(new Date(weeklyChallenge.week_start_date).getTime() + 6 * 86400000).toLocaleDateString()}
-            </p> */}
             {completedWeeklyChallenge ? (<>
               <p>הושלם ✅</p>
              <button onClick={()=>handleCompleteWeeklyChallenge(false)}>רוצה לבטל ?</button>

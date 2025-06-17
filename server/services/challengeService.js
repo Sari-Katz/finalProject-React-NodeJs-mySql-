@@ -135,12 +135,22 @@ exports.getCompletedUsers = async (challengeId) => {
 };
 
 exports.getUserCompletedChallenges = async (userId) => {
-    const [rows] = await pool.query(
-        `SELECT c.*, cc.completed FROM weekly_challenges c
-         LEFT JOIN challenge_completions cc
-         ON c.id = cc.challenge_id AND cc.user_id = ?`,
-        [userId]
-    );
+    // const [rows] = await pool.query(
+    //     `SELECT c.*, cc.completed FROM weekly_challenges c
+    //      LEFT JOIN challenge_completions cc
+    //      ON c.id = cc.challenge_id AND cc.user_id = ?`,
+    //     [userId]
+    // );
+     const [rows] = await pool.query(
+     
+      `SELECT c.*
+         FROM weekly_challenges c
+         JOIN challenge_completions cc ON c.id = cc.challenge_id
+         WHERE cc.user_id = ? AND cc.completed = true
+         ORDER BY c.week_start_date DESC
+         LIMIT 10`,
+      [userId]
+     );
     return rows;
 };
 

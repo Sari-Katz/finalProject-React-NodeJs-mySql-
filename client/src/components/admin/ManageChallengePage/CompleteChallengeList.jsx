@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
-import styles from "./ParticipantsList.module.css"; // הוספה כאן
+import styles from "./CompleteChallengeList.module.css"; // הוספה כאן
 
 const api = new ApiUtils();
 
-const ParticipantsList = ({ challengeId, description, onClose }) => {
+const CompleteChallengeList = ({ challengeId, description, onClose }) => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,4 +53,4 @@ const ParticipantsList = ({ challengeId, description, onClose }) => {
   );
 };
 
-export default ParticipantsList;
+export default CompleteChallengeList;

@@ -102,11 +102,7 @@ const userService = {
   async getUserDashboard(userId) {
     // שליפת האתגרים שהושלמו
     const [completedChallenges] = await pool.query(
-      // `SELECT cc.*, wc.description
-      //  FROM challenge_completions cc
-      //  JOIN weekly_challenges wc ON cc.challenge_id = wc.id
-      //  WHERE cc.user_id = ?
-      //  ORDER BY cc.challenge_id DESC`,
+     
       `SELECT c.*
          FROM weekly_challenges c
          JOIN challenge_completions cc ON c.id = cc.challenge_id
@@ -218,7 +214,16 @@ const userService = {
       );
     }
   },
-
+ async update (id, data) {
+ 
+  const { user_id, full_name, email, phone } = data;
+  await pool.query(`
+    UPDATE users
+    SET user_id = ?, full_name = ?, email = ?, phone = ?
+    WHERE id = ?
+  `, [user_id, full_name, email, phone ]);
+  return { id, ...data };
+},
   async unregisterUserFromClass(userId, classId) {
     await pool.query(
       'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
