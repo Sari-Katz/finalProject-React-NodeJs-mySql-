@@ -2,47 +2,56 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 
+// Import של כל האייקונים
+import medalIcon from '../../img/medal.png';
+import groupIcon from '../../img/group.png';
+import alarmClockIcon from '../../img/alarm-clock.png';
+import gpsIcon from '../../img/gps.png';
+import protectIcon from '../../img/protect.png';
+import checklistIcon from '../../img/checklist.png';
+import goalIcon from '../../img/goal.png';
+
 const Home = () => {
     const features = [
         {
-            icon: "🏆",
+            icon: medalIcon,
             title: "מקצועיות",
-            description: "הדרכות מוסמכת ונסיון רחב של יותר מ-7 שנים, הכן דגש על ערכי איכות יוצא מן הכלל למקצועות אישיות."
+            description: "הדרכות מוסמכת ונסיון רחב של יותר מ-7 שנים, עם דגש על ערכי איכות יוצאי מן הכלל למקצועות אישיות."
         },
         {
-            icon: "👥",
+            icon: groupIcon,
             title: "ציוד מתקדם",
-            description: "ציוד בטיפלס מתקדם ברמה הגבוהה וציוד האימון לצורכי האימון לשיפור הביצועים אבזרים"
+            description: "ציוד פילאטיס מתקדם ברמה הגבוהה וציוד האימון לצורכי האימון לשיפור הביצועים והאבזרים"
         },
         {
-            icon: "⏰",
-            title: "שעות ערב",
+            icon: alarmClockIcon,
+            title: "שעות נוחות",
             description: "ימי ראשון עד חמישי: 7:00 עד 23:00, שישי: בוקר 7:00-14:00, מוצ\"ש: ערב 21:30-23:30"
         },
         {
-            icon: "📍",
-            title: "מיקום",
-            description: "הכתובת: שמואל הנביא 24, ירושלים קרוב לתחבורה ציבורית עברית ירושלים קו איטומי: 3, 55"
+            icon: gpsIcon,
+            title: "מיקום מרכזי",
+            description: "הכתובת: הקונגרס הציוני 11, 360 מעל הקניון. נוח להגעה ונגיש לכולם"
         },
         {
-            icon: "🛡️",
-            title: "בטיחות",
-            description: "הקפדה על בטיחות ובריאות עם לוי צוער מוסמך מדריכה מקצועית לשמירה על בטיחות המתחרבות."
+            icon: protectIcon,
+            title: "בטיחות מלאה",
+            description: "הקפדה על בטיחות ובריאות עם ליווי מוסמך מדריכה מקצועית לשמירה על בטיחות המתאמנות."
         },
         {
-            icon: "📋",
+            icon: checklistIcon,
             title: "מגוון פעילויות",
-            description: "שיעורי טון מתקדמים כמו פילטס, חתנה, וגל. המתאמצים לשפר בין טוב מאימון לתכנון מדויק"
+            description: "שיעורי טון מתקדמים כמו פילאטיס, חיטוב וכוח. המתאמצים לשפר בין טוב מאימון לתכנון מדויק"
         },
         {
-            icon: "🎯",
+            icon: goalIcon,
             title: "מטרות אישיות",
-            description: "מגוון תוכניות מותאמות צרכים כמו חיזוק הגוף לפני ואחרי זריק, תסות סוכר, כלבטון יוצא ועוד"
+            description: "מגוון תוכניות מותאמות צרכים כמו חיזוק הגוף לפני ואחרי לידה, ירידת משקל, כלבטון יציבה ועוד"
         },
         {
-            icon: "💰",
-            title: "מחיר",
-            description: "מחר כל גלי שיעורי המחלקה שלנות המתמחן שלנות טססטית, ולעתום טמלא הבלות"
+            icon: medalIcon,
+            title: "איכות גבוהה",
+            description: "שירות ברמה הגבוהה ביותר עם יחס אישי והתאמה מלאה לרצונות ויכולות של כל מתאמנת"
         }
     ];
 
@@ -76,7 +85,7 @@ const Home = () => {
                 <div className={styles.heroContent}>
                     <div className={styles.textContent}>
                         <h1 className={styles.mainTitle}>ברוכה הבאה לסטודיו שלי!</h1>
-                        <h2 className={styles.subtitle}>טובה - מאמנת כושר אישית ומקצועית</h2>
+                        <h2 className={styles.subtitle}>טובה - מאמנת פילאטיס וכושר</h2>
                         
                         <p className={styles.description}>
                             מזמינה אותך להצטרף אליי למסע של שינוי, חיזוק והתחדשות.
@@ -110,7 +119,11 @@ const Home = () => {
                 <div className={styles.featuresGrid}>
                     {features.map((feature, index) => (
                         <div key={index} className={styles.featureCard}>
-                            <div className={styles.featureIcon}>{feature.icon}</div>
+                            <img 
+                                src={feature.icon} 
+                                alt={feature.title}
+                                className={styles.featureIcon}
+                            />
                             <h3 className={styles.featureTitle}>{feature.title}</h3>
                             <p className={styles.featureDescription}>{feature.description}</p>
                         </div>
@@ -147,7 +160,6 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* CTA Section */}
             <section className={styles.ctaSection}>
                 <div className={styles.ctaContent}>
                     <h2>מוכנה להתחיל?</h2>
@@ -158,12 +170,12 @@ const Home = () => {
                             צפייה בלוח השיעורים
                         </Link>
                         <a
-                            href="https://www.google.com/maps/dir/?api=1&destination=your+studio+address"
+                            href="https://www.google.com/maps/dir/?api=1&destination=הקונגרס+הציוני+11+ירושלים"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.secondaryBtn}
                         >
-                            איך מגיעים אלינו? 📍
+                            איך מגיעים אלינו?
                         </a>
                     </div>
                 </div>

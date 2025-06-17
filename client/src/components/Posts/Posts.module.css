@@ -1,192 +1,274 @@
+/* Posts.module.css */
+
 .container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-  background: white;
-  font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    font-family: Arial, sans-serif;
+    direction: rtl;
 }
+
 .title {
-  text-align: center;
-  color: #064e1d;
-  font-size: 2rem;
-  margin-bottom: 30px;
+    text-align: center;
+    color: #064e1d;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
+
+/* Add New Post Section */
 .newPost {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(6, 78, 29, 0.15);
+    margin-bottom: 50px;
+    border: 2px solid #064e1d;
 }
-.newPost h3 { color: #064e1d; }
-.newPost input, .newPost textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+
+.newPost h3 { 
+    color: #064e1d; 
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
+
+.postInput, .postTextarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    border: 2px solid #064e1d;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    direction: rtl;
+    text-align: right;
+}
+
+.postInput:focus, .postTextarea:focus {
+    outline: none;
+    border-color: #0a6b24;
+    box-shadow: 0 0 15px rgba(6, 78, 29, 0.2);
+}
+
+.postTextarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
 .addButton {
-  background: #f85c52;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+    background: linear-gradient(135deg, #064e1d, #0a6b24);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(6, 78, 29, 0.3);
 }
-.addButton:hover { background: #e24e45; }
 
+.addButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0a6b24, #0e7d2a);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(6, 78, 29, 0.4);
+}
+
+.addButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* No Posts State */
+.noPosts {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 20px;
+    border: 2px dashed #bdc3c7;
+    margin: 40px 0;
+}
+
+.noPosts h3 {
+    color: #064e1d;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.noPosts p {
+    color: #7f8c8d;
+    font-size: 1.2rem;
+}
+
+/* Posts Grid */
 .postGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
 }
+
 .postCard {
-  background: #f9f9f9;
-  padding: 16px;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.postCard h3 { color: #064e1d; margin-bottom: 10px; }
-.postCard p { color: #333; font-size: 0.95rem; margin-bottom: 12px; }
-
-.actions {
-  display: flex;
-  align-items: center;
-}
-.actions button {
-  background: #064e1d;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  margin-right: 5px;
-  transition: background 0.3s;
-}
-.actions button:hover { background: #053d16; }
-
-.editIcon, .deleteButton {
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 50px;
-  height: 28px;
-  border: none;
-  cursor: pointer;
-}
-.editIcon { background-image: url('../../img/edit.png'); }
-.deleteButton { background-image: url('../../img/delete.png'); }
-
-.closeBtn {
-  margin-top: 10px;
-  background: #f85c52;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.postContentWrapper {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 25px;
+    border: 2px solid #e9ecef;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
     position: relative;
-    margin-top: 10px;
+    overflow: hidden;
+}
+
+.postCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #064e1d, #0a6b24);
+}
+
+.postCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    border-color: #064e1d;
+}
+
+/* Post Header */
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.postTitle {
+    color: #064e1d;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.3;
+    flex: 1;
+}
+
+.deleteButton {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.deleteButton:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(231, 76, 60, 0.4);
+}
+
+/* Post Content */
+.postContentWrapper {
+    flex: 1;
+    margin-bottom: 20px;
 }
 
 .postContent {
-    max-height: 100px;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: right;
     white-space: pre-wrap;
-    line-height: 1.5;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.truncated::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 30px;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+/* Post Actions */
+.postActions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
-.readMore {
-    background: none;
+.readMoreButton, .commentsButton {
+    padding: 12px 20px;
     border: none;
-    color: #064e1d;
-    font-weight: bold;
+    border-radius: 10px;
     cursor: pointer;
-    margin-top: 5px;
-}
-.truncatedContent {
-  max-height: 80px; /* או גובה אחר שתבחר */
-  overflow: hidden;
-  position: relative;
-  transition: max-height 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.fullContent {
-  max-height: none;
+.readMoreButton {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    flex: 1;
 }
 
-.readMoreBtn {
-  background-color: transparent;
-  color: #f85c52;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-/* ביטול נקודה ליד פוסטים */
-.postGrid li {
-  list-style: none;
+.readMoreButton:hover {
+    background: linear-gradient(135deg, #2980b9, #1f6391);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(52, 152, 219, 0.4);
 }
 
-/* כפתור המשך קריאה - צבע ירוק רגיל */
-.readMore {
-  background: none;
-  border: none;
-  color: #064e1d;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 5px;
-  transition: color 0.3s;
+.commentsButton {
+    background: linear-gradient(135deg, #064e1d, #0a6b24);
+    color: white;
+    flex: 1;
 }
 
-/* כאשר לוחצים על המשך קריאה (post פתוח) – בצבע אדום */
-.readMore.active {
-  color: #f85c52;
+.commentsButton:hover {
+    background: linear-gradient(135deg, #0a6b24, #0e7d2a);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(6, 78, 29, 0.4);
 }
 
-/* גם כפתור סגירה – תואם */
-.closeBtn {
-  margin-top: 10px;
-  background: none;
-  color: #064e1d;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: color 0.3s;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .postGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .newPost {
+        padding: 20px;
+    }
+    
+    .postCard {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .postActions {
+        flex-direction: column;
+    }
+    
+    .readMoreButton, .commentsButton {
+        flex: none;
+        width: 100%;
+    }
 }
-
-.closeBtn.active {
-  color: #f85c52;
-}
-.readMoreBtn {
-  outline: none;
-}
-
-.readMoreBtn:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
