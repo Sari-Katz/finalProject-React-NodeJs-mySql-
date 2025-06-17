@@ -1,7 +1,333 @@
-.image {
-    background-image: url('../../img/main.webp');
-    width: 80%;
+/* Home.module.css */
+
+.homeContainer {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hero Section */
+.heroSection {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 60px 20px;
+    margin-bottom: 80px;
+}
+
+.heroContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.textContent {
+    flex: 1;
+    text-align: right;
+}
+
+.imageContent {
+    flex: 0 0 400px;
+}
+
+.heroImage {
+    width: 100%;
     height: 500px;
+    background-image: url('../../img/main.webp');
     background-size: cover;
     background-position: center;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.mainTitle {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 1.8rem;
+    color: #27ae60;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.description, .vision {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #5a6c7d;
+    margin-bottom: 25px;
+    text-align: right;
+}
+
+.vision {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    border-right: 5px solid #27ae60;
+}
+
+.servicesList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.serviceItem {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.serviceItem:hover {
+    transform: translateY(-5px);
+}
+
+/* Features Section */
+.featuresSection {
+    padding: 80px 20px;
+    background: white;
+}
+
+.sectionTitle {
+    text-align: center;
+    font-size: 2.8rem;
+    color: #27ae60;
+    margin-bottom: 60px;
+    font-weight: bold;
+}
+
+.featuresGrid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.featureCard {
+    background: white;
+    padding: 40px 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 3px solid #f8f9fa;
+}
+
+.featureCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(39, 174, 96, 0.15);
+    border-color: #27ae60;
+}
+
+.featureIcon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.featureTitle {
+    font-size: 1.5rem;
+    color: #27ae60;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.featureDescription {
+    color: #5a6c7d;
+    line-height: 1.6;
+    font-size: 1rem;
+    text-align: right;
+}
+
+/* Testimonials Section */
+.testimonialsSection {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+}
+
+.testimonialsSection .sectionTitle {
+    color: white;
+}
+
+.testimonialsGrid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonialCard {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.stars {
+    margin-bottom: 20px;
+}
+
+.star {
+    font-size: 1.2rem;
+    margin: 0 2px;
+}
+
+.testimonialText {
+    color: #5a6c7d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: right;
+    font-style: italic;
+}
+
+.testimonialName {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Special Message */
+.specialMessage {
+    padding: 60px 20px;
+    background: #f8f9fa;
+}
+
+.messageCard {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.messageCard h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.messageCard p {
+    font-size: 1.3rem;
+    line-height: 1.7;
+}
+
+/* CTA Section */
+.ctaSection {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    text-align: center;
+}
+
+.ctaContent h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.ctaContent p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.ctaButtons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.primaryBtn, .secondaryBtn {
+    padding: 18px 35px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.primaryBtn {
+    background: #27ae60;
+    color: white;
+}
+
+.primaryBtn:hover {
+    background: #2ecc71;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+}
+
+.secondaryBtn {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.secondaryBtn:hover {
+    background: white;
+    color: #2c3e50;
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .heroContent {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+    
+    .imageContent {
+        flex: none;
+        width: 100%;
+    }
+    
+    .heroImage {
+        height: 300px;
+    }
+    
+    .mainTitle {
+        font-size: 2.5rem;
+    }
+    
+    .servicesList {
+        grid-template-columns: 1fr;
+    }
+    
+    .featuresGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonialsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ctaButtons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .primaryBtn, .secondaryBtn {
+        width: 100%;
+        max-width: 300px;
+    }
 }

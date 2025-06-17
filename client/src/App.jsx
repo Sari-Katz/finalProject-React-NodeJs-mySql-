@@ -12,15 +12,19 @@ import SubscriptionList from './components/Subscription/SubscriptionList.jsx';
 import UserProfile from './components/UserProfile/UserProfile.jsx';
 import Posts from './components/Posts/Posts.jsx';
 import Info from './components/UserProfile/Info.jsx';
-
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import ViewComments from './components/Posts/ViewComments';
 
+// ייבוא הCSS הגלובלי
+import './App.css';
+
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <div className="app-container">
+        <AppRoutes />
+      </div>
     </AuthProvider>
   );
 }
@@ -28,10 +32,17 @@ function App() {
 function AppRoutes() {
   const { user } = useContext(AuthContext);
 
+  // קומפוננט שעוטף כל דף עם Nav, Footer ומיקום מרכזי
   const WithLayout = ({ children }) => (
     <>
       <Nav />
-      {children}
+      <main className="main-content">
+        <div className="page-wrapper">
+          <div className="content-container">
+            {children}
+          </div>
+        </div>
+      </main>
       <Footer />
     </>
   );
@@ -52,7 +63,8 @@ function AppRoutes() {
           user ? <Navigate to={`/user/home`} /> : <Login />
         }
       />
-       <Route
+      
+      <Route
         path="/Info"
         element={
           <PrivateRoute>
@@ -62,13 +74,16 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      
       <Route
         path="/login"
         element={
           user ? <Navigate to={`/user/home`} /> : <Login />
         }
       />
+      
       <Route path="/register" element={<Register />} />
+      
       <Route
         path="/user/home"
         element={
@@ -79,6 +94,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      
       <Route
         path="/schedule"
         element={
@@ -89,6 +105,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      
       <Route
         path="/Subscription"
         element={
@@ -110,7 +127,8 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
-        <Route
+      
+      <Route
         path="/ManageChallanges"
         element={
           <PrivateRoute requiredRole="admin">
@@ -120,6 +138,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
+      
       <Route
         path="/profile"
         element={
@@ -130,7 +149,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
-      {/* <Route path="*" element={<PageNotFound />} /> */}
+      
       <Route
         path="/posts"
         element={
@@ -139,9 +158,9 @@ function AppRoutes() {
               <Posts />
             </WithLayout>
           </PrivateRoute>
-
         }
       />
+      
       <Route
         path="/post/:postId/comments"
         element={
@@ -150,11 +169,9 @@ function AppRoutes() {
               <ViewComments />
             </WithLayout>
           </PrivateRoute>
-
         }
       />
     </Routes>
-
   );
 }
 
