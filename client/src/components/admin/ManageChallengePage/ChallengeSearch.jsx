@@ -4,7 +4,7 @@ import ApiUtils from "../../../utils/ApiUtils";
 
 const api = new ApiUtils();
 
-const ChallengeSearch = ({ openParticipantsModal }) => {
+const ChallengeSearch = ({ openCompletedListModal }) => {
     const [challenges, setchallenges] = useState([]);
     const [page, setPage] = useState(0);
     const [expandedId, setExpandedId] = useState(null);
@@ -50,7 +50,7 @@ const ChallengeSearch = ({ openParticipantsModal }) => {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setExpandedId(null); // סגור את ההרחבה
-                                                openParticipantsModal(c)
+                                                openCompletedListModal(c)
                                             }}
                                         >
                                             הצג משתתפים

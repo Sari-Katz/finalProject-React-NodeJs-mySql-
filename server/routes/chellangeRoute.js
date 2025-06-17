@@ -32,7 +32,7 @@ router.get('/:challengeId/completions', controller.getChallengeCompletions); // 
 
 // השלמות
 // router.get('/:challengeId/completions', controller.getChallengeCompletions); // כל מי שהשלים את האתגר
-router.get('/user/:userId', controller.getUserChallengeStatuses); // מה המשתמש השלים
+// router.get('/user/:userId', controller.getUserChallengeStatuses); // מה המשתמש השלים
 router.post('/:challengeId/complete/:userId', controller.markCompleted);
 router.delete('/:challengeId/complete/:userId', controller.unmarkCompleted);
 // // אתגרים שהמשתמש השלים, אחרונים קודם

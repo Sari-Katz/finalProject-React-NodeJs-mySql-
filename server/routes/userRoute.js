@@ -20,7 +20,7 @@ router.get('/', authenticateToken, requireRole('admin'), userController.getUsers
 router.get('/:id', userController.getUserById);
 
 // // עדכון פרטי משתמש
-// router.put('/:id', userController.updateUser);
+router.put('/:id', userController.updateUser);
 
 // // מחיקת משתמש
 // router.delete('/:id', userController.deleteUser);

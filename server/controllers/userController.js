@@ -121,6 +121,15 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
     }
 };
+exports.updateUser = async (req, res) => {
+  try {
+    const updated = await userService.update(req.params.id, req.body);
+    res.json(updated);
+  } catch (error) {
+    console.error('Error updating subscription:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 exports.registerToClass = async (req, res) => {
   const userId = req.user.id;
   const classId = req.params.classId;
