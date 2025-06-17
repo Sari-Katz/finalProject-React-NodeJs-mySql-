@@ -105,7 +105,7 @@ function Posts() {
                         return (
                             <div key={post.post_id} className={styles.postCard}>
                                 {/* Post Header */}
-                                <div className={styles.postHeader}>
+                                {/* <div className={styles.postHeader}>
                                     <h3 className={styles.postTitle}>{post.title}</h3>
                                     {user.role === 'admin' && (
                                         <button
@@ -115,7 +115,7 @@ function Posts() {
                                             🗑️
                                         </button>
                                     )}
-                                </div>
+                                </div> */}
 
                                 {/* Post Content Preview */}
                                 <div className={styles.postContentWrapper}>
