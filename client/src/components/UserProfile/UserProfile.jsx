@@ -44,8 +44,12 @@ function UserProfile() {
 
   const handleCompleteWeeklyChallenge = async (isComplete = true) => {
     try {
+      // await apiUtils.patch(
+      //   `http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`,
+      //   { completed: isComplete }
+      // );
       await apiUtils.patch(
-        `http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`,
+        `http://localhost:3000/challenges/${weeklyChallenge.id}/completed`,
         { completed: isComplete }
       );
       setCompletedWeeklyChallenge(isComplete);

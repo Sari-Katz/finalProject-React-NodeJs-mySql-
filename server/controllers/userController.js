@@ -93,26 +93,26 @@ exports.getUserDashboard = async (req, res) => {
 };
 // עבור משתמש פרטי
 
-exports.completeWeeklyChallenge = async (req, res) => {
-const userId = req.params.id;
-  const challengeId = req.params.weeklyChallenge;
-    const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
-console.log(completed);
-  try {
-    await userService.markChallengeCompletion(userId, challengeId,completed);
-    res.status(200).json({
-      message: 'Challenge completion status updated successfully'
-    });
-  } catch (error) {
-    console.error('Error completing challenge:', error);
-    res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
-  }
-};
+// exports.completeWeeklyChallenge = async (req, res) => {
+// const userId = req.params.id;
+//   const challengeId = req.params.weeklyChallenge;
+//     const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
+// console.log(completed);
+//   try {
+//     await userService.markChallengeCompletion(userId, challengeId,completed);
+//     res.status(200).json({
+//       message: 'Challenge completion status updated successfully'
+//     });
+//   } catch (error) {
+//     console.error('Error completing challenge:', error);
+//     res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
+//   }
+// };
 
 // קבלת משתמש לפי מזהה
 exports.getUserById = async (req, res) => {
     try {
-        const user = await userService.getUserById(req.params.id);
+        const user = await userService.getUserById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'המשתמש לא נמצא.' });
         }

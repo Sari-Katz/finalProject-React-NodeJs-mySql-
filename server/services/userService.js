@@ -110,10 +110,7 @@ const userService = {
          LIMIT 10`,
       [userId]
     );
-
-
     // שליפת השיעורים שהמשתמש היה בהם בחודש האחרון
-
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
     const isoDate = oneMonthAgo.toISOString().split('T')[0];
@@ -124,24 +121,7 @@ const userService = {
     JOIN classes_participants cp ON c.id = cp.class_id
     WHERE cp.user_id = ? AND c.date_start >= ?
   `;
-
-    const [classes] = await pool.query(query, [userId, isoDate]);
-
-    // שליפת השיעורים שהמשתמש היה בהם
-    //   const [classes] = await pool.query(
-    //     // `SELECT c.*
-    //     //  FROM classes_participants cp
-    //     //  JOIN classes c ON cp.class_id = c.id
-    //     //  WHERE cp.user_id = ?
-    //     //  ORDER BY c.date_start DESC`,
-    //     `
-    //     SELECT c.id, c.title, c.class_types, c.day_of_week, c.start_time, c.date_start, c.end_time
-    //     FROM classes c
-    //     JOIN classes_participants cp ON c.id = cp.class_id
-    //     WHERE cp.user_id = ? AND c.date_start >= ?
-    //   `,[userId]
-    //   );
-
+    const [classes] = await pool.query(query, [userId, isoDate]);  
     // בדיקה אם השלים את אתגר השבוע הנוכחי
     const [currentChallenge] = await pool.query(
       `SELECT id,description FROM weekly_challenges
@@ -149,9 +129,7 @@ const userService = {
     AND DATE_ADD(week_start_date, INTERVAL 6 DAY) >= CURDATE()
     LIMIT 1`
     );
-    console.log(currentChallenge[0].description);
     let hasCompletedCurrent = false;
-
     if (currentChallenge.length > 0) {
       const challengeId = currentChallenge[0].id;
       const [completion] = await pool.query(
@@ -159,13 +137,10 @@ const userService = {
        WHERE user_id = ? AND challenge_id = ? AND completed = true`,
         [userId, challengeId]
       );
-      console.log(completion);
-
       hasCompletedCurrent = completion.length > 0;
     }
     console.log(hasCompletedCurrent);
 
-    // console.log(`classes+${classes}+recentCompletedChallenges${completedChallenges}+hasCompletedCurrent${hasCompletedCurrent}`)
     return {
       recentClasses: classes,
       recentCompletedChallenges: completedChallenges,

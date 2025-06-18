@@ -28,7 +28,7 @@ const Info = ({ onBack }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const data = await apiUtils.get(`http://localhost:3000/users/${user.id}`);
+                const data = await apiUtils.get(`http://localhost:3000/users/me`);
                 setUserInfo(data);
                 setEditData(data);
             } catch (err) {

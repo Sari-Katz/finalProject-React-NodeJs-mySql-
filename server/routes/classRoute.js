@@ -21,6 +21,13 @@ router.get('/:id/participants', classController.getParticipantsByClassId);
 // עדכון פרטי כיתה
 router.put('/:id', classController.updateClass);
 
+router.post('/:classId/register', authenticateToken, classController.registerToClass);
+
+// ביטול רישום לקורס
+router.post('/:classId/unregister', authenticateToken, classController.unregisterFromClass);
+
+// בדיקה אם המשתמש רשום לקורס
+router.get('/:classId/isRegistered', authenticateToken, classController.isUserRegistered);
 
 // מחיקת כיתה
 router.delete('/:id', classController.deleteClass);
