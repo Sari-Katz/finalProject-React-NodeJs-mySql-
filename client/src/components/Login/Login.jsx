@@ -16,12 +16,7 @@ function Login() {
     try {
       const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
       if (data && data.user) {
-        const minimalUser = {
-          id: data.user.id,
-          role: data.user.role
-        };
-
-        login(minimalUser);
+        login(data.user);
         // שומרים בלוקאל סטורג רק מזהה ותפקי
         // נווט לדף הבית או כל דף אחר
         navigate(`/user/home`);
