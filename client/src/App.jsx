@@ -14,10 +14,8 @@ import Posts from './components/Posts/Posts.jsx';
 import Info from './components/UserProfile/Info.jsx';
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
-import ViewComments from './components/Posts/ViewComments';
 import SinglePostView from './components/Posts/SinglePostView.jsx';
 
-// ייבוא הCSS הגלובלי
 import './App.css';
 
 function App() {
@@ -170,16 +168,6 @@ function AppRoutes() {
       </WithLayout>
     </PrivateRoute>
   }/>
-      {/* <Route
-        path="/post/:postId/comments"
-        element={
-          <PrivateRoute>
-            <WithLayout>
-              <ViewComments />
-            </WithLayout>
-          </PrivateRoute>
-        }
-      /> */}
       
     </Routes>
     
