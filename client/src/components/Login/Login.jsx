@@ -17,6 +17,7 @@ function Login() {
       const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
       console.log('Login successful:', data.user);
       if (data && data.user) {
+
         const minimalUser = {
           full_name: data.user.full_name,
           email: data.user.email,

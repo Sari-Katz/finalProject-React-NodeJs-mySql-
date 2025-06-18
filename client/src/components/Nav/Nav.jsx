@@ -31,9 +31,6 @@ function Nav() {
         <NavLink to="/schedule" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           מערכת שעות
         </NavLink>
-        <NavLink to="/Info" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          מערכת שעות
-        </NavLink>
         <NavLink to="/posts" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           פוסטים
         </NavLink>

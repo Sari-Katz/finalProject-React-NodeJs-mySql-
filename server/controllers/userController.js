@@ -57,7 +57,7 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.id, role: user.role ,email:user.email,full_name:user.full_name},
       process.env.JWT_SECRET,
       { expiresIn: '3h' }
     );
@@ -165,8 +165,10 @@ exports.logoutUser = (req, res) => {
   return res.status(200).json({ message: "Logout successful" });
 };
 exports.checkSession = (req, res) => {
-  const { id, role } = req.user;
-  res.json({ id, role }); // שליחת פרטי המשתמש
+console.log(req.user)
+  const { id, full_name,email,role } = req.user;
+
+  res.json({ id, full_name,email,role } ); // שליחת פרטי המשתמש
 };
 
 exports.isUserRegistered = async (req, res) => {

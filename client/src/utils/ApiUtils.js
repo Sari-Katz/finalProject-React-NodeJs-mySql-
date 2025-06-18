@@ -26,7 +26,6 @@ class ApiUtils {
     return options;
   }
 
-  // === קריאות ציבוריות (שם־API לא השתנה) ===
   async fetch(url)                         { return this._request(url, this._options('GET')); }
   async get(url, headers = {})             { return this._request(url, this._options('GET',  null, headers)); }
   async post(url, data, headers = {})      { return this._request(url, this._options('POST', data, headers)); }
