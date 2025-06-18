@@ -15,8 +15,12 @@ function Login() {
   const handleLogin = async () => {
     try {
       const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
+      console.log('Login successful:', data.user);
       if (data && data.user) {
+        console.log('full:', data.user.full_name);
         const minimalUser = {
+          full_name: data.user.full_name,
+          email: data.user.email,
           id: data.user.id,
           role: data.user.role
         };

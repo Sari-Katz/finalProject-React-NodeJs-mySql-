@@ -14,7 +14,6 @@ const userService = {
         [full_name, email, phone]
       );
       const userId = userResult.insertId;
-
       // הצפנת סיסמה והכנסה לטבלת user_credentials
       const password_hash = await bcrypt.hash(password, 10);
       await conn.query(

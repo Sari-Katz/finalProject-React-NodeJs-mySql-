@@ -9,6 +9,7 @@ const apiUtils = new ApiUtils();
 
 function UserProfile() {
   const { user } = useContext(AuthContext);
+  console.log(user);
   const navigate = useNavigate();
   const userId = user.id;
   const [recentClasses, setRecentClasses] = useState([]);
@@ -39,6 +40,7 @@ function UserProfile() {
     };
     fetchData();
   }, [userId]);
+      
 
   const handleCompleteWeeklyChallenge = async (isComplete = true) => {
     try {
@@ -83,6 +85,7 @@ function UserProfile() {
           </div>
           <div className={styles.avatarHoverText}>פרטי משתמש</div>
         </div>
+      
         <div className={styles.userInfo}>
           <h1 className={styles.welcomeText}>שלום, {user?.full_name || user?.name}! 👋</h1>
           <p className={styles.subtitle}>ברוך הבא לפרופיל האישי שלך</p>

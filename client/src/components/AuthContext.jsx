@@ -29,8 +29,8 @@
 //   const login = (userData) => {
     
 //     // userData מכיל id, role ויתכן עוד שדות
-//     const { id, role } = userData;
-//     const minimalUser = { id, role };
+//     const { id, role,full_name,email } = userData;
+//     const minimalUser = { id, role,full_name,email};
 //     setUser(minimalUser);
 //     localStorage.setItem("user", JSON.stringify(minimalUser));
 //   };
@@ -43,7 +43,6 @@
 //       console.error("Failed to clear cookie on server:", err);
 //       // גם אם נכשל, נמשיך לנקות מקומית
 //     }
-
 //     setUser(null);
 //     localStorage.removeItem("user");
 //   };

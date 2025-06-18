@@ -19,7 +19,7 @@ function Footer() {
           </div>
           <div className={styles.contactItem}>
             <span className={styles.icon}>📧</span>
-            <a href="mailto:tova746@gmail.com" className={styles.contactLink}>tova746@gmail.com</a>
+            <a href="mailto:tova746@gmail.com" className={styles.contactLink}>tovah746@gmail.com</a>
           </div>
           <div className={styles.contactItem}>
             <span className={styles.icon}>📍</span>

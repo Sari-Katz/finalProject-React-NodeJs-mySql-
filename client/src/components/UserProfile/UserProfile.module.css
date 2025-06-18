@@ -1,7 +1,7 @@
 /* UserProfile.module.css */
 
 .profileContainer {
-    max-width: 1000px;
+    max-width:100%;
     margin: 0 auto;
     padding: 30px 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
