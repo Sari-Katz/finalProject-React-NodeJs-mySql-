@@ -16,24 +16,13 @@ router.get("/check-session", authenticateToken, userController.checkSession);
 router.get('/', authenticateToken, requireRole('admin'), userController.getUsers);
 
 // קבלת משתמש לפי מזהה
-router.get('/me', userController.getUserById);
+router.get('/me', authenticateToken, userController.getUserById);
 
 // // עדכון פרטי משתמש
-router.put('/:id', userController.updateUser);
+router.put('/me', authenticateToken,userController.updateUser);
 // // מחיקת משתמש
-router.delete('/:id', userController.deleteUser);
+// router.delete('/:id', userController.deleteUser);
+router.get('/:id/dashboard', authenticateToken,userController.getUserDashboard);
 
-// בדיקה האם המשתמש השלים את אתגר השבוע
-// router.get('/:id/challenges/current/completed', controller.didUserCompleteCurrentChallenge);
-
-router.get('/:id/dashboard', userController.getUserDashboard);
-
-router.post('/classes_participants/:classId/register', authenticateToken, userController.registerToClass);
-
-// ביטול רישום לקורס
-router.post('/classes_participants/:classId/unregister', authenticateToken, userController.unregisterFromClass);
-
-// בדיקה אם המשתמש רשום לקורס
-router.get('/classes_participants/:classId/isRegistered', authenticateToken, userController.isUserRegistered);
 
 module.exports = router;

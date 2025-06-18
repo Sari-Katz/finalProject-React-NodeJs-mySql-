@@ -10,6 +10,8 @@ router.get('/recent', authenticateToken, classController.getRecentClassesByUser)
 router.get('/:id', classController.getClassById);
 //קבלת משתתפים בכיתה לפי מזהה
 router.get('/:id/participants', classController.getParticipantsByClassId);
+router.put('/:id',authenticateToken, requireRole('admin'), classController.updateClass);
+router.delete('/:id',authenticateToken, requireRole('admin'), classController.deleteClass);
 
 router.post('/:classId/register', authenticateToken, classController.registerToClass);
 
@@ -18,11 +20,4 @@ router.post('/:classId/unregister', authenticateToken, classController.unregiste
 
 // בדיקה אם המשתמש רשום לקורס
 router.get('/:classId/isRegistered', authenticateToken, classController.isUserRegistered);
-
-// מחיקת כיתה
-router.delete('/:id', classController.deleteClass);
-
-router.put('/:id',authenticateToken, requireRole('admin'), classController.updateClass);
-router.delete('/:id',authenticateToken, requireRole('admin'), classController.deleteClass);
-
 module.exports = router;

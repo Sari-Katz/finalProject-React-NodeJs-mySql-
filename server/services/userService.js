@@ -190,12 +190,13 @@ const userService = {
   },
  async update (id, data) {
  
-  const { user_id, full_name, email, phone } = data;
+  const {full_name, email, phone } = data;
+
   await pool.query(`
     UPDATE users
-    SET user_id = ?, full_name = ?, email = ?, phone = ?
+    SET full_name = ?, email = ?, phone = ?
     WHERE id = ?
-  `, [user_id, full_name, email, phone ]);
+  `, [full_name, email, phone,id ]);
   return { id, ...data };
 },
   async unregisterUserFromClass(userId, classId) {

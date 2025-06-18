@@ -12,7 +12,7 @@ export default function CourseSignupModal({ course, onClose }) {
   useEffect(() => {
     const checkRegistration = async () => {
       try {
-        const res = await api.get(`http://localhost:3000/users/classes_participants/${course.id}/isRegistered`);
+        const res = await api.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
         setIsRegistered(res);
         setStatus("idle");
       } catch (err) {
@@ -26,7 +26,7 @@ export default function CourseSignupModal({ course, onClose }) {
   const handleSignup = async () => {
     setStatus("signingUp");
     try {
-      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/register`);
+      await api.post(`http://localhost:3000/classes/${course.id}/register`);
       setStatus("success");
       setIsRegistered(true);
     } catch (err) {
@@ -38,7 +38,7 @@ export default function CourseSignupModal({ course, onClose }) {
   const handleUnregister = async () => {
     setStatus("canceling");
     try {
-      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
+      await api.post(`http://localhost:3000/classes/${course.id}/unregister`);
       setStatus("success");
       setIsRegistered(false);
     } catch (err) {
