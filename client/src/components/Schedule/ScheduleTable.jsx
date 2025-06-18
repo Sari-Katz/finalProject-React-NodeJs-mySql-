@@ -163,7 +163,7 @@ export default function ScheduleTable() {
     async function loadCourses() {
       try {
         const currentDate = new Date().toISOString().split("T")[0];
-        const data = await apiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+        const data = await apiUtils.get(`http://localhost:3000/classes/week/${currentDate}`);
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
