@@ -79,9 +79,9 @@
 
 // export default ManageClassesPage;
 // ManageClassesPage.jsx
-
+// ManageClassesPage.jsx
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import AddClassForm from "./AddClassForm";
 import ClassSearch from "./ClassSearch";
 import ParticipantsList from "./ParticipantsList";
@@ -90,11 +90,13 @@ import styles from "./ManageClassesPage.module.css";
 
 const ManageClassesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
-
+    
     const [selectedClass, setSelectedClass] = useState(null);
     const [participantsOpen, setParticipantsOpen] = useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+    
+    // מפתח לרענון הרשימה
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const id = searchParams.get("classId");
@@ -124,13 +126,20 @@ const ManageClassesPage = () => {
         setSearchParams({ classId: classData.id, view: "delete", title: classData.title });
     };
 
+    // פונקציה לרענון הרשימה אחרי שינויים
+    const refreshClasses = () => {
+        setRefreshKey(prev => prev + 1);
+    };
+
     return (
         <div className={styles.container}>
-            <AddClassForm />
+            <AddClassForm onClassAdded={refreshClasses} />
             <ClassSearch
                 openParticipantsModal={openParticipantsModal}
                 openDeleteModal={openDeleteModal}
+                refreshKey={refreshKey}
             />
+            
             {participantsOpen && selectedClass && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalContent}>
@@ -152,6 +161,7 @@ const ManageClassesPage = () => {
                             onDeleteSuccess={() => {
                                 closeModals();
                                 setSelectedClass(null);
+                                refreshClasses(); // רענון הרשימה אחרי מחיקה
                             }}
                         />
                     </div>

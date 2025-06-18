@@ -15,7 +15,7 @@ function UserProfile() {
   const [recentClasses, setRecentClasses] = useState([]);
   const [pastChallenges, setPastChallenges] = useState([]);
   const [weeklyChallenge, setWeeklyChallenge] = useState(null);
-  const [completedWeeklyChallenge, setCompletedWeeklyChallenge] = useState(false);
+  const [completedWeeklyChallenge, setCompletedlyChallenge] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showUserInfo, setShowUserInfo] = useState(false);
 
@@ -28,6 +28,7 @@ function UserProfile() {
           completedWeeklyChallenge,
           weeklyChallenge
         } = await apiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
+
         setRecentClasses(recentClasses);
         setPastChallenges(recentCompletedChallenges);
         setCompletedWeeklyChallenge(completedWeeklyChallenge);

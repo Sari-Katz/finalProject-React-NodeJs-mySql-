@@ -2,19 +2,18 @@ import { useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
 const api = new ApiUtils();
 
-const AddClassForm = () => {
+const AddClassForm = ({ onClassAdded }) => {
   const [formData, setFormData] = useState({
     title: "",
     class_types: "",
-    day_of_week: "",
     start_time: "",
     end_time: "",
     date_start: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const daysOfWeek = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +27,11 @@ const AddClassForm = () => {
         newErrors[key] = "שדה חובה";
       }
     }
+
+    // בדיקה נוספת - שעת התחלה לפני שעת סיום
+    if (formData.start_time && formData.end_time && formData.start_time >= formData.end_time) {
+      newErrors.end_time = "שעת הסיום חייבת להיות אחרי שעת ההתחלה";
+    }
   
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -37,23 +41,36 @@ const AddClassForm = () => {
     e.preventDefault();
     if (!validate()) return;
 
+    setIsSubmitting(true);
     try {
-      await api.post("http://localhost:3000/classes/create", formData);
+      console.log("Sending form data:", formData);
+      const response = await api.post("http://localhost:3000/classes", formData);
+      // הצלחה!
       alert("קורס נוסף בהצלחה");
+      
+      // נקה את הטופס
+      setFormData({
+        title: "",
+        class_types: "",
+        start_time: "",
+        end_time: "",
+        date_start: "",
+      });
+      setErrors({});
+      
+      // עדכן את הרשימה ברכיב האב
+      if (onClassAdded) {
+        onClassAdded(response);
+      }
+      
     } catch (err) {
-      alert("שגיאה בהוספת הקורס");
       console.error(err);
+      // הצג את הודעת השגיאה מהשרת
+      const errorMessage = err.response?.data?.message || "שגיאה בהוספת הקורס";
+      alert(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setFormData({
-      title: "",
-      class_types: "",
-      day_of_week: "",
-      start_time: "",
-      end_time: "",
-      date_start: "",
-    });
-    setErrors({});
   };
 
   return (
@@ -71,6 +88,7 @@ const AddClassForm = () => {
           value={formData.title}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={isSubmitting}
         />
         {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
       </div>
@@ -83,38 +101,26 @@ const AddClassForm = () => {
           value={formData.class_types}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={isSubmitting}
         />
         {errors.class_types && (
           <p className="text-red-500 text-sm">{errors.class_types}</p>
         )}
       </div>
 
-      <div>
-        <select
-          name="day_of_week"
-          value={formData.day_of_week}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        >
-          <option value="">בחר יום בשבוע</option>
-          {daysOfWeek.map((day) => (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          ))}
-        </select>
-        {errors.day_of_week && (
-          <p className="text-red-500 text-sm">{errors.day_of_week}</p>
-        )}
-      </div>
+      
 
       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          שעת התחלה
+        </label>
         <input
           type="time"
           name="start_time"
           value={formData.start_time}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={isSubmitting}
         />
         {errors.start_time && (
           <p className="text-red-500 text-sm">{errors.start_time}</p>
@@ -122,12 +128,16 @@ const AddClassForm = () => {
       </div>
 
       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          שעת סיום
+        </label>
         <input
           type="time"
           name="end_time"
           value={formData.end_time}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={isSubmitting}
         />
         {errors.end_time && (
           <p className="text-red-500 text-sm">{errors.end_time}</p>
@@ -135,12 +145,17 @@ const AddClassForm = () => {
       </div>
 
       <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          תאריך השיעור
+        </label>
         <input
           type="date"
           name="date_start"
           value={formData.date_start}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={isSubmitting}
+          min={new Date().toISOString().split('T')[0]} // מניעת בחירת תאריך עבר
         />
         {errors.date_start && (
           <p className="text-red-500 text-sm">{errors.date_start}</p>
@@ -149,9 +164,10 @@ const AddClassForm = () => {
 
       <button
         type="submit"
-        className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        disabled={isSubmitting}
+        className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        הוסף קורס
+        {isSubmitting ? "מוסיף קורס..." : "הוסף קורס"}
       </button>
     </form>
   );

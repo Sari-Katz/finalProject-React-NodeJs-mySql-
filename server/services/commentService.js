@@ -1,6 +1,5 @@
-// const db = require('../../DB/connection');
 const pool = require('../../DB/Connection');
-const db=pool
+const db=pool;
 // Create new comment
 exports.createComment = async function createComment(commentData) {
     const { post_id, user_id, content } = commentData;

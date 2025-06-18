@@ -4,7 +4,6 @@ class ApiUtils {
     if (!response.ok) {
       throw new Error(`HTTP Error! Status: ${response.status}`);
     }
-    // אם יש תגובת ‎204‎ ללא גוף, אל תנסי json()
     return response.status === 204 ? null : response.json();
   }
 
@@ -21,7 +20,7 @@ class ApiUtils {
     const options = {
       method,
       headers: this.getAuthHeaders(customHeaders),
-      credentials: 'include',          // ⬅️ מצרף את העוגיות אוטומטית
+      credentials: 'include',          
     };
     if (body) options.body = JSON.stringify(body);
     return options;
