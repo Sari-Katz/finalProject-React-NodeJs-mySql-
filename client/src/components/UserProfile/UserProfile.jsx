@@ -28,6 +28,7 @@ function UserProfile() {
           completedWeeklyChallenge,
           weeklyChallenge
         } = await apiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
+        
         setRecentClasses(recentClasses);
         setPastChallenges(recentCompletedChallenges);
         setCompletedWeeklyChallenge(completedWeeklyChallenge);
