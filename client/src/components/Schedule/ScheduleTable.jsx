@@ -179,7 +179,7 @@ export default function ScheduleTable() {
     async function fetchUserSubscription() {
       try {
         const { isActive } = await apiUtils.get(
-          `http://localhost:3000/userSubscription/byUser/${userId}`
+          `http://localhost:3000/subscription/user/isActive`
         );
         setActiveSubscription(isActive);
       } catch (err) {

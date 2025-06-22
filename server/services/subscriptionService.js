@@ -11,10 +11,19 @@ exports.registerToSubscription = async(userId, subscriptionId, startDate, endDat
     );
   
 };
-exports.getSubscriptionPlanById=async(id) =>{
-        const [rows] = await pool.query(
-            'SELECT * FROM subscription_plans WHERE id = ?',
-            [id]
-        );
-        return rows[0];
-    };
+
+
+exports.getActiveByUserId = async (userId) => {
+  const [rows] = await pool.query(`
+    SELECT * FROM user_subscriptions 
+    WHERE user_id = ? AND end_date >= CURRENT_DATE
+    ORDER BY end_date DESC
+    LIMIT 1
+  `, [userId]);
+  return rows[0] || null;
+};
+
+exports.getAllSubscriptions = async () => {
+  const [rows] = await pool.query('SELECT * FROM user_subscriptions');
+  return rows;
+};

@@ -40,7 +40,6 @@ const userService = {
              WHERE u.email = ?`,
       [email]
     );
-    console.log({ rows });
     return rows[0];
   },
 
@@ -52,19 +51,8 @@ const userService = {
     );
     return rows[0];
   },
-  async getUsersByIds(userIds) {
 
-    if (userIds.length === 0) return [];
-
-    const [rows] = await pool.query(
-      `SELECT id, full_name, email, phone FROM users WHERE id IN (?)`,
-      [userIds]
-    );
-
-    return rows;
-  },
-  // services/userService.js
-
+//לשנות בקונטרול של השיעורים ולמחוק
   async getEmailsByUserIds(userIds) {
     if (userIds.length === 0) return [];
 
@@ -114,7 +102,6 @@ const userService = {
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
     const isoDate = oneMonthAgo.toISOString().split('T')[0];
-
     const query = `
     SELECT c.id, c.title, c.class_types, c.day_of_week, c.start_time, c.date_start, c.end_time
     FROM classes c
@@ -139,8 +126,6 @@ const userService = {
       );
       hasCompletedCurrent = completion.length > 0;
     }
-    console.log(hasCompletedCurrent);
-
     return {
       recentClasses: classes,
       recentCompletedChallenges: completedChallenges,
@@ -149,45 +134,45 @@ const userService = {
     };
   },
 
-  //עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
-  async markChallengeCompletion(userId, challengeId, completed) {
-    const [existing] = await pool.query(
-      'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
-      [userId, challengeId]
-    );
+  // //עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
+  // async markChallengeCompletion(userId, challengeId, completed) {
+  //   const [existing] = await pool.query(
+  //     'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
+  //     [userId, challengeId]
+  //   );
 
-    if (existing.length > 0) {
-      // אם כבר יש שורה, נעשה UPDATE עם הערך שנשלח
-      await pool.query(
-        'UPDATE challenge_completions SET completed = ? WHERE user_id = ? AND challenge_id = ?',
-        [completed, userId, challengeId]
-      );
-    } else {
-      // אחרת, INSERT עם הערך שנשלח
-      await pool.query(
-        'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, ?)',
-        [userId, challengeId, completed]
-      );
-    }
-  },
-  async registerUserToClass(userId, classId) {
-    const [existing] = await pool.query(
-      'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
-      [userId, classId]
-    );
+  //   if (existing.length > 0) {
+  //     // אם כבר יש שורה, נעשה UPDATE עם הערך שנשלח
+  //     await pool.query(
+  //       'UPDATE challenge_completions SET completed = ? WHERE user_id = ? AND challenge_id = ?',
+  //       [completed, userId, challengeId]
+  //     );
+  //   } else {
+  //     // אחרת, INSERT עם הערך שנשלח
+  //     await pool.query(
+  //       'INSERT INTO challenge_completions (user_id, challenge_id, completed) VALUES (?, ?, ?)',
+  //       [userId, challengeId, completed]
+  //     );
+  //   }
+  // },
+  // async registerUserToClass(userId, classId) {
+  //   const [existing] = await pool.query(
+  //     'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ?',
+  //     [userId, classId]
+  //   );
 
-    if (existing.length > 0) {
-      await pool.query(
-        'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
-        ['נרשמה', userId, classId]
-      );
-    } else {
-      await pool.query(
-        'INSERT INTO classes_participants (user_id, class_id, status) VALUES (?, ?, ?)',
-        [userId, classId, 'נרשמה']
-      );
-    }
-  },
+  //   if (existing.length > 0) {
+  //     await pool.query(
+  //       'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
+  //       ['נרשמה', userId, classId]
+  //     );
+  //   } else {
+  //     await pool.query(
+  //       'INSERT INTO classes_participants (user_id, class_id, status) VALUES (?, ?, ?)',
+  //       [userId, classId, 'נרשמה']
+  //     );
+  //   }
+  // },
  async update (id, data) {
  
   const {full_name, email, phone } = data;
@@ -199,19 +184,19 @@ const userService = {
   `, [full_name, email, phone,id ]);
   return { id, ...data };
 },
-  async unregisterUserFromClass(userId, classId) {
-    await pool.query(
-      'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
-      ['בוטלה', userId, classId]
-    );
-  },
-  async isUserRegisteredToClass(userId, classId) {
-    const [result] = await pool.query(
-      'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ? AND status =?',
-      [userId, classId, 'נרשמה']
-    );
-    return result.length > 0;
-  }
+  // async unregisterUserFromClass(userId, classId) {
+  //   await pool.query(
+  //     'UPDATE classes_participants SET status = ? WHERE user_id = ? AND class_id = ?',
+  //     ['בוטלה', userId, classId]
+  //   );
+  // },
+  // async isUserRegisteredToClass(userId, classId) {
+  //   const [result] = await pool.query(
+  //     'SELECT * FROM classes_participants WHERE user_id = ? AND class_id = ? AND status =?',
+  //     [userId, classId, 'נרשמה']
+  //   );
+  //   return result.length > 0;
+  // }
 
 
 };

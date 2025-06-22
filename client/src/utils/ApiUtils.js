@@ -5,7 +5,7 @@ class ApiUtils {
   }
   // 1) בדיקת סטטוס — ללא שינוי
   async checkResponseStatus(response) {
-    if (response.status === 401&&this.onUnauthorized) {
+    if (response.status === 401 &&this.onUnauthorized) {
       this.onUnauthorized(); 
     }
     if (!response.ok) {

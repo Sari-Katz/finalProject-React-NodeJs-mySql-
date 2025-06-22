@@ -20,8 +20,7 @@ router.get('/me', authenticateToken, userController.getUserById);
 
 // // עדכון פרטי משתמש
 router.put('/me', authenticateToken,userController.updateUser);
-// // מחיקת משתמש
-// router.delete('/:id', userController.deleteUser);
+
 router.get('/:id/dashboard', authenticateToken,userController.getUserDashboard);
 
 
