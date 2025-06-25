@@ -11,8 +11,6 @@ function Posts() {
     const [posts, setPosts] = useState([]);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostBody, setNewPostBody] = useState('');
-    const [truncatedPosts, setTruncatedPosts] = useState({});
-    const apiService = new ApiUtils();
 
     useEffect(() => {
         fetchPosts();
@@ -20,7 +18,7 @@ function Posts() {
 
     const fetchPosts = async () => {
         try {
-            const data = await apiService.get(`http://localhost:3000/posts`);
+            const data = await ApiUtils.get(`http://localhost:3000/posts`);
             setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -35,25 +33,12 @@ function Posts() {
                 content: newPostBody,
             };
             try {
-                const post = await apiService.post('http://localhost:3000/posts', newPost);
+                const post = await ApiUtils.post('http://localhost:3000/posts', newPost);
                 setPosts([post, ...posts]);
                 setNewPostTitle('');
                 setNewPostBody('');
             } catch (error) {
                 console.error('Error adding post:', error);
-            }
-        }
-    };
-
-    const handleDeletePost = async (index, id) => {
-        if (window.confirm('האם אתה בטוח שברצונך למחוק את הפוסט?')) {
-            try {
-                await apiService.delete(`http://localhost:3000/posts/${id}`);
-                const updatedAllPosts = [...posts];
-                updatedAllPosts.splice(index, 1);
-                setPosts(updatedAllPosts);
-            } catch (error) {
-                console.error('Error deleting post:', error);
             }
         }
     };
@@ -99,24 +84,11 @@ function Posts() {
                     </div>
                 ) : (
                     posts.map((post, index) => {
-                        const isTruncated = truncatedPosts[post.post_id];
                         const isLongContent = post.content && post.content.length > 200;
 
                         return (
                             <div key={post.post_id} className={styles.postCard}>
-                                {/* Post Header */}
-                                {/* <div className={styles.postHeader}>
-                                    <h3 className={styles.postTitle}>{post.title}</h3>
-                                    {user.role === 'admin' && (
-                                        <button
-                                            className={styles.deleteButton}
-                                            onClick={() => handleDeletePost(index, post.post_id)}
-                                        >
-                                            🗑️
-                                        </button>
-                                    )}
-                                </div> */}
-
+                         
                                 {/* Post Content Preview */}
                                 <div className={styles.postContentWrapper}>
                                     <div className={styles.postContent}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
-import { AuthContext } from "../AuthContext";  // נתיב מדויק לפי המיקום שלך
+import { AuthContext } from "../AuthContext";
 import SubscriptionList from "../Subscription/SubscriptionList";
 import CourseSignupModal from "./CourseSignupModal";
 import ApiUtils from "../../utils/ApiUtils";
@@ -19,9 +19,6 @@ export default function ScheduleTable() {
   const [showSubscriptionList, setShowSubscriptionList] = useState(false);
   // const [me, setMe] = useState(null); // לפרטי המשתמש עם מנוי פעיל
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const apiUtils = new ApiUtils();
-
   const times = [...new Set(courses.map((c) => c.start_time))].sort();
 
   // טען קורסים
@@ -29,7 +26,7 @@ export default function ScheduleTable() {
     async function loadCourses() {
       try {
         const currentDate = new Date().toISOString().split("T")[0];
-        const data = await apiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+        const data = await ApiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
@@ -44,7 +41,7 @@ export default function ScheduleTable() {
 
     async function fetchUserSubscription() {
       try {
-      const { isActive } = await apiUtils.get(
+      const { isActive } = await ApiUtils.get(
           `http://localhost:3000/subscription/user/isActive`
         );
         setActiveSubscription(isActive);

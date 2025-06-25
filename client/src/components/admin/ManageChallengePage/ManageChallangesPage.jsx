@@ -7,8 +7,6 @@ import CompleteChallengeList from "./CompleteChallengeList";
 import styles from "./ManageChallangesPage.module.css";
 const ManageChallangesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
-
     const [selectedChallenge, setselectedChallenge] = useState(null);
     const [completeChallengeOpen, setcompleteChallengeOpen] = useState(false);
 
@@ -26,10 +24,6 @@ const ManageChallangesPage = () => {
         }
     }, [searchParams]);
 
-    const closeModals = () => {
-        setSearchParams({});
-    };
-
     const openCompletedListModal = (challengeData) => {
         setSearchParams({ challengeId: challengeData.id, view: "participants", description: challengeData.description });
     };
@@ -46,13 +40,12 @@ const ManageChallangesPage = () => {
                         <CompleteChallengeList
                             challengeId={selectedChallenge.id}
                             description={selectedChallenge.description}
-                            onClose={closeModals}
+                            onClose={() => {
+                                setSearchParams({})}}
                         />
                     </div>
                 </div>
             )}
-
-            
         </div>
     );
 };

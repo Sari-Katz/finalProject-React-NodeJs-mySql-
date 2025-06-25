@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
-import styles from "./CompleteChallengeList.module.css"; // הוספה כאן
-
-const api = new ApiUtils();
+import styles from "./CompleteChallengeList.module.css"; 
 
 const CompleteChallengeList = ({ challengeId, description, onClose }) => {
   const [participants, setParticipants] = useState([]);
@@ -12,7 +10,7 @@ const CompleteChallengeList = ({ challengeId, description, onClose }) => {
     const fetchParticipants = async () => {
       setLoading(true);
       try {
-        const res = await api.get(
+        const res = await ApiUtils.get(
           `http://localhost:3000/challenges/${challengeId}/completions`
         );
         setParticipants(res);
@@ -47,7 +45,7 @@ const CompleteChallengeList = ({ challengeId, description, onClose }) => {
           ))}
         </ul>
       ) : (
-        <p className={styles.empty}>אין נרשמים בשיעור זה.</p>
+        <p className={styles.empty}>אין נרשמים לאתגר זה.</p>
       )}
     </div>
   );

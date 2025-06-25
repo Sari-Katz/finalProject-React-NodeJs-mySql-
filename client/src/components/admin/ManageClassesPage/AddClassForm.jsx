@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
-const api = new ApiUtils();
 
 const AddClassForm = ({ onClassAdded }) => {
   const [formData, setFormData] = useState({
@@ -44,7 +43,7 @@ const AddClassForm = ({ onClassAdded }) => {
     setIsSubmitting(true);
     try {
       console.log("Sending form data:", formData);
-      const response = await api.post("http://localhost:3000/classes", formData);
+      const response = await ApiUtils.post("http://localhost:3000/classes", formData);
       // הצלחה!
       alert("קורס נוסף בהצלחה");
       

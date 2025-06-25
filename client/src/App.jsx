@@ -59,7 +59,7 @@ function AppRoutes() {
       <Route
         path="/"
         element={
-          user ? <Navigate to={`/user/home`} /> : <Login />
+          user ? <Navigate to={`/about`} /> : <Login />
         }
       />
       
@@ -77,14 +77,14 @@ function AppRoutes() {
       <Route
         path="/login"
         element={
-          user ? <Navigate to={`/user/home`} /> : <Login />
+          user ? <Navigate to={`/about`} /> : <Login />
         }
       />
       
       <Route path="/register" element={<Register />} />
       
       <Route
-        path="/user/home"
+        path="/about"
         element={
           <PrivateRoute>
             <WithLayout>
@@ -168,7 +168,15 @@ function AppRoutes() {
       </WithLayout>
     </PrivateRoute>
   }/>
-      
+            <Route
+  path="/profile/info"
+  element={
+    <PrivateRoute>
+      <WithLayout>
+        <UserProfile />    
+          </WithLayout>
+    </PrivateRoute>
+  }/>
     </Routes>
     
   );

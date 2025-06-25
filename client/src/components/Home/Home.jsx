@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
-
-// Import של כל האייקונים
 import medalIcon from '../../img/medal.png';
 import groupIcon from '../../img/group.png';
 import alarmClockIcon from '../../img/alarm-clock.png';

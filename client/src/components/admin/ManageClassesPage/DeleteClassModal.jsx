@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
 
-const api = new ApiUtils();
 
 const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
     const [confirmStep, setConfirmStep] = useState(false);
@@ -11,7 +10,7 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
     const handleDelete = async () => {
         setSending(true);
         try {
-            await api.delete(`http://localhost:3000/classes/${classData.id}?notify=${notifyParticipants}`);
+            await ApiUtils.delete(`http://localhost:3000/classes/${classData.id}?notify=${notifyParticipants}`);
             onDeleteSuccess();
         } catch (err) {
             console.error("שגיאה במחיקת שיעור", err);

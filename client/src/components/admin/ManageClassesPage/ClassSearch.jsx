@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
-
-const api = new ApiUtils();
-
 const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => {
   const [query, setQuery] = useState("");
   const [classes, setClasses] = useState([]);
@@ -18,7 +15,7 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get(
+      const res = await ApiUtils.get(
         `http://localhost:3000/classes?search=${encodeURIComponent(query)}&limit=${limit}&offset=${page * limit}`
       );
       setClasses(res);

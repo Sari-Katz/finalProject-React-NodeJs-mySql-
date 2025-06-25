@@ -3,8 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import styles from './Register.module.css';
 import ApiUtils from '../../utils/ApiUtils';
-// import { GoogleLogin } from '@react-oauth/google';
-// import { FacebookLoginButton } from 'react-social-login-buttons';
 
 function Register() {
     const [error, setError] = useState('');
@@ -18,11 +16,10 @@ function Register() {
 
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-    const apiUtils = new ApiUtils();
 
  const checkIfUserExists = async (email) => {
   try {
-    const data = await apiUtils.fetch(`http://localhost:3000/users?email=${email}`);
+    const data = await ApiUtils.fetch(`http://localhost:3000/users?email=${email}`);
     console.log('User data:', data);
     return data.length > 0;
 
@@ -31,7 +28,6 @@ function Register() {
     return false;
   }
 };
-
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -50,11 +46,11 @@ const userExists = await checkIfUserExists(additionalInfo.email);
         const newUser = {
             password,
             ...additionalInfo,
-            role: 'user' // ניתן להוסיף פה תפקיד כברירת מחדל
+            role: 'user' 
         };
 
         try {
-            const user = await apiUtils.post(`http://localhost:3000/users/register`, newUser);
+            const user = await ApiUtils.post(`http://localhost:3000/users/register`, newUser);
             login(user);
             navigate(`/about`);
         } catch (error) {
@@ -95,7 +91,6 @@ const userExists = await checkIfUserExists(additionalInfo.email);
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
-                 
                   
                     <input
                         type="text"
@@ -107,22 +102,6 @@ const userExists = await checkIfUserExists(additionalInfo.email);
                     <button type="submit">Sign Up</button>
                 </form>
                 {error && <div className={styles.error}>{error}</div>}
-
-                {/* <div className={styles.socialLogin}>
-                    <h4>Or sign up with</h4>
-                    <div className={styles.googleLogin}>
-                        <GoogleLogin
-                            onSuccess={(credentialResponse) => {
-                                console.log("Google login success:", credentialResponse);
-                            }}
-                            onError={() => {
-                                console.log("Google login failed");
-                            }}
-                        />
-                    </div>
-                    <FacebookLoginButton onClick={() => console.log("Facebook login clicked")} />
-                </div> */}
-
                 <Link to="/login" className={styles.link}>Already have an account? Log in</Link>
             </div>
         </div>
