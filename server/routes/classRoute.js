@@ -13,4 +13,11 @@ router.get('/:id/participants', classController.getParticipantsByClassId);
 router.put('/:id',authenticateToken, requireRole('admin'), classController.updateClass);
 router.delete('/:id',authenticateToken, requireRole('admin'), classController.deleteClass);
 
+router.post('/:classId/register', authenticateToken, classController.registerToClass);
+
+// ביטול רישום לקורס
+router.post('/:classId/unregister', authenticateToken, classController.unregisterFromClass);
+
+// בדיקה אם המשתמש רשום לקורס
+router.get('/:classId/isRegistered', authenticateToken, classController.isUserRegistered);
 module.exports = router;

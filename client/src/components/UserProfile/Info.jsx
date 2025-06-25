@@ -28,32 +28,34 @@ const Info = ({ onBack }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const data = await apiUtils.get(`http://localhost:3000/users/${user.id}`);
-                setUserInfo(data);
+                const data = await apiUtils.get(`http://localhost:3000/users/me`);
+                setUserInfo(data);   
                 setEditData(data);
             } catch (err) {
                 console.error("Error fetching user info:", err);
             }
         };
         fetchUserInfo();
-    }, [user.id]);
+    }, [user]);
 
     const handleEditChange = (field, value) => {
         setEditData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSave = async () => {
-        try {
-            const updated = await apiUtils.put(
-                `http://localhost:3000/users/${user.id}`,
-                { body: editData }
-            );
-            setUserInfo({ ...editData });
-            setEditMode(false);
-        } catch (err) {
-            console.error("Error saving user info:", err);
-        }
-    };
+        const handleSave = async () => {
+            try {
+                                console.log(editData);
+
+                const updated = await apiUtils.put(
+                    `http://localhost:3000/users/me`,
+                     editData 
+                );
+                setUserInfo({ ...editData });
+                setEditMode(false);
+            } catch (err) {
+                console.error("Error saving user info:", err);
+            }
+        };
 
     if (!userInfo) {
         return (

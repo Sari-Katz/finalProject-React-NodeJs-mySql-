@@ -9,7 +9,6 @@ const apiUtils = new ApiUtils();
 
 function UserProfile() {
   const { user } = useContext(AuthContext);
-  console.log(user);
   const navigate = useNavigate();
   const userId = user.id;
   const [recentClasses, setRecentClasses] = useState([]);
@@ -31,7 +30,7 @@ function UserProfile() {
 
         setRecentClasses(recentClasses);
         setPastChallenges(recentCompletedChallenges);
-        setCompletedWeeklyChallenge(completedWeeklyChallenge);
+        setCompletedlyChallenge(completedWeeklyChallenge);
         setWeeklyChallenge(weeklyChallenge);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -45,11 +44,16 @@ function UserProfile() {
 
   const handleCompleteWeeklyChallenge = async (isComplete = true) => {
     try {
+      // await apiUtils.patch(
+      //   `http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`,
+      //   { completed: isComplete }
+      // );
       await apiUtils.patch(
-        `http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`,
+        `http://localhost:3000/challenges/${weeklyChallenge.id}/completed`,
         { completed: isComplete }
       );
-      setCompletedWeeklyChallenge(isComplete);
+      
+      setCompletedlyChallenge(isComplete);
     } catch (error) {
       console.error("Failed to complete challenge:", error);
     }

@@ -57,7 +57,7 @@
 // }
 
 // export default AuthProvider;
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect ,useMemo } from "react";
 import ApiUtils from "../utils/ApiUtils";
 
 export const AuthContext = createContext();
@@ -65,7 +65,16 @@ export const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // {id, role}
   const [isReady, setIsReady] = useState(false);
-  const apiUtils = new ApiUtils();
+    const logout = async () => {
+    try {
+      await apiUtils.post("http://localhost:3000/users/logout");
+    } catch (err) {
+      console.error("Failed to clear cookie on server:", err);
+    }
+
+    setUser(null);
+  };
+  const apiUtils =useMemo(() => new ApiUtils({ onUnauthorized: logout }), [logout]);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -88,15 +97,7 @@ function AuthProvider({ children }) {
     setUser(userData); // לא שומר כלום בלוקאל סטורג'
   };
 
-  const logout = async () => {
-    try {
-      await apiUtils.post("http://localhost:3000/users/logout");
-    } catch (err) {
-      console.error("Failed to clear cookie on server:", err);
-    }
 
-    setUser(null);
-  };
 
   const role = user?.role || "guest";
 

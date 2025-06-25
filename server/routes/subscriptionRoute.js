@@ -1,22 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const subscriptionController = require('../controllers/subscriptionController');
-const { authenticateToken } = require('../middlewares/authMiddleware');
+const { authenticateToken, requireRole } = require('../middlewares/authMiddleware');
 
 // כל חבילות המנוי
 
 router.get('/plans', authenticateToken,subscriptionController.getAllPlans);
 
-// // חבילה לפי מזהה
-// router.get('/:id', subscriptionPlanController.getPlanById);
+//כל המנויים
+router.get('/',authenticateToken,requireRole('admin'), subscriptionController.getAllSubscriptions);
+
+///בדיקת משתמש האם יש לו מנו
+router.get('/user/isActive', authenticateToken,subscriptionController.getSubscriptionByUserId);
+
 
  router.post('/:subscriptionId/register',  authenticateToken,subscriptionController.registerToSubscription);
-
-// // עדכון חבילה
-// router.put('/:id', subscriptionPlanController.updatePlan);
-
-// // מחיקת חבילה
-// router.delete('/:id', subscriptionPlanController.deletePlan);
-
 
 module.exports = router;

@@ -1,9 +1,17 @@
+
 class ApiUtils {
+ constructor() {
+    this.onUnauthorized = null; // callback שייקרא כשיש 401
+  }
   // 1) בדיקת סטטוס — ללא שינוי
   async checkResponseStatus(response) {
+    if (response.status === 401 &&this.onUnauthorized) {
+      this.onUnauthorized(); 
+    }
     if (!response.ok) {
       throw new Error(`HTTP Error! Status: ${response.status}`);
     }
+
     return response.status === 204 ? null : response.json();
   }
 

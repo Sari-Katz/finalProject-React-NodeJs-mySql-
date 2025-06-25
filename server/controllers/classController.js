@@ -159,7 +159,44 @@ exports.updateClass = async (req, res) => {
     res.status(500).json({ message: 'שגיאה בעדכון כיתה', error: error.message });
   }
 };
+exports.registerToClass = async (req, res) => {
+  const userId = req.user.id;
+  const classId = req.params.classId;
+  console.log(userId);
+  try {
+    await classService.registerUserToClass(userId, classId);
+    res.status(200).json({ message: 'נרשמת בהצלחה לשיעור' });
+  } catch (error) {
+    console.error('שגיאה בהרשמה:', error);
+    res.status(500).json({ message: 'שגיאה בהרשמה' });
+  }
+};
 
+exports.unregisterFromClass = async (req, res) => {
+  const userId = req.user.id;
+  const classId = req.params.classId;
+
+  try {
+    await classService.unregisterUserFromClass(userId, classId);
+    res.status(200).json({ message: 'הרישום בוטל בהצלחה' });
+  } catch (error) {
+    console.error('שגיאה בביטול הרשמה:', error);
+    res.status(500).json({ message: 'שגיאה בביטול הרשמה' });
+  }
+};
+
+exports.isUserRegistered = async (req, res) => {
+
+  const userId = req.user.id;
+  const classId = req.params.classId;
+  try {
+    const isRegistered = await classService.isUserRegisteredToClass(userId, classId);
+    res.status(200).json(isRegistered );
+  } catch (error) {
+    console.error('שגיאה בבדיקת רישום:', error);
+    res.status(500).json({ message: 'שגיאה בבדיקת רישום' });
+  }
+};
 // מחיקת כיתה
 exports.deleteClass = async (req, res) => {
   try {
