@@ -3,66 +3,68 @@ import { useSearchParams } from "react-router-dom";
 import AddChallengeForm from "./AddChallengeForm";
 import ChallengeSearch from "./ChallengeSearch";
 import CompleteChallengeList from "./CompleteChallengeList";
+import DeleteChallengeModal from "./DeleteChallengeModal";
 import styles from "./ManageChallangesPage.module.css";
 
 const ManageChallangesPage = () => {
-    
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [selectedChallenge, setselectedChallenge] = useState(null);
-    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-    const [completeChallengeOpen, setcompleteChallengeOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [completeChallengeOpen, setCompleteChallengeOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-    useEffect(() => {
-        const id = searchParams.get("challengeId");
-        const view = searchParams.get("view");
-        const description = searchParams.get("description");
+  useEffect(() => {
+    const id = searchParams.get("challengeId");
+    const view = searchParams.get("view");
+    const description = searchParams.get("description");
 
-        if (id && view) {
-            setselectedChallenge({ id, description });
-            setcompleteChallengeOpen(view === "participants");
-            setConfirmDeleteOpen(view === "delete");
-        } else {
-            setselectedChallenge(null);
-            setcompleteChallengeOpen(false);
-            setConfirmDeleteOpen(false);
-        }
-    }, [searchParams]);
+    if (id && view) {
+      setSelectedChallenge({ id, description });
+      setCompleteChallengeOpen(view === "participants");
+      setConfirmDeleteOpen(view === "delete");
+    } else {
+      setSelectedChallenge(null);
+      setCompleteChallengeOpen(false);
+      setConfirmDeleteOpen(false);
+    }
+  }, [searchParams]);
 
-    const openCompletedListModal = (challengeData) => {
-        setSearchParams({
-            challengeId: challengeData.id,
-            view: "participants",
-            description: challengeData.description,
-        });
-    };
+  const closeModals = () => {
+    setSearchParams({});
+  };
 
-    return (
-        <div className={styles.container}>
-            <AddChallengeForm />
-            <ChallengeSearch openCompletedListModal={openCompletedListModal} />
+  const refreshChallange = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
 
-            {completeChallengeOpen && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modalContent}>
-                        <CompleteChallengeList onClose={closeModals} />
-                    </div>
-                </div>
-            )}
+  return (
+    <div className={styles.container}>
+      <AddChallengeForm onChallengeAdded={refreshChallange} />
+      <ChallengeSearch refreshKey={refreshKey} />
 
-            {confirmDeleteOpen && selectedChallenge && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modalContent}>
-                        <CompleteChallengeList
-                            challengeId={selectedChallenge.id}
-                            description={selectedChallenge.description}
-                            onClose={() => {
-                                setSearchParams({})}}
-                        />
-                    </div>
-                </div>
-            )}
+      {completeChallengeOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <CompleteChallengeList onClose={closeModals} />
+          </div>
         </div>
-    );
+      )}
+
+      {confirmDeleteOpen && selectedChallenge && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <DeleteChallengeModal
+              onClose={closeModals}
+              onDeleteSuccess={() => {
+                closeModals();
+                refreshChallange();
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ManageChallangesPage;

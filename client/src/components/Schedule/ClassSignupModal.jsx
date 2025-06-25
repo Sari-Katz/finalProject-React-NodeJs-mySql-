@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../AuthContext";
-import styles from "./CourseSignupModal.module.css";
+import styles from "./ClassSignupModal.module.css";
 import ApiUtils from "../../utils/ApiUtils";
 
 export default function CourseSignupModal({ course, onClose, onUpdate }) {

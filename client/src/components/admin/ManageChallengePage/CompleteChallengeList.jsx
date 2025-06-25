@@ -16,7 +16,6 @@ const CompleteChallengeList = ({ onClose }) => {
       setLoading(true);
       try {
         const res = await ApiUtils.get(
-        const res = await ApiUtils.get(
           `http://localhost:3000/challenges/${challengeId}/completions`
         );
         setParticipants(res);

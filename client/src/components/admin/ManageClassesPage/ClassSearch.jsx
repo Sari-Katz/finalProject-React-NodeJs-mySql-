@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
-const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => {
-  const [query, setQuery] = useState("");
+
+const ClassSearch = ({ refreshKey }) => {
   const [classes, setClasses] = useState([]);
   const [page, setPage] = useState(0);
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const limit = 10;
 
-  // פונקציה לטעינת השיעורים
   const fetchClasses = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await ApiUtils.get(
-        `http://localhost:3000/classes?search=${encodeURIComponent(query)}&limit=${limit}&offset=${page * limit}`
+        `http://localhost:3000/classes?limit=${limit}&offset=${page * limit}`
       );
       setClasses(res);
     } catch (err) {
@@ -28,31 +29,23 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
     }
   };
 
-  // טעינה ראשונית וכשמשתנים הפרמטרים
   useEffect(() => {
     fetchClasses();
-  }, [query, page]);
+  }, [page]);
 
-  // רענון כשמתקבל refreshKey חדש (אחרי הוספה/מחיקה)
   useEffect(() => {
     if (refreshKey > 0) {
       fetchClasses();
     }
   }, [refreshKey]);
 
-  const handleQueryChange = (e) => {
-    setQuery(e.target.value);
-    setPage(0); // חזרה לעמוד הראשון בחיפוש חדש
-    setExpandedId(null); // סגור את כל ההרחבות
-  };
-
   const handleAction = (c, action) => {
-    if (action === "participants") {
-      openParticipantsModal(c);
-    } else if (action === "delete") {
-      openDeleteModal(c);
-    }
-    setExpandedId(null); // סגור את ההרחבה אחרי פעולה
+    setSearchParams({
+      classId: c.id,
+      view: action,
+      title: c.title,
+    });
+    setExpandedId(null);
   };
 
   const toggleExpanded = (classId) => {
@@ -61,20 +54,12 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
 
   return (
     <div className="space-y-3">
-      <h3 className="font-semibold text-lg">חפש שיעור קיים</h3>
-      
-      <input
-        value={query}
-        onChange={handleQueryChange}
-        placeholder="הקלד שם שיעור…"
-        className="w-full p-2 border rounded"
-        disabled={loading}
-      />
+      <h3 className="font-semibold text-lg">רשימת שיעורים</h3>
 
       {error && (
         <div className="text-red-500 text-sm p-2 bg-red-50 rounded">
           {error}
-          <button 
+          <button
             onClick={fetchClasses}
             className="mr-2 text-blue-600 underline"
           >
@@ -89,7 +74,7 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
             <span className="text-gray-600">טוען...</span>
           </div>
         )}
-        
+
         <ul className="divide-y border rounded max-h-60 overflow-auto">
           {classes.length > 0 ? (
             classes.map((c) => (
@@ -106,14 +91,14 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
                         {c.class_types} • {c.day_of_week} • {c.start_time}-{c.end_time}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {new Date(c.date_start).toLocaleDateString('he-IL')}
+                        {new Date(c.date_start).toLocaleDateString("he-IL")}
                       </div>
                     </div>
                     <span className="text-xs text-gray-400">
-                      {expandedId === c.id ? '▼' : '▶'}
+                      {expandedId === c.id ? "▼" : "▶"}
                     </span>
                   </div>
-                  
+
                   {expandedId === c.id && (
                     <div className="flex gap-2 pt-2 border-t">
                       <button
@@ -141,7 +126,7 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
             ))
           ) : (
             <li className="p-3 text-gray-500 text-center">
-              {loading ? "טוען..." : query ? "לא נמצאו שיעורים התואמים לחיפוש" : "לא נמצאו שיעורים"}
+              {loading ? "טוען..." : "לא נמצאו שיעורים"}
             </li>
           )}
         </ul>
@@ -156,11 +141,9 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
         >
           ← קודם
         </button>
-        
-        <span className="text-sm text-gray-600">
-          עמוד {page + 1}
-        </span>
-        
+
+        <span className="text-sm text-gray-600">עמוד {page + 1}</span>
+
         <button
           disabled={classes.length < limit || loading}
           onClick={() => setPage((p) => p + 1)}
@@ -170,7 +153,6 @@ const ClassSearch = ({ openParticipantsModal, openDeleteModal, refreshKey }) => 
         </button>
       </div>
 
-      {/* מידע נוסף */}
       {classes.length > 0 && (
         <div className="text-xs text-gray-500 text-center">
           מוצגים {classes.length} שיעורים
