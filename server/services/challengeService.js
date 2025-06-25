@@ -7,7 +7,6 @@ exports.getAllChallenges = async (limit, offset) => {
     );
     return rows;
 };
-//עשינו בשלב הזה בקשת פאטש אולי היה אפשר לעשות רק עדכון
 exports.markChallengeCompletion = async (userId, challengeId, completed) =>{
     const [existing] = await pool.query(
       'SELECT * FROM challenge_completions WHERE user_id = ? AND challenge_id = ?',
@@ -15,7 +14,6 @@ exports.markChallengeCompletion = async (userId, challengeId, completed) =>{
     );
 
     if (existing.length > 0) {
-      // אם כבר יש שורה, נעשה UPDATE עם הערך שנשלח
       await pool.query(
         'UPDATE challenge_completions SET completed = ? WHERE user_id = ? AND challenge_id = ?',
         [completed, userId, challengeId]
@@ -40,28 +38,13 @@ exports.deleteChallenge = async (id) => {
     await pool.query('DELETE FROM weekly_challenges WHERE id = ?', [id]);
 };
 
-async function getCompletedUsersWithDetails(challengeId) {
-  const sql = `
-    SELECT  u.id,u.full_name, u.email,u.phone
-    FROM    challenge_completions   AS c
-    JOIN    users AS u ON u.id = c.user_id
-    WHERE   c.challenge_id = ?
-      AND   c.completed     = 1
-  `;
-
-  const [rows] = await pool.query(sql, [challengeId]);
-  return rows;          // כבר כולל את כל הפרטים הנחוצים
+exports.getChallengeByDate=async(week_start_date) =>{
+    const [rows] = await pool.query(
+        "SELECT * FROM weekly_challenges WHERE week_start_date = ?",
+        [week_start_date]
+    );
+    return rows[0]; 
 }
-exports.getUserCompletedChallenges = async (challengeId) => {
-  const sql = `
-    SELECT u.id, u.full_name, u.email, u.phone
-    FROM challenge_completions c
-    JOIN users u ON u.id = c.user_id
-    WHERE c.challenge_id = ? AND c.completed = 1
-  `;
-  const [rows] = await pool.query(sql, [challengeId]);
-  return rows;
-};
 
 exports.getUserChallengesByStatus = async (userId, completed) => {
     const [rows] = await pool.query(
@@ -72,6 +55,7 @@ exports.getUserChallengesByStatus = async (userId, completed) => {
     )
         return rows;
 };
+
 exports.getRecentCompletedChallenges = async (userId, limit = 10) => {
     const [rows] = await pool.query(
         `SELECT c.*
@@ -84,6 +68,7 @@ exports.getRecentCompletedChallenges = async (userId, limit = 10) => {
     );
     return rows;
 };
+
 exports.updateChallenge = async (id, week_start_date, description) => {
   const query = `
     UPDATE weekly_challenges
@@ -93,6 +78,7 @@ exports.updateChallenge = async (id, week_start_date, description) => {
 
   await pool.query(query, [week_start_date, description, id]);
 };
+
 exports.didUserCompleteCurrentChallenge = async (userId) => {
   const [currentChallenge] = await pool.query(`
     SELECT id FROM weekly_challenges

@@ -50,7 +50,6 @@ exports.getAllPosts = async function getAllPosts(userId = null) {
 
     try {
         const [rows] = await db.execute(query, values);
-        // console.log('Fetched posts:', rows);
         return rows;
     } catch (error) {
         throw new Error('Error fetching posts: ' + error.message);

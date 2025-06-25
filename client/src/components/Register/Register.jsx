@@ -20,7 +20,6 @@ function Register() {
  const checkIfUserExists = async (email) => {
   try {
     const data = await ApiUtils.fetch(`http://localhost:3000/users?email=${email}`);
-    console.log('User data:', data);
     return data.length > 0;
 
   } catch (error) {

@@ -20,7 +20,6 @@ const Info = ({ onBack }) => {
     const [editData, setEditData] = useState({});
     const [editMode, setEditMode] = useState(false);
     const { user } = useContext(AuthContext);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -41,8 +40,6 @@ const Info = ({ onBack }) => {
 
         const handleSave = async () => {
             try {
-                                console.log(editData);
-
                 const updated = await ApiUtils.put(
                     `http://localhost:3000/users/me`,
                      editData 

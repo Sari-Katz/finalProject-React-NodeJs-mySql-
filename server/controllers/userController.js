@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// קבלת כל המשתמשים או חיפוש עם פילטרים
 exports.getUsers = async (req, res) => {
   try {
     const filters = req.query;
@@ -17,7 +16,6 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// הרשמת משתמש חדש
 exports.registerUser = async (req, res) => {
     try {
         const { full_name, password, email, phone } = req.body;
@@ -36,10 +34,12 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ message: 'שגיאה בשרת', error: error.message });
     }
 };
+
 exports.checkSession = (req, res) => {
   const { id, full_name,email,role } = req.user;
   res.json({ id, full_name,email,role } );
 };
+
 exports.logoutUser = (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
@@ -48,7 +48,7 @@ exports.logoutUser = (req, res) => {
   });
   return res.status(200).json({ message: "Logout successful" });
 };
-// התחברות משתמש
+
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -80,7 +80,6 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// עבור משתמש פרטי
 exports.getUserDashboard = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -92,7 +91,6 @@ exports.getUserDashboard = async (req, res) => {
   }
 };
 
-// קבלת משתמש לפי מזהה
 exports.getUserById = async (req, res) => {
     try {
         const user = await userService.getUserById(req.user.id);

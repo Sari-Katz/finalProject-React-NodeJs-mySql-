@@ -40,8 +40,7 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
       setStatus("success");
       setIsRegistered(true);
       setStatus("success");
-      
-      // עדכן את רשימת הקורסים ברכיב האב
+    
       if (onUpdate) {
         onUpdate();
       }

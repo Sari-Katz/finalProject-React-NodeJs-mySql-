@@ -1,30 +1,21 @@
 const classService = require('../services/classService');
-const userService = require('../services/userService');
 const mailer = require('../utils/mailer');
 
-// יצירת כיתה חדשה
 exports.createClass = async (req, res) => {
   try {
     const { title, class_types, start_time, end_time, date_start } = req.body;
-
-    // בדיקות בסיסיות
     if (!title || !class_types || !start_time || !end_time || !date_start) {
       return res.status(400).json({ message: "יש למלא את כל השדות" });
     }
-
-    // בדיקת שעת התחלה < שעת סיום
     if (start_time >= end_time) {
       return res.status(400).json({ message: "שעת ההתחלה חייבת להיות לפני שעת הסיום" });
     }
-
-    // הפקת היום בשבוע מתוך date_start
     const days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
     const dateObj = new Date(date_start);
     if (isNaN(dateObj)) {
       return res.status(400).json({ message: "תאריך לא תקין" });
     }
     const day_of_week = days[dateObj.getDay()];
-
     const newClass = await classService.createClass({
       title,
       class_types,
@@ -47,11 +38,9 @@ exports.getClasses = async (req, res) => {
     const { week, ...otherFilters } = req.query;
     let filters = { ...otherFilters };
 
-    console.log(filters)
     classes = Object.keys(filters).length === 0
       ? await classService.getAllClasses()
       : await classService.searchClasses(filters);
-    console.log(classes)
 
     res.status(200).json(classes);
   } catch (error) {
@@ -60,7 +49,6 @@ exports.getClasses = async (req, res) => {
   }
 };
 
-// פונקציה  לשליפת כיתות לפי שבוע
 exports.getClassesByWeekInternal = async (req, res) => {
   try {
     const { currentDate } = req.params;
@@ -76,7 +64,6 @@ exports.getClassesByWeekInternal = async (req, res) => {
   }
 };
 
-// קבלת כיתה לפי ID
 exports.getClassById = async (req, res) => {
   try {
     const classItem = await classService.getClassById(req.params.id);
@@ -90,7 +77,6 @@ exports.getClassById = async (req, res) => {
   }
 };
 
-// קבלת כיתה עם פרטי משתתפים
 exports.getClassWithParticipants = async (req, res) => {
   try {
     const classWithParticipants = await classService.getClassWithParticipants(req.params.id);
@@ -104,7 +90,6 @@ exports.getClassWithParticipants = async (req, res) => {
   }
 };
 
-// קבלת משתתפים לפי ID של כיתה
 exports.getParticipantsByClassId = async (req, res) => {
   try {
     const classId = req.params.id;
@@ -116,7 +101,6 @@ exports.getParticipantsByClassId = async (req, res) => {
   }
 };
 
-// קבלת כיתות אחרונות של משתמש
 exports.getRecentClassesByUser = async (req, res) => {
   try {
     const { userId } = req.query;
@@ -132,23 +116,21 @@ exports.getRecentClassesByUser = async (req, res) => {
   }
 };
 
-// עדכון כיתה
 exports.updateClass = async (req, res) => {
   try {
     const { title, class_types, day_of_week, start_time, end_time, date_start } = req.body;
-
-    // בדיקות בסיסיות (אופציונלי - רק אם השדה קיים)
+    if (!title || !class_types || !start_time || !end_time || !date_start) {
+      return res.status(400).json({ message: "יש למלא את כל השדות" });
+    }
     if (start_time && end_time && start_time >= end_time) {
       return res.status(400).json({ message: "שעת ההתחלה חייבת להיות לפני שעת הסיום" });
     }
-
     if (day_of_week) {
       const validDays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "מוצאי שבת"];
       if (!validDays.includes(day_of_week)) {
         return res.status(400).json({ message: "יום בשבוע לא תקין" });
       }
     }
-
     const updatedClass = await classService.updateClass(req.params.id, req.body);
     if (!updatedClass) {
       return res.status(404).json({ message: 'הכיתה לא נמצאה.' });
@@ -159,10 +141,10 @@ exports.updateClass = async (req, res) => {
     res.status(500).json({ message: 'שגיאה בעדכון כיתה', error: error.message });
   }
 };
+
 exports.registerToClass = async (req, res) => {
   const userId = req.user.id;
   const classId = req.params.classId;
-  console.log(userId);
   try {
     await classService.registerUserToClass(userId, classId);
     res.status(200).json({ message: 'נרשמת בהצלחה לשיעור' });
@@ -197,28 +179,22 @@ exports.isUserRegistered = async (req, res) => {
     res.status(500).json({ message: 'שגיאה בבדיקת רישום' });
   }
 };
-// מחיקת כיתה
+
 exports.deleteClass = async (req, res) => {
   try {
     const classId = req.params.id;
     const notify = req.query.notify === true || req.query.notify === 'true';
 
     if (notify) {
-      // שלח התראות למשתתפים לפני המחיקה
-      const userIds = await classService.getParticipantUserIds(classId);
-
-      if (userIds.length > 0) {
-        const emails = await userService.getEmailsByUserIds(userIds);
+      const emails = await classService.getParticipantUserIds(classId);
+      if (emails.length > 0) {
         await mailer.sendCancellationEmails(emails, classId);
       }
     }
-
     const deleted = await classService.deleteClassAndParticipants(classId);
-
     if (!deleted) {
       return res.status(404).json({ message: 'הכיתה לא נמצאה.' });
     }
-
     res.json({
       message: 'הכיתה נמחקה בהצלחה.',
       notificationsSent: notify
@@ -229,7 +205,6 @@ exports.deleteClass = async (req, res) => {
   }
 };
 
-// רישום משתמש לכיתה
 exports.registerUserToClass = async (req, res) => {
   try {
     const { userId, classId } = req.body;
@@ -258,7 +233,6 @@ exports.registerUserToClass = async (req, res) => {
   }
 };
 
-// ביטול רישום משתמש מכיתה
 exports.unregisterUserFromClass = async (req, res) => {
   try {
     const { userId, classId } = req.body;
@@ -275,7 +249,6 @@ exports.unregisterUserFromClass = async (req, res) => {
   }
 };
 
-// קבלת סטטיסטיקות כיתה
 exports.getClassStatistics = async (req, res) => {
   try {
     const classId = req.params.id;
@@ -287,7 +260,6 @@ exports.getClassStatistics = async (req, res) => {
   }
 };
 
-// פונקציה פנימית לבניית פילטר שבועי
 function addWeekFilter(query) {
   const inputDate = new Date(query.week);
   if (isNaN(inputDate)) return {}; 

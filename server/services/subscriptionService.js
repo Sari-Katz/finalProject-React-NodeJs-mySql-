@@ -12,7 +12,6 @@ exports.registerToSubscription = async(userId, subscriptionId, startDate, endDat
   
 };
 
-
 exports.getActiveByUserId = async (userId) => {
   const [rows] = await pool.query(`
     SELECT * FROM user_subscriptions 

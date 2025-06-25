@@ -13,7 +13,6 @@ function Login() {
   const handleLogin = async () => {
     try {
       const data = await ApiUtils.post('http://localhost:3000/users/login', { email, password });
-      console.log('Login successful:', data.user);
       if (data && data.user) {
 
         const user = {

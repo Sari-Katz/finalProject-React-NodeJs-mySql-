@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
+import styles from './ChallengeSearch.module.css';
 
 const ChallengeSearch = ({ refreshKey }) => {
   const [challenges, setChallenges] = useState([]);
@@ -61,38 +62,38 @@ const ChallengeSearch = ({ refreshKey }) => {
   };
 
   return (
-    <div className="space-y-3">
-      <h3 className="font-semibold text-lg">רשימת אתגרים</h3>
+    <div className={styles.container}>
+      <h3 className={styles.title}>רשימת אתגרים</h3>
 
       {error && (
-        <div className="text-red-500 text-sm p-2 bg-red-50 rounded">
+        <div className={styles.errorContainer}>
           {error}
-          <button onClick={fetchChallenges} className="mr-2 text-blue-600 underline">
+          <button onClick={fetchChallenges} className={styles.retryButton}>
             נסה שוב
           </button>
         </div>
       )}
 
-      <ul className="divide-y border rounded max-h-60 overflow-auto">
+      <ul className={styles.challengesList}>
         {challenges.length > 0 ? (
           challenges.map((c) => (
             <li
               key={c.id}
-              className="p-3 hover:bg-gray-100 cursor-pointer transition-colors"
+              className={styles.challengeItem}
               onClick={() => toggleExpanded(c.id)}
             >
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-start">
-                  <span className="font-medium">{c.description}</span>
-                  <span className="text-xs text-gray-400">
+              <div className={styles.challengeContent}>
+                <div className={styles.challengeHeader}>
+                  <span className={styles.challengeDescription}>{c.description}</span>
+                  <span className={styles.expandIcon}>
                     {expandedId === c.id ? "▼" : "▶"}
                   </span>
                 </div>
 
                 {expandedId === c.id && (
-                  <div className="flex gap-2 pt-2 border-t">
+                  <div className={styles.actionButtons}>
                     <button
-                      className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition"
+                      className={styles.participantsButton}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAction(c, "participants");
@@ -101,7 +102,7 @@ const ChallengeSearch = ({ refreshKey }) => {
                       הצג משתתפים
                     </button>
                     <button
-                      className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition"
+                      className={styles.deleteButton}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAction(c, "delete");
@@ -115,34 +116,34 @@ const ChallengeSearch = ({ refreshKey }) => {
             </li>
           ))
         ) : (
-          <li className="p-3 text-gray-500 text-center">
+          <li className={styles.emptyState}>
             {loading ? "טוען..." : "לא נמצאו אתגרים"}
           </li>
         )}
       </ul>
 
-      <div className="flex justify-between items-center">
+      <div className={styles.pagination}>
         <button
           disabled={page === 0 || loading}
           onClick={() => setPage((p) => Math.max(0, p - 1))}
-          className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+          className={styles.paginationButton}
         >
           ← קודם
         </button>
 
-        <span className="text-sm text-gray-600">עמוד {page + 1}</span>
+        <span className={styles.pageInfo}>עמוד {page + 1}</span>
 
         <button
           disabled={challenges.length < limit || loading}
           onClick={() => setPage((p) => p + 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+          className={styles.paginationButton}
         >
           הבא →
         </button>
       </div>
 
       {challenges.length > 0 && (
-        <div className="text-xs text-gray-500 text-center">
+        <div className={styles.resultsInfo}>
           מוצגים {challenges.length} אתגרים
         </div>
       )}

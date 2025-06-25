@@ -1,118 +1,9 @@
-// const challengeService = require('../services/challengeService');
-
-// // יצירת אתגר שבועי חדש
-// exports.createChallenge = async (req, res) => {
-//     try {
-//         const challengeData = req.body;
-//         const newChallenge = await challengeService.createChallenge(challengeData);
-//         res.status(201).json(newChallenge);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה ביצירת אתגר', error: error.message });
-//     }
-// };
-
-// // קבלת כל האתגרים השבועיים (עם אפשרות לסינון)
-// exports.getChallenges = async (req, res) => {
-//     try {
-//         const { week, ...otherFilters } = req.query;
-//         console.log("otherFilters", otherFilters);
-//         let filters = { ...otherFilters };
-
-//         if (week) {
-//             const weekFilter = addWeekFilter({ week });
-//             filters = { ...filters, ...weekFilter };
-//         }
-
-//         const challenges = Object.keys(filters).length === 0
-//             ? await challengeService.getAllChallenges()
-//             : await challengeService.searchChallenges(filters);
-
-//         res.status(200).json(challenges);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה בקבלת אתגרים', error: error.message });
-//     }
-// };
-
-// // פונקציה פנימית לבניית פילטר שבועי לפי פרמטר week
-// function addWeekFilter(query) {
-//     const inputDate = new Date(query.week);
-//     if (isNaN(inputDate)) return {};
-
-//     const dayOfWeek = inputDate.getDay();
-//     const diffToSunday = (dayOfWeek + 6) % 7;
-//     const startOfWeek = new Date(inputDate);
-//     startOfWeek.setDate(inputDate.getDate() - diffToSunday);
-//     startOfWeek.setHours(0, 0, 0, 0);
-
-//     const endOfWeek = new Date(startOfWeek);
-//     endOfWeek.setDate(startOfWeek.getDate() + 6);
-//     endOfWeek.setHours(23, 59, 59, 999);
-
-//     return {
-//         challengeDate: {
-//             $gte: startOfWeek,
-//             $lte: endOfWeek
-//         }
-//     };
-// }
-
-// // קבלת אתגר לפי מזהה
-// exports.getChallengeById = async (req, res) => {
-//     try {
-//         const challenge = await challengeService.getChallengeById(req.params.id);
-//         if (!challenge) {
-//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
-//         }
-//         res.json(challenge);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה בקבלת אתגר', error: error.message });
-//     }
-// };
-
-// // קבלת אתגרים לפי מזהה משתמש
-// exports.getChallengeByUserId = async (req, res) => {
-//     try {
-//         const challenges = await challengeService.getChallengeByUserId(req.params.id);
-//         if (!challenges || challenges.length === 0) {
-//             return res.status(404).json({ message: 'לא נמצאו אתגרים למשתמש.' });
-//         }
-//         res.json(challenges);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה בקבלת אתגרים למשתמש', error: error.message });
-//     }
-// };
-
-// // עדכון פרטי אתגר
-// exports.updateChallenge = async (req, res) => {
-//     try {
-//         const updatedChallenge = await challengeService.updateChallenge(req.params.id, req.body);
-//         if (!updatedChallenge) {
-//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
-//         }
-//         res.json(updatedChallenge);
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה בעדכון אתגר', error: error.message });
-//     }
-// };
-
-// // מחיקת אתגר
-// exports.deleteChallenge = async (req, res) => {
-//     try {
-//         const deleted = await challengeService.deleteChallenge(req.params.id);
-//         if (!deleted) {
-//             return res.status(404).json({ message: 'האתגר לא נמצא.' });
-//         }
-//         res.json({ message: 'האתגר נמחק בהצלחה.' });
-//     } catch (error) {
-//         res.status(500).json({ message: 'שגיאה במחיקת אתגר', error: error.message });
-//     }
-// };
 const challengeService = require('../services/challengeService');
-const userService = require('../services/userService');
+
 exports.completeWeeklyChallenge = async (req, res) => {
 const userId = req.user.id;
   const challengeId = req.params.challengeId;
-    const { completed } = req.body;  // מקבל את הערך שמגיע מהקליינט
+    const { completed } = req.body;  
   try {
     await challengeService.markChallengeCompletion(userId, challengeId,completed);
     res.status(200).json({
@@ -123,6 +14,7 @@ const userId = req.user.id;
     res.status(500).json({ message: 'שגיאה בעת סימון אתגר כושלם' });
   }
 };
+
 exports.updateChallenge = async (req, res) => {
   const challengeId = req.params.id;
   const { week_start_date, description } = req.body;
@@ -138,46 +30,23 @@ exports.updateChallenge = async (req, res) => {
 
 exports.getAllChallenges = async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 20; // ברירת מחדל
+        const limit = parseInt(req.query.limit) || 20;
         const offset = parseInt(req.query.offset) || 0;
-
         const result = await challengeService.getAllChallenges(limit, offset);
-        console.log(result);
         res.json(result);
     } catch (err) {
-        console.log(err)
         res.status(500).json({ error: err.message });
     }
 };
 
-exports.createChallenge = async (req, res) => {
-    try {
-        const result = await challengeService.createChallenge(req.body);
-        res.status(201).json(result);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
-exports.getRecentCompletedChallenges = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const limit = req.query.limit || 10; // אפשר לשלוח limit מהקליינט
-        const challenges = await challengeService.getRecentCompletedChallenges(userId, limit);
-        res.json(challenges);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
-exports.didUserCompleteCurrentChallenge = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const result = await challengeService.didUserCompleteCurrentChallenge(userId);
-        res.json(result);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: err.message });
-    }
-};
+// exports.createChallenge = async (req, res) => {
+//     try {
+//         const result = await challengeService.createChallenge(req.body);
+//         res.status(201).json(result);
+//     } catch (err) {
+//         res.status(500).json({ error: err.message });
+//     }
+// };
 
 exports.deleteChallenge = async (req, res) => {
     try {
@@ -188,41 +57,31 @@ exports.deleteChallenge = async (req, res) => {
     }
 };
 
-
 exports.getChallengeCompletions = async (req, res) => {
   try {
     const users = await challengeService.getUserCompletedChallenges(req.params.challengeId);
-    console.log(users);
     res.json(users);     
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
-
-exports.getUserChallengeStatuses = async (req, res) => {
+exports.createChallenge = async (req, res) => {
     try {
-        const challenges = await challengeService.getUserCompletedChallenges(req.params.userId);
-        res.json(challenges);
+        const { week_start_date, description } = req.body;
+        if (!week_start_date || !description) {
+            return res.status(400).json({ error: "חובה לציין תאריך ואת תיאור האתגר" });
+        }
+        const existing = await challengeService.getChallengeByDate(week_start_date);
+        if (existing) {
+            return res.status(400).json({ error: "כבר קיים אתגר לאותו שבוע" });
+        }
+        const result = await challengeService.createChallenge({ week_start_date, description });
+        res.status(201).json(result);
+        
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Error creating challenge:", err);
+        res.status(500).json({ error: "שגיאה בשרת: " + err.message });
     }
 };
 
-exports.markCompleted = async (req, res) => {
-    try {
-        await challengeService.markCompleted(req.user.id, req.params.challengeId);
-        res.sendStatus(200);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
-
-exports.unmarkCompleted = async (req, res) => {
-    try {
-        await challengeService.unmarkCompleted(req.params.userId, req.params.challengeId);
-        res.sendStatus(200);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};

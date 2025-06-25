@@ -42,7 +42,6 @@ const AddClassForm = ({ onClassAdded }) => {
 
     setIsSubmitting(true);
     try {
-      console.log("Sending form data:", formData);
       const response = await ApiUtils.post("http://localhost:3000/classes", formData);
       // הצלחה!
       alert("קורס נוסף בהצלחה");

@@ -1,5 +1,4 @@
 const PostService = require('../services/postService');
-// Get all posts
 exports.getAllPosts = async (req, res) => {
     try {
         const posts = await PostService.getAllPosts();
@@ -23,7 +22,6 @@ exports.partialUpdatePostById = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-// Get post by ID
 exports.getPostById = async (req, res) => {
     try {
         const post = await PostService.getPostById(req.params.id);
@@ -36,7 +34,6 @@ exports.getPostById = async (req, res) => {
     }
 };
 
-// Create new post
 exports.createPost = async (req, res) => {
     try {
         const newPost = await PostService.createPost(req.body);
@@ -46,7 +43,6 @@ exports.createPost = async (req, res) => {
     }
 };
 
-// Update post by ID
 exports.updatePostById = async (req, res) => {
     try {
         const updatedPost = await PostService.updatePostById(req.params.id, req.body);
@@ -59,7 +55,6 @@ exports.updatePostById = async (req, res) => {
     }
 };
 
-// Delete post by ID
 exports.deletePostById = async (req, res) => {
     try {
         const deleted = await PostService.deletePostById(req.params.id);

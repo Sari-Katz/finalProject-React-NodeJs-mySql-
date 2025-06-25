@@ -60,7 +60,6 @@ export default function PaymentComponent({ price, onSuccess, onClose }) {
             }}
             onApprove={(data, actions) => {
               return actions.order.capture().then(function (details) {
-                console.log("Payment successful:", details);
                 onSuccess();
                 onClose();
               });

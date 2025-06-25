@@ -1,6 +1,6 @@
 const pool = require('../../DB/Connection');
 const db=pool;
-// Create new comment
+
 exports.createComment = async function createComment(commentData) {
     const { post_id, user_id, content } = commentData;
     const query = `
@@ -27,7 +27,6 @@ exports.createComment = async function createComment(commentData) {
     }
 };
 
-// Get all comments
 exports.getAllComments = async function getAllComments() {
 
     const query = `
@@ -45,9 +44,7 @@ exports.getAllComments = async function getAllComments() {
     }
 };
 
-// Get comments by PostID
 exports.getCommentByPostId = async function getCommentByPostId(postId) {
-   console.log('Fetching comments for post ID:', postId);
     const query = `
         SELECT comments.comment_id, comments.content, comments.created_at, users.full_name, users.email
         FROM comments
@@ -63,7 +60,6 @@ exports.getCommentByPostId = async function getCommentByPostId(postId) {
     }
 };
 
-// Get comments by UserID
 exports.getCommentsByUserId = async function getCommentsByUserId(userId) {
     const query = `
         SELECT comments.comment_id, comments.content, comments.created_at, posts.title
@@ -81,7 +77,6 @@ exports.getCommentsByUserId = async function getCommentsByUserId(userId) {
     }
 };
 
-// Update comment by ID
 exports.updateCommentById = async function updateCommentById(commentId, content) {
     const query = `
         UPDATE comments
@@ -111,7 +106,6 @@ exports.updateCommentById = async function updateCommentById(commentId, content)
     }
 };
 
-// Delete comment by ID
 exports.deleteCommentById = async function deleteCommentById(commentId) {
     const query = 'DELETE FROM comments WHERE comment_id = ?';
     try {
@@ -122,16 +116,4 @@ exports.deleteCommentById = async function deleteCommentById(commentId) {
     }
 };
 
-// Partial update comment by ID
-exports.partialUpdateCommentById = async (comment_id, updates) => {
-    try {
-        const fields = Object.keys(updates).map((key) => `${key} = ?`).join(', ');
-        const values = Object.values(updates);
-        const query = `UPDATE comments SET ${fields} WHERE comment_id = ?`;
-        const [result] = await db.execute(query, [...values, comment_id]);
-        return result.affectedRows > 0 ? { comment_id, ...updates } : null;
-    } catch (error) {
-        console.error('Error in partialUpdateCommentById service:', error);
-        throw error;
-    }
-};
+

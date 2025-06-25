@@ -24,7 +24,6 @@ app.use("/classes", classRoute);
 app.use("/challenges",chellangeRoute );
 app.use("/comments", commentRoute);
 app.use("/posts", postRoute);
-// app.use("/userSubscription", userSubscriptionRoute);
 app.use("/subscription", subscriptionRoute);
 
 
