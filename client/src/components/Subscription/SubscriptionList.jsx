@@ -8,7 +8,6 @@ export default function SubscriptionList() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [paymentSubscription, setPaymentSubscription] = useState(null);
-  const apiUtils = new ApiUtils();
 
   // בטעינת הקומפוננטה נבדוק אם ב-URL יש id של מנוי לתשלום ונפתח את התשלום
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function SubscriptionList() {
   useEffect(() => {
     async function loadSubscriptions() {
       try {
-        const data = await apiUtils.get("http://localhost:3000/subscription/plans");
+        const data = await ApiUtils.get("http://localhost:3000/subscription/plans");
         setSubscriptions(data);
 
         // אם יש paymentSubscription עם id, נעדכן את המנוי המלא מתוך הרשימה
@@ -62,7 +61,7 @@ export default function SubscriptionList() {
 
   const handlePaymentSuccess = async (subscriptionId) => {
     try {
-      await apiUtils.post(`http://localhost:3000/subscription/${subscriptionId}/register`);
+      await ApiUtils.post(`http://localhost:3000/subscription/${subscriptionId}/register`);
       alert('נרשמת בהצלחה!');
     } catch (error) {
       console.error("שגיאה בהרשמה:", error);

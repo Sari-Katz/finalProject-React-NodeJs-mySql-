@@ -28,18 +28,6 @@ const ManageChallangesPage = () => {
         }
     }, [searchParams]);
 
-    const closeModals = () => {
-        setSearchParams({});
-    };
-
-    const openDeleteModal = (classData) => {
-        setSearchParams({
-            classId: classData.id,
-            view: "delete",
-            title: classData.description,
-        });
-    };
-
     const openCompletedListModal = (challengeData) => {
         setSearchParams({
             challengeId: challengeData.id,
@@ -64,13 +52,11 @@ const ManageChallangesPage = () => {
             {confirmDeleteOpen && selectedChallenge && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalContent}>
-                        <DeleteClassModal
-                            classData={selectedChallenge}
-                            onClose={closeModals}
-                            onDeleteSuccess={() => {
-                                closeModals();
-                                setselectedChallenge(null);
-                            }}
+                        <CompleteChallengeList
+                            challengeId={selectedChallenge.id}
+                            description={selectedChallenge.description}
+                            onClose={() => {
+                                setSearchParams({})}}
                         />
                     </div>
                 </div>

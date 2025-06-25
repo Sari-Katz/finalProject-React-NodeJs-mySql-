@@ -2,19 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
 
-const api = new ApiUtils();
-
 const ChallengeSearch = ({ openCompletedListModal }) => {
     const [challenges, setchallenges] = useState([]);
     const [page, setPage] = useState(0);
     const [expandedId, setExpandedId] = useState(null);
     const limit = 10;
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchchallenges = async () => {
             try {
-                const res = await api.get(
+                const res = await ApiUtils.get(
                     `http://localhost:3000/challenges?limit=${limit}&offset=${page * limit}`
                 );
                 setchallenges(res);
@@ -27,13 +24,10 @@ const ChallengeSearch = ({ openCompletedListModal }) => {
     }, [page]);
 
 
-
     return (
         <div className="space-y-3">
             <h3 className="font-semibold text-lg">חפש את האתגר המבוקש </h3>
-
-
-            <ul className="divide-y border rounded max-h-60 overflow-auto">
+           <ul className="divide-y border rounded max-h-60 overflow-auto">
                 {challenges.length > 0 ? (
                     challenges.map((c) => (
                         <li
@@ -49,7 +43,7 @@ const ChallengeSearch = ({ openCompletedListModal }) => {
                                             className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setExpandedId(null); // סגור את ההרחבה
+                                                setExpandedId(null); 
                                                 openCompletedListModal(c)
                                             }}
                                         >

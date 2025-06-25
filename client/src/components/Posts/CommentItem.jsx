@@ -6,14 +6,12 @@ function CommentItem({ comment, onEdit, onDelete }) {
     const { user } = useContext(AuthContext);
     const [isEditing, setIsEditing] = useState(false);
     const [editBody, setEditBody] = useState(comment.content);
-
     const handleSave = () => {
         if (editBody.trim()) {
             onEdit(comment.comment_id, editBody);
             setIsEditing(false);
         }
     };
-
     const handleCancel = () => {
         setEditBody(comment.content);
         setIsEditing(false);

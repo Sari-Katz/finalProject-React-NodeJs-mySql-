@@ -9,16 +9,13 @@ function CommentsSection({ postId }) {
     const [comments, setComments] = useState([]);
     const [newCommentBody, setNewCommentBody] = useState("");
     const [loading, setLoading] = useState(true);
-    
-    const apiService = new ApiUtils();
-
     useEffect(() => {
         fetchComments();
     }, [postId]);
 
     const fetchComments = async () => {
         try {
-            const data = await apiService.get(`http://localhost:3000/comments/${postId}`);
+            const data = await ApiUtils.get(`http://localhost:3000/comments/${postId}`);
             setComments(data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -36,7 +33,7 @@ function CommentsSection({ postId }) {
             };
 
             try {
-                const comment = await apiService.post('http://localhost:3000/comments', newComment);
+                const comment = await ApiUtils.post('http://localhost:3000/comments', newComment);
                 setComments([...comments, comment]);
                 setNewCommentBody("");
             } catch (error) {
@@ -51,7 +48,7 @@ function CommentsSection({ postId }) {
                 content: newBody,
             };
 
-            await apiService.put(`http://localhost:3000/comments/${commentId}`, updatedComment);
+            await ApiUtils.put(`http://localhost:3000/comments/${commentId}`, updatedComment);
             
             setComments(prevComments =>
                 prevComments.map(comment =>
@@ -67,7 +64,7 @@ function CommentsSection({ postId }) {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            await apiService.delete(`http://localhost:3000/comments/${commentId}`);
+            await ApiUtils.delete(`http://localhost:3000/comments/${commentId}`);
             setComments(prevComments =>
                 prevComments.filter(comment => comment.comment_id !== commentId)
             );

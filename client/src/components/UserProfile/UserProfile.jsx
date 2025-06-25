@@ -1,22 +1,25 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./UserProfile.module.css";
 import { AuthContext } from "../AuthContext";
 import Info from "./Info";
 
-const apiUtils = new ApiUtils();
-
 function UserProfile() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const userId = user.id;
+
+  // במקום לנהל showUserInfo ב-state, נשתמש ב-URL
+  const showUserInfo = location.pathname === "/profile/info";
+
   const [recentClasses, setRecentClasses] = useState([]);
   const [pastChallenges, setPastChallenges] = useState([]);
   const [weeklyChallenge, setWeeklyChallenge] = useState(null);
   const [completedWeeklyChallenge, setCompletedlyChallenge] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showUserInfo, setShowUserInfo] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +29,7 @@ function UserProfile() {
           recentCompletedChallenges,
           completedWeeklyChallenge,
           weeklyChallenge
-        } = await apiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
+        } = await ApiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
 
         setRecentClasses(recentClasses);
         setPastChallenges(recentCompletedChallenges);
@@ -40,19 +43,13 @@ function UserProfile() {
     };
     fetchData();
   }, [userId]);
-      
 
   const handleCompleteWeeklyChallenge = async (isComplete = true) => {
     try {
-      // await apiUtils.patch(
-      //   `http://localhost:3000/users/${userId}/weekly-challenge/${weeklyChallenge.id}/complete`,
-      //   { completed: isComplete }
-      // );
-      await apiUtils.patch(
+      await ApiUtils.patch(
         `http://localhost:3000/challenges/${weeklyChallenge.id}/completed`,
         { completed: isComplete }
       );
-      
       setCompletedlyChallenge(isComplete);
     } catch (error) {
       console.error("Failed to complete challenge:", error);
@@ -72,8 +69,16 @@ function UserProfile() {
     );
   }
 
+  const openUserInfo = () => {
+    navigate("/profile/info");
+  };
+
+  const closeUserInfo = () => {
+    navigate("/about");
+  };
+
   if (showUserInfo) {
-    return <Info onBack={() => setShowUserInfo(false)} />;
+    return <Info onBack={closeUserInfo} />;
   }
 
   return (
@@ -82,8 +87,9 @@ function UserProfile() {
       <div className={styles.profileHeader}>
         <div 
           className={styles.avatarContainer}
-          onClick={() => setShowUserInfo(true)}
+          onClick={openUserInfo}
           title="לחץ לצפייה בפרטי המשתמש"
+          style={{ cursor: "pointer" }}
         >
           <div className={styles.avatar}>
             {getUserInitial()}
@@ -151,7 +157,7 @@ function UserProfile() {
           </div>
         </section>
       )}
-
+      
       {/* Recent Classes */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>📅 שיעורים בחודש האחרון</h2>

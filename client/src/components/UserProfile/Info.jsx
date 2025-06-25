@@ -15,9 +15,6 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import InfoRow from "./InfoRow";
-
-const apiUtils = new ApiUtils();
-
 const Info = ({ onBack }) => {
     const [userInfo, setUserInfo] = useState(null);
     const [editData, setEditData] = useState({});
@@ -28,7 +25,7 @@ const Info = ({ onBack }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const data = await apiUtils.get(`http://localhost:3000/users/me`);
+                const data = await ApiUtils.get(`http://localhost:3000/users/me`);
                 setUserInfo(data);   
                 setEditData(data);
             } catch (err) {
@@ -46,7 +43,7 @@ const Info = ({ onBack }) => {
             try {
                                 console.log(editData);
 
-                const updated = await apiUtils.put(
+                const updated = await ApiUtils.put(
                     `http://localhost:3000/users/me`,
                      editData 
                 );

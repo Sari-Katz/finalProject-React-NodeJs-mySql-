@@ -4,8 +4,6 @@ import { AuthContext } from "../AuthContext";
 import styles from "./CourseSignupModal.module.css";
 import ApiUtils from "../../utils/ApiUtils";
 
-const api = new ApiUtils();
-
 export default function CourseSignupModal({ course, onClose, onUpdate }) {
   const { user } = useContext(AuthContext);
   const [status, setStatus] = useState("loading");
@@ -17,7 +15,7 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
       try {
         setStatus("loading");
         setError(null);
-        const res = await api.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
+        const res = await ApiUtils.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
         setIsRegistered(res);
       if (!user?.id) {
         setStatus("error");
@@ -38,7 +36,7 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     setError(null);
     
     try {
-      await api.post(`http://localhost:3000/classes/${course.id}/register`);
+      await ApiUtils.post(`http://localhost:3000/classes/${course.id}/register`);
       setStatus("success");
       setIsRegistered(true);
       setStatus("success");
@@ -59,9 +57,9 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     setError(null);
     
     try {
-      await api.post(`http://localhost:3000/classes/${course.id}/unregister`);
+      await ApiUtils.post(`http://localhost:3000/classes/${course.id}/unregister`);
       setStatus("success");
-      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
+      await ApiUtils.post(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
       setIsRegistered(false);
       setStatus("success");
       

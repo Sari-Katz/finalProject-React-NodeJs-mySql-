@@ -14,7 +14,6 @@ function SinglePostView() {
     const [isEditingPost, setIsEditingPost] = useState(false);
     const [loading, setLoading] = useState(true);
     
-    const apiService = new ApiUtils();
 
     useEffect(() => {
         fetchPost();
@@ -22,7 +21,7 @@ function SinglePostView() {
 
     const fetchPost = async () => {
         try {
-            const data = await apiService.get(`http://localhost:3000/posts/${postId}`);
+            const data = await ApiUtils.get(`http://localhost:3000/posts/${postId}`);
             setPost(data);
             setLoading(false);
         } catch (error) {
@@ -34,7 +33,7 @@ function SinglePostView() {
     const handleUpdatePost = async (id, newBody) => {
         const updatedPost = { ...post, content: newBody };
         try {
-            const response = await apiService.put(`http://localhost:3000/posts/${id}`, updatedPost);
+            const response = await ApiUtils.put(`http://localhost:3000/posts/${id}`, updatedPost);
             setPost(response);
             setIsEditingPost(false);
         } catch (error) {
@@ -45,7 +44,7 @@ function SinglePostView() {
     const handleDeletePost = async () => {
         if (window.confirm('האם אתה בטוח שברצונך למחוק את הפוסט?')) {
             try {
-                await apiService.delete(`http://localhost:3000/posts/${postId}`);
+                await ApiUtils.delete(`http://localhost:3000/posts/${postId}`);
                 navigate('/posts');
             } catch (error) {
                 console.error('Error deleting post:', error);

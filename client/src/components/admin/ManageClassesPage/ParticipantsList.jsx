@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import ApiUtils from "../../../utils/ApiUtils";
 import styles from "./ParticipantsList.module.css"; // הוספה כאן
-
-const api = new ApiUtils();
-
 const ParticipantsList = ({ classId, title, onClose }) => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +9,7 @@ const ParticipantsList = ({ classId, title, onClose }) => {
     const fetchParticipants = async () => {
       setLoading(true);
       try {
-        const res = await api.get(
+        const res = await ApiUtils.get(
           `http://localhost:3000/classes/${classId}/participants`
         );
         setParticipants(res);

@@ -10,25 +10,21 @@ function Login() {
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const apiUtils = new ApiUtils();
-
   const handleLogin = async () => {
     try {
-      const data = await apiUtils.post('http://localhost:3000/users/login', { email, password });
+      const data = await ApiUtils.post('http://localhost:3000/users/login', { email, password });
       console.log('Login successful:', data.user);
       if (data && data.user) {
 
-        const minimalUser = {
+        const user = {
           full_name: data.user.full_name,
           email: data.user.email,
           id: data.user.id,
           role: data.user.role
         };
 
-        login(minimalUser);
-        // שומרים בלוקאל סטורג רק מזהה ותפקי
-        // נווט לדף הבית או כל דף אחר
-        navigate(`/user/home`);
+        login(user);
+        navigate(``);
       } else {
         setError(error.message || 'אירעה שגיאה במהלך ההתחברות');
       }
