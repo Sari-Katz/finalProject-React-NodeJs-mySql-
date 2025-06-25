@@ -96,26 +96,15 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
   useEffect(() => {
     const checkRegistration = async () => {
       try {
+        setStatus("loading");
+        setError(null);
         const res = await api.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
         setIsRegistered(res);
       if (!user?.id) {
         setStatus("error");
         setError("משתמש לא מחובר");
-        return;
-      }
-
-      try {
-        setStatus("loading");
-        setError(null);
-        
-        // בדיקה אם המשתמש רשום לקורס
-        const response = await api.get(
-          `http://localhost:3000/users/classes_participants/${course.id}/isRegistered`
-        );
-        
-        setIsRegistered(response || false);
-        setStatus("idle");
-      } catch (err) {
+      }}
+      catch (err) {
         console.error("שגיאה בבדיקת הרשמה:", err);
         setError("שגיאה בבדיקת סטטוס ההרשמה");
         setStatus("error");
@@ -132,7 +121,6 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     try {
       await api.post(`http://localhost:3000/classes/${course.id}/register`);
       setStatus("success");
-      await api.post(`http://localhost:3000/users/classes_participants/${course.id}/register`);
       setIsRegistered(true);
       setStatus("success");
       
