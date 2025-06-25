@@ -84,7 +84,7 @@ const Home = () => {
             <section className={styles.heroSection}>
                 <div className={styles.heroContent}>
                     <div className={styles.textContent}>
-                        <h1 className={styles.mainTitle}>ברוכה הבאה לסטודיו שלי!</h1>
+                        <h1 className={styles.mainTitle}>!ברוכה הבאה לסטודיו שלי</h1>
                         <h2 className={styles.subtitle}>טובה - מאמנת פילאטיס וכושר</h2>
                         
                         <p className={styles.description}>
