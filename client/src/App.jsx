@@ -15,6 +15,7 @@ import Info from './components/UserProfile/Info.jsx';
 import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import SinglePostView from './components/Posts/SinglePostView.jsx';
+import PageNotFound from './components/PageNotFound/PageNotFound';
 
 import './App.css';
 
@@ -177,6 +178,7 @@ function AppRoutes() {
           </WithLayout>
     </PrivateRoute>
   }/>
+    <Route path="*" element={<PageNotFound />} />
     </Routes>
     
   );

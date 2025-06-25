@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../AuthContext";
 import ApiUtils from '../../utils/ApiUtils';
-import CommentsSection from './CommentsSection';
+import CommentsSection from '../Comments/CommentsSection';
+import ConfirmModal from '../ConfrimModal/ConfrimModal'; // 👈 הייבוא החדש
 import styles from './SinglePostView.module.css';
 
 function SinglePostView() {
@@ -13,6 +14,7 @@ function SinglePostView() {
     const [editPostBody, setEditPostBody] = useState('');
     const [isEditingPost, setIsEditingPost] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // 👈 state חדש
     
 
     useEffect(() => {
@@ -41,15 +43,24 @@ function SinglePostView() {
         }
     };
 
-    const handleDeletePost = async () => {
-        if (window.confirm('האם אתה בטוח שברצונך למחוק את הפוסט?')) {
-            try {
-                await ApiUtils.delete(`http://localhost:3000/posts/${postId}`);
-                navigate('/posts');
-            } catch (error) {
-                console.error('Error deleting post:', error);
-            }
+    // 👇 הפונקציות החדשות למחיקה
+    const handleDeletePostClick = () => {
+        setShowDeleteModal(true);
+    };
+
+    const handleDeletePostConfirm = async () => {
+        try {
+            await ApiUtils.delete(`http://localhost:3000/posts/${postId}`);
+            setShowDeleteModal(false);
+            navigate('/posts');
+        } catch (error) {
+            console.error('Error deleting post:', error);
+            setShowDeleteModal(false);
         }
+    };
+
+    const handleDeletePostCancel = () => {
+        setShowDeleteModal(false);
     };
 
     const startEditing = () => {
@@ -83,84 +94,84 @@ function SinglePostView() {
     }
 
     return (
-        <div className={styles.container}>
-            {/* Header */}
-            <div className={styles.header}>
-                <button onClick={() => navigate('/posts')} className={styles.backButton}>
-                    ← חזרה לפוסטים
-                </button>
-                <h1 className={styles.pageTitle}>פוסט מורחב</h1>
-            </div>
-
-            {/* Post Content */}
-            <div className={styles.postContainer}>
-                <div className={styles.postHeader}>
-                    <h2 className={styles.postTitle}>{post.title}</h2>
-                    {user.role === 'admin' && (
-                        <div className={styles.postActions}>
-                            <button
-                                onClick={startEditing}
-                                className={styles.editButton}
-                                disabled={isEditingPost}
-                            >
-                                ✏️ עריכה
-                            </button>
-                            <button
-                                onClick={handleDeletePost}
-                                className={styles.deleteButton}
-                            >
-                                🗑️ מחיקה
-                            </button>
-                        </div>
-                    )}
+        <>
+            <div className={styles.container}>
+                {/* Header */}
+                <div className={styles.header}>
+                    <button onClick={() => navigate('/posts')} className={styles.backButton}>
+                        ← חזרה לפוסטים
+                    </button>
+                    <h1 className={styles.pageTitle}>פוסט מורחב</h1>
                 </div>
-{/* 
-                Post Image
-                {post.image_url && (
-                    <div className={styles.postImageWrapper}>
-                        <img 
-                            src={`http://localhost:3000${post.image_url}`} 
-                            alt={post.title}
-                            className={styles.postImage}
-                        />
-                    </div>
-                )} */}
 
-                <div className={styles.postContent}>
-                    {isEditingPost ? (
-                        <div className={styles.editSection}>
-                            <textarea
-                                value={editPostBody}
-                                onChange={(e) => setEditPostBody(e.target.value)}
-                                className={styles.editTextarea}
-                                rows="8"
-                            />
-                            <div className={styles.editActions}>
+                {/* Post Content */}
+                <div className={styles.postContainer}>
+                    <div className={styles.postHeader}>
+                        <h2 className={styles.postTitle}>{post.title}</h2>
+                        {user.role === 'admin' && (
+                            <div className={styles.postActions}>
                                 <button
-                                    onClick={() => handleUpdatePost(post.post_id, editPostBody)}
-                                    className={styles.saveButton}
+                                    onClick={startEditing}
+                                    className={styles.editButton}
+                                    disabled={isEditingPost}
                                 >
-                                    💾 שמור
+                                    ✏️ עריכה
                                 </button>
                                 <button
-                                    onClick={cancelEditing}
-                                    className={styles.cancelButton}
+                                    onClick={handleDeletePostClick} // 👈 שינוי כאן
+                                    className={styles.deleteButton}
                                 >
-                                    ❌ בטל
+                                    🗑️ מחיקה
                                 </button>
                             </div>
-                        </div>
-                    ) : (
-                        <div className={styles.postText}>
-                            {post.content}
-                        </div>
-                    )}
+                        )}
+                    </div>
+
+                    <div className={styles.postContent}>
+                        {isEditingPost ? (
+                            <div className={styles.editSection}>
+                                <textarea
+                                    value={editPostBody}
+                                    onChange={(e) => setEditPostBody(e.target.value)}
+                                    className={styles.editTextarea}
+                                    rows="8"
+                                />
+                                <div className={styles.editActions}>
+                                    <button
+                                        onClick={() => handleUpdatePost(post.post_id, editPostBody)}
+                                        className={styles.saveButton}
+                                    >
+                                        💾 שמור
+                                    </button>
+                                    <button
+                                        onClick={cancelEditing}
+                                        className={styles.cancelButton}
+                                    >
+                                        ❌ בטל
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={styles.postText}>
+                                {post.content}
+                            </div>
+                        )}
+                    </div>
                 </div>
+
+                {/* Comments Section */}
+                <CommentsSection postId={postId} />
             </div>
 
-            {/* Comments Section */}
-            <CommentsSection postId={postId} />
-        </div>
+            {/* 👇 חלונית אישור מחיקת פוסט */}
+            <ConfirmModal 
+                isOpen={showDeleteModal}
+                title="מחק פוסט"
+                message="האם אתה בטוח שברצונך למחוק את הפוסט? פעולה זו תמחק גם את כל התגובות ואינה ניתנת לביטול"
+                onConfirm={handleDeletePostConfirm}
+                onCancel={handleDeletePostCancel}
+            />
+        </>
     );
 }
 
