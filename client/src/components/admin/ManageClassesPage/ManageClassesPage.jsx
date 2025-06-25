@@ -90,19 +90,15 @@ import styles from "./ManageClassesPage.module.css";
 
 const ManageClassesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    
     const [selectedClass, setSelectedClass] = useState(null);
     const [participantsOpen, setParticipantsOpen] = useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-    
-    // מפתח לרענון הרשימה
     const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const id = searchParams.get("classId");
         const view = searchParams.get("view");
-        const title = searchParams.get("title");
-
+        const title = searchParams.get("title"); 
         if (id && view) {
             setSelectedClass({ id, title });
             setParticipantsOpen(view === "participants");
@@ -113,7 +109,7 @@ const ManageClassesPage = () => {
             setConfirmDeleteOpen(false);
         }
     }, [searchParams]);
-
+    
     const closeModals = () => {
         setSearchParams({});
     };

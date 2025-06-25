@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
-import styles from "./CompleteChallengeList.module.css"; // הוספה כאן
-
-const api = new ApiUtils();
-
-const CompleteChallengeList = ({ challengeId, description, onClose }) => {
+import styles from "./CompleteChallengeList.module.css";
+const CompleteChallengeList = ({ onClose }) => {
+  const [searchParams] = useSearchParams();
+  const challengeId = searchParams.get("challengeId");
+  const description = searchParams.get("description");
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!challengeId) return;
+
     const fetchParticipants = async () => {
       setLoading(true);
       try {
-        const res = await api.get(
+        const res = await ApiUtils.get(
           `http://localhost:3000/challenges/${challengeId}/completions`
         );
         setParticipants(res);
@@ -22,6 +25,7 @@ const CompleteChallengeList = ({ challengeId, description, onClose }) => {
         setLoading(false);
       }
     };
+
     fetchParticipants();
   }, [challengeId]);
 
@@ -47,7 +51,7 @@ const CompleteChallengeList = ({ challengeId, description, onClose }) => {
           ))}
         </ul>
       ) : (
-        <p className={styles.empty}>אין נרשמים בשיעור זה.</p>
+        <p className={styles.empty}>אין נרשמים באתגר זה.</p>
       )}
     </div>
   );

@@ -1,15 +1,15 @@
-
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import AddChallengeForm from "./AddChallengeForm";
 import ChallengeSearch from "./ChallengeSearch";
 import CompleteChallengeList from "./CompleteChallengeList";
 import styles from "./ManageChallangesPage.module.css";
-const ManageChallangesPage = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const navigate = useNavigate();
 
+const ManageChallangesPage = () => {
+    
+    const [searchParams, setSearchParams] = useSearchParams();
     const [selectedChallenge, setselectedChallenge] = useState(null);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [completeChallengeOpen, setcompleteChallengeOpen] = useState(false);
 
     useEffect(() => {
@@ -20,9 +20,11 @@ const ManageChallangesPage = () => {
         if (id && view) {
             setselectedChallenge({ id, description });
             setcompleteChallengeOpen(view === "participants");
+            setConfirmDeleteOpen(view === "delete");
         } else {
             setselectedChallenge(null);
             setcompleteChallengeOpen(false);
+            setConfirmDeleteOpen(false);
         }
     }, [searchParams]);
 
@@ -30,29 +32,49 @@ const ManageChallangesPage = () => {
         setSearchParams({});
     };
 
+    const openDeleteModal = (classData) => {
+        setSearchParams({
+            classId: classData.id,
+            view: "delete",
+            title: classData.description,
+        });
+    };
+
     const openCompletedListModal = (challengeData) => {
-        setSearchParams({ challengeId: challengeData.id, view: "participants", description: challengeData.description });
+        setSearchParams({
+            challengeId: challengeData.id,
+            view: "participants",
+            description: challengeData.description,
+        });
     };
 
     return (
         <div className={styles.container}>
             <AddChallengeForm />
-            <ChallengeSearch
-                openCompletedListModal={openCompletedListModal}
-            />
-            {completeChallengeOpen && selectedChallenge && (
+            <ChallengeSearch openCompletedListModal={openCompletedListModal} />
+
+            {completeChallengeOpen && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalContent}>
-                        <CompleteChallengeList
-                            challengeId={selectedChallenge.id}
-                            description={selectedChallenge.description}
-                            onClose={closeModals}
-                        />
+                        <CompleteChallengeList onClose={closeModals} />
                     </div>
                 </div>
             )}
 
-            
+            {confirmDeleteOpen && selectedChallenge && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <DeleteClassModal
+                            classData={selectedChallenge}
+                            onClose={closeModals}
+                            onDeleteSuccess={() => {
+                                closeModals();
+                                setselectedChallenge(null);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

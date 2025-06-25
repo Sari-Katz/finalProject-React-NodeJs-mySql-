@@ -2,29 +2,23 @@ import React, { useEffect, useState, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AuthContext } from "../AuthContext";  // נתיב מדויק לפי המיקום שלך
 import SubscriptionList from "../Subscription/SubscriptionList";
-import CourseSignupModal from "./CourseSignupModal";
+import CourseSignupModal from "./ClassSignupModal";
 import ApiUtils from "../../utils/ApiUtils";
 import styles from "./ScheduleTable.module.css";
-import CourseCell from "./CourseCell";
-
+import CourseCell from "./ClassCell";
 const days = ["ראשון", "שני", "שלישי", "רביעי", "חמישי"];
 
 export default function ScheduleTable() {
   const { user } = useContext(AuthContext);
   const userId = user?.id;
   const [activeSubscription, setActiveSubscription] = useState(null);
-
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showSubscriptionList, setShowSubscriptionList] = useState(false);
-  // const [me, setMe] = useState(null); // לפרטי המשתמש עם מנוי פעיל
   const [searchParams, setSearchParams] = useSearchParams();
-
   const apiUtils = new ApiUtils();
-
   const times = [...new Set(courses.map((c) => c.start_time))].sort();
 
-  // טען קורסים
   useEffect(() => {
     async function loadCourses() {
       try {
@@ -38,7 +32,6 @@ export default function ScheduleTable() {
     loadCourses();
   }, []);
 
-  // טען פרטי משתמש עם מנוי פעיל ברגע שיש userId
   useEffect(() => {
     if (!userId) return;
 
@@ -121,9 +114,7 @@ export default function ScheduleTable() {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <button onClick={closeSubscriptionList}>×</button>
-
             <div> אין לך מנוי בתוקף לחידוש המנוי בחר את החבילה הרצויה</div>
-
             <SubscriptionList />
           </div>
         </div>
