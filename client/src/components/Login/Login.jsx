@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import ApiUtils from '../../utils/ApiUtils';
 import styles from './Login.module.css';
@@ -9,27 +9,25 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       const data = await ApiUtils.post('http://localhost:3000/users/login', { email, password });
       if (data && data.user) {
-
         const user = {
           full_name: data.user.full_name,
           email: data.user.email,
           id: data.user.id,
           role: data.user.role
         };
-
         login(user);
-        navigate(``);
-      } else {
-        setError(error.message || 'אירעה שגיאה במהלך ההתחברות');
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'אירעה שגיאה במהלך ההתחברות');
+    } catch (_error) {
+      console.error('Login error:', _error);
+      if (_error.status === 401) {
+        setError('אימייל או סיסמה שגויים.');
+      } else {
+        setError(_error.message || 'אירעה שגיאה במהלך ההתחברות');
+      }
     }
   };
 

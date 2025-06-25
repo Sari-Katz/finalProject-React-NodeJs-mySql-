@@ -54,7 +54,7 @@ const userExists = await checkIfUserExists(additionalInfo.email);
             navigate(`/about`);
         } catch (error) {
             console.error('Error creating user:', error);
-            setError('Failed to create user');
+            setError(`Failed to create user ${error.message}`|| 'אירעה שגיאה במהלך ההתחברות');
         }
     };
 
