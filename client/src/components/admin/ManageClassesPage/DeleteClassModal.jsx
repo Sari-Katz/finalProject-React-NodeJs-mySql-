@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
 
+const DeleteClassModal = ({ onClose, onDeleteSuccess }) => {
+    const [searchParams] = useSearchParams();
+    const classId = searchParams.get("classId");
+    const title = searchParams.get("title");
 
-const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
     const [confirmStep, setConfirmStep] = useState(false);
     const [sending, setSending] = useState(false);
     const [notifyParticipants, setNotifyParticipants] = useState(false);
@@ -10,7 +14,9 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
     const handleDelete = async () => {
         setSending(true);
         try {
-            await ApiUtils.delete(`http://localhost:3000/classes/${classData.id}?notify=${notifyParticipants}`);
+            await ApiUtils.delete(
+                `http://localhost:3000/classes/${classId}?notify=${notifyParticipants}`
+            );
             onDeleteSuccess();
         } catch (err) {
             console.error("שגיאה במחיקת שיעור", err);
@@ -28,8 +34,10 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
 
                 {!confirmStep ? (
                     <div>
-                        <h2 className="text-xl font-bold mb-4">האם אתה בטוח שברצונך למחוק את השיעור?</h2>
-                        <p className="mb-4">{classData.title}</p>
+                        <h2 className="text-xl font-bold mb-4">
+                            האם אתה בטוח שברצונך למחוק את השיעור?
+                        </h2>
+                        <p className="mb-4">{title}</p>
                         <div className="flex justify-end gap-4">
                             <button
                                 className="bg-gray-300 px-4 py-2 rounded"
@@ -47,7 +55,9 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
                     </div>
                 ) : (
                     <div>
-                        <h3 className="text-lg font-semibold mb-4">האם לשלוח הודעה למשתתפים על ביטול השיעור?</h3>
+                        <h3 className="text-lg font-semibold mb-4">
+                            האם לשלוח הודעה למשתתפים על ביטול השיעור?
+                        </h3>
                         <label className="flex items-center gap-2">
                             <input
                                 type="checkbox"
@@ -56,7 +66,7 @@ const DeleteClassModal = ({ classData, onClose, onDeleteSuccess }) => {
                             />
                             שלח הודעת ביטול לכל הנרשמים במייל
                         </label>
-                        <div className="flex justify-end gap-4">
+                        <div className="flex justify-end gap-4 mt-4">
                             <button
                                 className="bg-gray-300 px-4 py-2 rounded"
                                 onClick={onClose}

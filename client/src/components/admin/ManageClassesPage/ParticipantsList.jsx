@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ApiUtils from "../../../utils/ApiUtils";
-import styles from "./ParticipantsList.module.css"; // הוספה כאן
-const ParticipantsList = ({ classId, title, onClose }) => {
+import styles from "./ParticipantsList.module.css";
+
+const ParticipantsList = ({ onClose }) => {
+  const [searchParams] = useSearchParams();
+  const classId = searchParams.get("classId");
+  const title = searchParams.get("title");
+
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!classId) return;
+
     const fetchParticipants = async () => {
       setLoading(true);
       try {
@@ -19,6 +27,7 @@ const ParticipantsList = ({ classId, title, onClose }) => {
         setLoading(false);
       }
     };
+
     fetchParticipants();
   }, [classId]);
 
