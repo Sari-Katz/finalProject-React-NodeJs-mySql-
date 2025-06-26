@@ -8,53 +8,32 @@ function Register() {
     const [error, setError] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [additionalInfo, setAdditionalInfo] = useState({
         full_name: '',
         email: '',
         phone: '',
     });
 
-    const { login } = useContext(AuthContext);
-    const navigate = useNavigate();
-
- const checkIfUserExists = async (email) => {
-  try {
-    const data = await ApiUtils.fetch(`http://localhost:3000/users?email=${email}`);
-    return data.length > 0;
-
-  } catch (error) {
-    console.error('Error checking user existence:', error);
-    return false;
-  }
-};
-
     const handleRegister = async (e) => {
         e.preventDefault();
-
         if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
-
-const userExists = await checkIfUserExists(additionalInfo.email);
-        if (userExists) {
-            setError('Email already exists');
-            return;
-        }
-
         const newUser = {
             password,
             ...additionalInfo,
-            role: 'user' 
+            role: 'user'
         };
-
         try {
             const user = await ApiUtils.post(`http://localhost:3000/users/register`, newUser);
             login(user);
             navigate(`/about`);
         } catch (error) {
-            console.error('Error creating user:', error);
-            setError('Failed to create user');
+               setError(`${error.body?.message}` || 'אירעה שגיאה במהלך ההתחברות');
+
         }
     };
 
@@ -63,13 +42,13 @@ const userExists = await checkIfUserExists(additionalInfo.email);
             <div className={styles.stepContainer}>
                 <h2>Create Your Account</h2>
                 <form onSubmit={handleRegister}>
-                     <input
+                    <input
                         type="text"
                         placeholder="Full Name"
                         value={additionalInfo.full_name}
                         onChange={(e) => setAdditionalInfo({ ...additionalInfo, full_name: e.target.value })}
                     />
-                       <input
+                    <input
                         type="email"
                         placeholder="Email"
                         value={additionalInfo.email}
@@ -90,14 +69,14 @@ const userExists = await checkIfUserExists(additionalInfo.email);
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
-                  
+
                     <input
                         type="text"
                         placeholder="Phone"
                         value={additionalInfo.phone}
                         onChange={(e) => setAdditionalInfo({ ...additionalInfo, phone: e.target.value })}
                     />
-                
+
                     <button type="submit">Sign Up</button>
                 </form>
                 {error && <div className={styles.error}>{error}</div>}
