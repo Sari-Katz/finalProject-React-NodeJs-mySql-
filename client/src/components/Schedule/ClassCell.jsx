@@ -20,7 +20,7 @@ export default function CourseCell({ course, onClick, isClickable = true }) {
     return (
       <div className={cellClasses}>
         <div className={styles.emptyCellContent}>
-          <span>פנוי</span>
+          <span>----</span>
         </div>
       </div>
     );
@@ -34,9 +34,9 @@ export default function CourseCell({ course, onClick, isClickable = true }) {
         <div className={styles.courseTime}>
           {course.start_time} - {course.end_time}
         </div>
-        {!isClickable && (
+        {/* {!isClickable && (
           <div className={styles.courseStatus}>נדרש מנוי</div>
-        )}
+        )} */}
       </div>
     </div>
   );

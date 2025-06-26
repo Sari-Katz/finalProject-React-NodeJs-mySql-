@@ -79,6 +79,7 @@ export default function ScheduleTable() {
 
   return (
     <div>
+    <div className="header">מערכת שעות</div>
       <div className={`${styles.scheduleContainer} ${styles.centeredContent}`} dir="rtl">
         <div className={`${styles.cell} ${styles.header}`}>שעה</div>
         {days.map((day) => (

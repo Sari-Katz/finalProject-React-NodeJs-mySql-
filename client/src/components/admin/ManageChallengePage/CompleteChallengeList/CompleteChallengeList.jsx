@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import ApiUtils from "../../../utils/ApiUtils";
+import ApiUtils from "../../../../utils/ApiUtils";
 import styles from "./CompleteChallengeList.module.css";
 const CompleteChallengeList = ({ onClose }) => {
   const [searchParams] = useSearchParams();

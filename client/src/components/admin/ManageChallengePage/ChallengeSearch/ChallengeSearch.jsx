@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import ApiUtils from "../../../utils/ApiUtils";
+import ApiUtils from "../../../../utils/ApiUtils";
 import styles from './ChallengeSearch.module.css';
 
 const ChallengeSearch = ({ refreshKey }) => {

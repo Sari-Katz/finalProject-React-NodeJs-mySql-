@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import AddClassForm from "./AddClassForm";
-import ClassSearch from "./ClassSearch";
+import AddClassForm from "./AddClassForm/AddClassForm";
+import ClassSearch from "./ClassSearch/ClassSearch";
 import ParticipantsList from "./ParticipantsList";
 import DeleteClassModal from "./DeleteClassModal";
 import styles from "./ManageClassesPage.module.css";

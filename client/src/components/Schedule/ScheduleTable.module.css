@@ -82,6 +82,7 @@
 }
 
 .scheduleContainer {
+  margin: 100px;
   display: grid;
   grid-template-columns: 100px repeat(5, 1fr);
   background: var(--tova-white);
@@ -324,6 +325,12 @@
   text-align: center;
   margin-bottom: 25px;
 }
+/* .header{
+  color: var(--tova-green);
+  font-size: 50px;
+  font-weight: 700;
+  margin-top: 100px;
+} */
 
 .modalHeader h3 {
   color: var(--tova-green);
