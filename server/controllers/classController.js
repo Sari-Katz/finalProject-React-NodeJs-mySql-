@@ -187,6 +187,7 @@ exports.deleteClass = async (req, res) => {
 
     if (notify) {
       const emails = await classService.getParticipantUserIds(classId);
+      console.log(emails)
       if (emails.length > 0) {
         await mailer.sendCancellationEmails(emails, classId);
       }

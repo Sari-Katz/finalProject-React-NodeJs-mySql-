@@ -14,7 +14,6 @@ const AddChallengeForm = () => {
 
     const showMessage = (text, type) => {
         setMessage({ text, type, show: true });
-        // הסתרה אוטומטית אחרי 5 שניות
         setTimeout(() => {
             setMessage({ text: "", type: "", show: false });
         }, 5000);
@@ -27,15 +26,12 @@ const AddChallengeForm = () => {
 
     const validate = () => {
         const newErrors = {};
-        
         if (!formData.description.trim()) {
             newErrors.description = "שדה חובה";
         }
-        
         if (!formData.week_start_date) {
             newErrors.week_start_date = "שדה חובה";
         }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
