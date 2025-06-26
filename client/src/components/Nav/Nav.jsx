@@ -27,6 +27,15 @@ function Nav() {
       </div>
 
       <div className={`${styles.navCenter} ${isOpen ? styles.open : ''}`}>
+        {user.role == 'admin' && <NavLink to="/ManageClasses" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          ניהול קורסים
+        </NavLink>}
+        {user.role == 'admin' && <NavLink to="/ManageChallanges" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          ניהול אתגרים
+        </NavLink>}
+        <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+          הרשמה למנוי
+        </NavLink>
         <NavLink to="/schedule" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           מערכת שעות
         </NavLink>
@@ -36,16 +45,8 @@ function Nav() {
         <NavLink to="/about" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           אודות
         </NavLink>
-        <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          הרשמה למנוי
-        </NavLink>
-        {user.role == 'admin' && <NavLink to="/ManageClasses" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          ניהול קורסים
-        </NavLink>}
-           {user.role == 'admin' && <NavLink to="/ManageChallanges" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          ניהול אתגרים
-        </NavLink>}
       </div>
+
 
       <div className={styles.navRight}>
         {location.pathname !== "/profile" && (

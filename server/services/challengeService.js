@@ -100,4 +100,14 @@ exports.didUserCompleteCurrentChallenge = async (userId) => {
   return { completed: rows.length > 0, challengeId };
 };
 
+exports.getUserCompletedChallenges = async (challengeId) => {
+  const sql = `
+    SELECT u.id, u.full_name, u.email, u.phone
+    FROM challenge_completions c
+    JOIN users u ON u.id = c.user_id
+    WHERE c.challenge_id = ? AND c.completed = 1
+  `;
+  const [rows] = await pool.query(sql, [challengeId]);
+  return rows;
+};
 

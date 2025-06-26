@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../AuthContext";
 import styles from "./ClassSignupModal.module.css";
@@ -15,13 +14,18 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
       try {
         setStatus("loading");
         setError(null);
+        
+        if (!user?.id) {
+          setStatus("error");
+          setError("משתמש לא מחובר");
+          return;
+        }
+
         const res = await ApiUtils.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
         setIsRegistered(res);
-      if (!user?.id) {
-        setStatus("error");
-        setError("משתמש לא מחובר");
-      }}
-      catch (err) {
+        setStatus("idle");
+        
+      } catch (err) {
         console.error("שגיאה בבדיקת הרשמה:", err);
         setError("שגיאה בבדיקת סטטוס ההרשמה");
         setStatus("error");
@@ -37,7 +41,6 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     
     try {
       await ApiUtils.post(`http://localhost:3000/classes/${course.id}/register`);
-      setStatus("success");
       setIsRegistered(true);
       setStatus("success");
     
@@ -46,7 +49,7 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
       }
     } catch (err) {
       console.error("שגיאה בהרשמה:", err);
-      setError(err.body?.message || "שגיאה בהרשמה לקורס");
+      setError(err.response?.data?.message || "שגיאה בהרשמה לקורס");
       setStatus("idle");
     }
   };
@@ -57,12 +60,9 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     
     try {
       await ApiUtils.post(`http://localhost:3000/classes/${course.id}/unregister`);
-      setStatus("success");
-      await ApiUtils.post(`http://localhost:3000/users/classes_participants/${course.id}/unregister`);
       setIsRegistered(false);
       setStatus("success");
       
-      // עדכן את רשימת הקורסים ברכיב האב
       if (onUpdate) {
         onUpdate();
       }
@@ -161,7 +161,6 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
 
           {status === "success" && (
             <div className={styles.successState}>
-              <div className={styles.successIcon}>🎉</div>
               <p className={styles.successMessage}>
                 {isRegistered ? "נרשמת בהצלחה לשיעור!" : "ההרשמה בוטלה בהצלחה"}
               </p>

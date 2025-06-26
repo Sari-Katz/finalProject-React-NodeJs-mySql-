@@ -35,7 +35,7 @@ const AddClassForm = ({ onClassAdded }) => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // מנקה את השגיאה כשמשנים ערך
+    setErrors({ ...errors, [e.target.name]: "" }); 
   };
 
   const validate = () => {

@@ -169,7 +169,7 @@
 
 .emptyCellContent {
   font-style: italic;
-  font-size: 12px;
+  font-size: 20px;
   color: var(--tova-gray-medium);
   opacity: 0.7;
 }
