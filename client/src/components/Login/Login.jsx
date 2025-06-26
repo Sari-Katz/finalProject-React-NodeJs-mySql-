@@ -22,12 +22,7 @@ function Login() {
         login(user);
       }
     } catch (_error) {
-      console.error('Login error:', _error);
-      if (_error.status === 401) {
-        setError('אימייל או סיסמה שגויים.');
-      } else {
-        setError(_error.message || 'אירעה שגיאה במהלך ההתחברות');
-      }
+        setError(`${_error.body?.message }`|| 'אירעה שגיאה במהלך ההתחברות');
     }
   };
 

@@ -58,12 +58,11 @@ class ApiUtil {
   }
 
   async checkResponseStatus(response) {
-    response.url.includes('/users/login')
-    if (response.status === 401 && this.onUnauthorized && !response.url.includes('/users/login')) {
+    if (response.status === 401 && this.onUnauthorized && !response.url.includes('/users/login')&&!response.url.includes('users/register')) {
       this.onUnauthorized();
     }
     if (!response.ok) {
-      const errorText = await response.text();
+      const errorText =  await response.json(); ;
       const error = new Error(`HTTP Error! Status: ${response.status}`);
       error.status = response.status;
       error.body = errorText;

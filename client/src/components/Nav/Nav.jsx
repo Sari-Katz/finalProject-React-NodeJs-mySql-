@@ -17,7 +17,6 @@ function Nav() {
   return (
     <nav className={styles.navContainer}>
       <div className={styles.navLeft}>
-        {/* <div className={styles.logo}></div> */}
         <Link to="/login" className={styles.personalAreaBtn} onClick={logout}>log out</Link>
       </div>
 

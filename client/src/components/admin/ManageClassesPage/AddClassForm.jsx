@@ -63,8 +63,7 @@ const AddClassForm = ({ onClassAdded }) => {
       
     } catch (err) {
       console.error(err);
-      // הצג את הודעת השגיאה מהשרת
-      const errorMessage = err.response?.data?.message || "שגיאה בהוספת הקורס";
+      const errorMessage = err.body?.message || "שגיאה בהוספת הקורס";
       alert(errorMessage);
     } finally {
       setIsSubmitting(false);

@@ -46,7 +46,7 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
       }
     } catch (err) {
       console.error("שגיאה בהרשמה:", err);
-      setError(err.response?.data?.message || "שגיאה בהרשמה לקורס");
+      setError(err.body?.message || "שגיאה בהרשמה לקורס");
       setStatus("idle");
     }
   };
