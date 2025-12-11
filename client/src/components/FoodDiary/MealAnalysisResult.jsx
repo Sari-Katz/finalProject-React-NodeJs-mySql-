@@ -33,7 +33,7 @@ const MealAnalysisResult = () => {
             await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
 
             // Redirect to the dashboard to see the updated progress
-            navigate('/food-diary', { replace: true });
+            navigate('/add-activity', { replace: true });
 
         } catch (err) {
             setError('שגיאה ברישום הארוחה. נסי שוב.');
@@ -44,7 +44,7 @@ const MealAnalysisResult = () => {
     };
 
     const handleCancel = () => {
-        navigate('/food-diary'); // Go back to the dashboard
+        navigate('/calories-dashboard'); // Go back to the dashboard
     };
 
     return (

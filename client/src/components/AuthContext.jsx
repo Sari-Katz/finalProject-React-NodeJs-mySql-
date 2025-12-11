@@ -37,12 +37,13 @@ useEffect(() => {
 
   const login = (userData) => {
     setUser(userData);
+    console.log("User logged in:", userData);
   };
   const role = user?.role || "guest";
   if (!isReady) return null;
   
   return (
-    <AuthContext.Provider value={{ user, role,registAI: 1,login, logout }}>
+    <AuthContext.Provider value={{ user, role,login, logout }}>
       {children}
     </AuthContext.Provider>
   );

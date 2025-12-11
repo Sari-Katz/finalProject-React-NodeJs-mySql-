@@ -5,7 +5,7 @@ import { AuthContext } from '../AuthContext';
 import { useLocation } from 'react-router-dom';
 
 function Nav() {
-  const { user, logout } = useContext(AuthContext);
+  const { user,logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -33,11 +33,8 @@ function Nav() {
         {user.role == 'admin' && <NavLink to="/ManageChallanges" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           ניהול אתגרים
         </NavLink>}
-        {user.registAI == 1 && <NavLink to="/AddMeal" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-כניסה ליועץ התזונתי שלי</NavLink>}
-         <NavLink to="/calorie-setup" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          הגדרת יעד הקלוריות
-     </NavLink>
+        <NavLink to="/calorie-dashboard" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+כניסה ליועץ התזונתי שלי</NavLink>
 
         <NavLink to="/Subscription" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
           הרשמה למנוי

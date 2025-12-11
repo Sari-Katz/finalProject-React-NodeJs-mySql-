@@ -5,6 +5,7 @@ import './AddMealPage.css';
 const AddMealPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [description, setDescription] = useState(''); // הוספת state לתיאור
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const AddMealPage = () => {
     };
 
     const handleAnalyze = async () => {
-        if (!selectedFile) {
+        if (!selectedFile && !description) { // בדיקה אם לפחות אחד מהם קיים
             setError('יש לבחור תמונה לפני הניתוח.');
             return;
         }
@@ -36,7 +37,10 @@ const AddMealPage = () => {
         setError('');
 
         const formData = new FormData();
-        formData.append('mealImage', selectedFile);
+        if (selectedFile) {
+            formData.append('mealImage', selectedFile);
+        }
+        formData.append('description', description); // הוספת התיאור לנתונים
 
         try {
             // TODO: Replace with actual API call to your backend
@@ -81,9 +85,20 @@ const AddMealPage = () => {
                 </label>
             </div>
 
+            <div className="description-box">
+                <label htmlFor="meal-description">או תארי את הארוחה במילים:</label>
+                <textarea
+                    id="meal-description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="לדוגמה: סלט קינואה עם ירקות צלויים וחזה עוף"
+                    rows="4"
+                />
+            </div>
+
             {error && <p className="error-message">{error}</p>}
 
-            <button onClick={handleAnalyze} disabled={isLoading || !selectedFile} className="analyze-btn">
+            <button onClick={handleAnalyze} disabled={isLoading || (!selectedFile && !description)} className="analyze-btn">
                 {isLoading ? 'מנתח את התמונה...' : 'נתחי את הארוחה'}
             </button>
         </div>

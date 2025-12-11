@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import CalorieGoalSetup from './components/FoodDiary/CalorieGoalSetup';
-import MealAnalysisResult from './components/FoodDiary/MealAnalysisResult';
+import CalorieGoalSetup from './CalorieGoalSetup';
+import MealAnalysisResult from './MealAnalysisResult';
 
-// ... inside your Routes
-{/* <Route path="/calorie-setup" element={<CalorieGoalSetup />} /> */}
 import { useNavigate, Navigate } from 'react-router-dom';
-import './FoodDiaryDashboard.css'; // ניצור קובץ CSS בסיסי לעיצוב
+import './CalorieDashboard.css'; // ניצור קובץ CSS בסיסי לעיצוב
 
-const FoodDiaryDashboard = () => {
+const CalorieDashboard = () => {
     const [dailyGoal, setDailyGoal] = useState(null); // Start with null to indicate loading/not set
     const [consumed, setConsumed] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -84,4 +82,4 @@ const FoodDiaryDashboard = () => {
     );
 };
 
-export default FoodDiaryDashboard;
+export default CalorieDashboard;
