@@ -19,7 +19,6 @@ const ManageChallangesPage = () => {
     const id = searchParams.get("challengeId");
     const view = searchParams.get("view");
     const description = searchParams.get("description");
-    
     if (id && view) {
       setSelectedChallenge({ id, description });
       setCompleteChallengeOpen(view === "participants");
@@ -42,7 +41,7 @@ const ManageChallangesPage = () => {
   const handleDeleteConfirm = async () => {
     if (!selectedChallenge) return;
     
-    setDeleting(true);
+  setDeleting(true);
     try {
       await ApiUtils.delete(`http://localhost:3000/challenges/${selectedChallenge.id}`);
       closeModals();

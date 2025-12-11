@@ -10,6 +10,9 @@ import ManageClassesPage from './components/admin/ManageClassesPage/ManageClasse
 import ManageChallangesPage from './components/admin/ManageChallengePage/ManageChallangesPage/ManageChallangesPage.jsx';
 import SubscriptionList from './components/Subscription/SubscriptionList.jsx';
 import UserProfile from './components/UserProfile/UserProfile.jsx';
+import AddMealPage from './components/FoodDiary/AddMealPage.jsx';
+import CalorieGoalSetup from './components/FoodDiary/CalorieGoalSetup.jsx';
+import MealAnalysisResult from './components/FoodDiary/MealAnalysisResult.jsx';
 import Posts from './components/Posts/Posts.jsx';
 import Info from './components/UserProfile/Info.jsx';
 import Nav from './components/Nav/Nav.jsx';
@@ -94,7 +97,36 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
-      
+      <Route
+        path="/AddMeal"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <AddMealPage />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+       <Route
+        path="/meal-analysis-result"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <MealAnalysisResult />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/calorie-setup"
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <CalorieGoalSetup />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/schedule"
         element={

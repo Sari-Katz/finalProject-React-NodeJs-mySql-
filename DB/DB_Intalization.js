@@ -25,6 +25,7 @@ async function initDb() {
         await pool.query('DROP TABLE IF EXISTS user_subscriptions');
         await pool.query('DROP TABLE IF EXISTS posts');
         await pool.query('DROP TABLE IF EXISTS comments');
+        await pool.query('DROP TABLE IF EXISTS daily_calorie_tracking');
      
 
         await pool.query('SET FOREIGN_KEY_CHECKS = 1');
@@ -38,7 +39,8 @@ async function initDb() {
                 email VARCHAR(255) NOT NULL UNIQUE,
                 phone VARCHAR(20),
                 role ENUM('user', 'admin', 'guide') NOT NULL DEFAULT 'user',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                daily_calorie_goal INT DEFAULT 2000
             )
         `);
 await pool.query(`
@@ -136,12 +138,22 @@ await pool.query(`
       )
     `);
 
+        await pool.query(`
+            CREATE TABLE daily_calorie_tracking (
+                user_id INT NOT NULL,
+                entry_date DATE NOT NULL,
+                consumed_calories INT DEFAULT 0,
+                PRIMARY KEY (user_id, entry_date),
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        `);
+
         logger.info('✅ Inserting data...');
 
         for (const user of db.users) {
             await pool.query(
-                'INSERT INTO users (id, full_name, email, phone,role) VALUES (?, ?, ?, ?,?)',
-                [user.id, user.full_name, user.email, user.phone,user.role]
+                'INSERT INTO users (id, full_name, email, phone, role, daily_calorie_goal) VALUES (?, ?, ?, ?, ?, ?)',
+                [user.id, user.full_name, user.email, user.phone, user.role, user.daily_calorie_goal || 2000]
             );
             const hash = await bcrypt.hash(user.password, saltRounds);
             await pool.query(

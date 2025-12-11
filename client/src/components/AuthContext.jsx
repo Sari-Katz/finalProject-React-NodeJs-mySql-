@@ -39,11 +39,10 @@ useEffect(() => {
     setUser(userData);
   };
   const role = user?.role || "guest";
-
   if (!isReady) return null;
-
+  
   return (
-    <AuthContext.Provider value={{ user, role, login, logout }}>
+    <AuthContext.Provider value={{ user, role,registAI: 1,login, logout }}>
       {children}
     </AuthContext.Provider>
   );

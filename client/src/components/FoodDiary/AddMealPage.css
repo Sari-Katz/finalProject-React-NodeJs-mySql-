@@ -1,0 +1,69 @@
+.add-meal-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    direction: rtl;
+}
+
+.add-meal-container h1 {
+    color: #333;
+}
+
+.upload-box {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.upload-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.upload-label:hover {
+    background-color: #f0f8ff;
+}
+
+.upload-label span {
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.analyze-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.analyze-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 1rem;
+}
