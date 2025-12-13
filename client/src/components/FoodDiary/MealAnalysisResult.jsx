@@ -62,6 +62,11 @@ const MealAnalysisResult = () => {
                     <span>{analysis.estimatedCalories}</span>
                     <p>קלוריות</p>
                 </div>
+                <div className="calories-estimation">
+                    <p>אם תאכל את המנה ישארו לך:</p>
+                    <span>{analysis.estimatedCalories}</span>
+                    <p>קלוריות</p>
+                </div>
             </div>
 
             <div className="confirmation-prompt">

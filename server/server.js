@@ -9,8 +9,11 @@ const subscriptionRoute = require('./routes/subscriptionRoute');
 const chellangeRoute = require('./routes/chellangeRoute');
 const postRoute = require('./routes/postRoute');
 const commentRoute = require('./routes/commentRoute');
+const foodDiaryRoute = require('./routes/foodDiaryRoutes');
+
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // הוספת מידלוור לטיפול ב-form-data
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -24,6 +27,8 @@ app.use("/challenges",chellangeRoute );
 app.use("/comments", commentRoute);
 app.use("/posts", postRoute);
 app.use("/subscription", subscriptionRoute);
+app.use("/food-diary", foodDiaryRoute);
+
 
 
 app.use("/", (req, res) => {

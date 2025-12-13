@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AddMealPage.css';
+import ApiUtils from '../../utils/ApiUtils';
 
 const AddMealPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -40,12 +41,15 @@ const AddMealPage = () => {
         if (selectedFile) {
             formData.append('mealImage', selectedFile);
         }
-        formData.append('description', description); // הוספת התיאור לנתונים
+        //
+        //formData.append('description', description); // הוספת התיאור לנתונים
 
         try {
             // TODO: Replace with actual API call to your backend
-            // const response = await api.post('/api/food-diary/analyze', formData);
-            
+            const response = await ApiUtils.post('http://localhost:3000/food-diary/analyze', formData
+
+            );
+            console.log('Analysis response:', response.data);
             // For now, we'll simulate a delay and navigate with mock results
             console.log('Simulating sending image to backend for analysis...');
             await new Promise(resolve => setTimeout(resolve, 2500)); // Simulate network & AI delay
@@ -54,6 +58,7 @@ const AddMealPage = () => {
             const mockAnalysisResult = {
                 foodItems: ['סלט ירקות גדול', 'חזה עוף בגריל (150 גרם)', 'כף טחינה גולמית'],
                 estimatedCalories: 450,
+
             };
 
             // Navigate to a results page (we will create this next)

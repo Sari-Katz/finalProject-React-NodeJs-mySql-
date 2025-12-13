@@ -48,6 +48,12 @@ const CalorieDashboard = () => {
     const handleAddMeal = () => {
         navigate('/add-meal'); // ננווט לעמוד העלאת התמונה
     };
+      const handleCaloriesSetup = () => {
+        navigate('/calorie-setup'); // ננווט לעמוד הגדרת קלוריות
+    };
+      const handleAddActivity  = () => {
+        navigate('/add-activity'); // ננווט לעמוד העלאת התמונה
+    };
 
     return (
         <div className="food-diary-container">
@@ -74,9 +80,15 @@ const CalorieDashboard = () => {
             </div>
 
             <div className="actions">
-                <button onClick={handleAddMeal} className="add-meal-btn">
-                    📸 הוסף ארוחה חדשה
-                </button>
+                    <button onClick={handleAddMeal} className="add-meal-btn">
+                        📸 הוסף ארוחה חדשה
+                    </button>
+                    <button onClick={handleCaloriesSetup} className="setup-goal-btn">
+                        🎯 הגדר/י יעד קלורי
+                    </button>
+                    <button onClick={handleAddActivity} className="add-activity-btn">
+                        🏃‍♀️ הוסף פעילות גופנית
+                    </button>   
             </div>
         </div>
     );
