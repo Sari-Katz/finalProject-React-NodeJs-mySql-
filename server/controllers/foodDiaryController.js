@@ -5,14 +5,14 @@ const { analyzeMealWithGemini } = require('../services/foodAnalysisService');
  */
 const analyzeMeal = async (req, res) => {
     const { file } = req; // The image file from multer
-   // const { description } = req.body; // The text description
+   const { description } = req.body; // The text description
     // console.log('Received description:', description);
-    if (!file ) {
+    if (!file && !description) {
         return res.status(400).json({ message: 'Please provide an image or a description to analyze.' });
     }
 
     try {
-        const analysisResult = await analyzeMealWithGemini(file);
+        const analysisResult = await analyzeMealWithGemini(file, description);
         console.log('Analysis result:', analysisResult);
         res.status(200).json(analysisResult);
     } catch (error) {

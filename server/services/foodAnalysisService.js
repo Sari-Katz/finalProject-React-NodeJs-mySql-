@@ -20,12 +20,16 @@ const fileToGenerativePart = (buffer, mimeType) => {
 
 /**
  * Analyzes a meal using an image and/or a text description with Google Gemini.
+ * @param {string} description - The text description of the meal (optional).
  * @param {object} file - The image file object from multer (optional).
  * @returns {Promise<object>} A promise that resolves to the analysis result.
  */
-const analyzeMealWithGemini = async (file) => {
+const analyzeMealWithGemini = async (file, description) => {
     // Use the gemini-pro-vision model for multimodal input
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+   const model = genAI.getGenerativeModel({
+  model: "models/gemini-2.5-flash"
+});
+
 
     const prompt = `
         Analyze the following meal. Identify the food items and provide a realistic estimation of the total calories.
@@ -40,8 +44,7 @@ const analyzeMealWithGemini = async (file) => {
         Do not include any text outside of this JSON object.
     `;
 
-    const parts = [prompt];
-
+    const parts = [{ text: prompt }];
     if (file) {
         const imagePart = fileToGenerativePart(file.buffer, file.mimetype);
         parts.push(imagePart);

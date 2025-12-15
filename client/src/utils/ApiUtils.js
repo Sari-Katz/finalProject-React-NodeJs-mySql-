@@ -79,12 +79,19 @@ class ApiUtil {
   }
 
   _options(method = 'GET', body, customHeaders = {}) {
-    const options = {
-      method,
-      headers: this.getAuthHeaders(customHeaders),
-      credentials: 'include',
-    };
-    if (body) options.body = JSON.stringify(body);
+    const isFormData = body instanceof FormData;
+
+     const options = {
+    method,
+    headers: isFormData
+      ? { ...customHeaders }            // ❗ בלי Content-Type
+      : this.getAuthHeaders(customHeaders),
+    credentials: 'include',
+  };
+
+  if (body) {
+    options.body = isFormData ? body : JSON.stringify(body);
+  }
     return options;
   }
 
