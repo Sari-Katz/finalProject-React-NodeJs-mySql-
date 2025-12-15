@@ -124,3 +124,16 @@ exports.update = async function update(id, data) {
   `, [full_name, email, phone,id ]);
   return { id, ...data };
 };
+
+/**
+ * Sets the daily calorie goal for a specific user.
+ * @param {number} userId The ID of the user.
+ * @param {number} daily_calorie_goal The new daily calorie goal.
+ * @returns {Promise<object>}
+ */
+exports.setCalorieGoal = async function setCalorieGoal(userId, daily_calorie_goal) {
+    const [result] = await pool.query(
+        'UPDATE users SET daily_calorie_goal = ? WHERE id = ?', [daily_calorie_goal, userId]
+    );
+    return { affectedRows: result.affectedRows };
+};

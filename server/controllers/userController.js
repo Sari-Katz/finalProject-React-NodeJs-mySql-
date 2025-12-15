@@ -114,3 +114,21 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+exports.setCalorieGoal = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { daily_calorie_goal } = req.body;
+
+        if (typeof daily_calorie_goal !== 'number' || daily_calorie_goal <= 0) {
+            return res.status(400).json({ message: 'ערך קלורי לא תקין.' });
+        }
+
+        await userService.setCalorieGoal(userId, daily_calorie_goal);
+
+        res.status(200).json({ message: 'יעד הקלוריות עודכן בהצלחה.', daily_calorie_goal });
+
+    } catch (error) {
+        console.error('Error setting calorie goal:', error);
+        res.status(500).json({ message: 'שגיאה בעדכון יעד הקלוריות.', error: error.message });
+    }
+};
