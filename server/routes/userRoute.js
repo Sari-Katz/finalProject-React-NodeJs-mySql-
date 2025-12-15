@@ -17,6 +17,8 @@ router.get('/me', authenticateToken, userController.getUserById);
 
 router.put('/me', authenticateToken,userController.updateUser);
 
+router.put('/set_calorie_goal', authenticateToken, userController.setCalorieGoal);
+
 router.get('/:id/dashboard', authenticateToken,userController.getUserDashboard);
 
 
