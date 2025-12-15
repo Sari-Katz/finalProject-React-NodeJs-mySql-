@@ -100,7 +100,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/add-meal"
+        path="/calorie-dashboard/add-meal"
         element={
           <PrivateRoute>
             <WithLayout>
@@ -110,7 +110,7 @@ function AppRoutes() {
         }
       />
        <Route
-        path="/add-activity"
+        path="/calorie-dashboard/add-activity"
         element={
           <PrivateRoute>
             <WithLayout>
@@ -120,7 +120,7 @@ function AppRoutes() {
         }
       />
        <Route
-        path="/meal-analysis-result"
+        path="/calorie-dashboard/meal-analysis-result"
         element={
           <PrivateRoute>
             <WithLayout>
@@ -140,7 +140,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/calorie-setup"
+        path="/calorie-dashboard/calorie-setup"
         element={
           <PrivateRoute>
             <WithLayout>

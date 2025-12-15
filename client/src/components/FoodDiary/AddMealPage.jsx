@@ -42,7 +42,7 @@ const AddMealPage = () => {
             formData.append('mealImage', selectedFile);
         }
         //
-       formData.append('description', description); // הוספת התיאור לנתונים
+        formData.append('description', description); // הוספת התיאור לנתונים
 
         try {
             // TODO: Replace with actual API call to your backend
@@ -62,7 +62,7 @@ const AddMealPage = () => {
             // };
 
             // Navigate to a results page (we will create this next)
-            navigate('/meal-analysis-result', { state: { analysis: mockAnalysisResult } });
+            navigate('/calorie-dashboard/meal-analysis-result', { state: { analysis: mockAnalysisResult } });
 
         } catch (err) {
             setError('אופס, משהו השתבש בניתוח התמונה. נסו שוב.');
@@ -74,16 +74,25 @@ const AddMealPage = () => {
 
     return (
         <div className="add-meal-container">
+           
+            <button
+                className="back-button"
+                onClick={() => navigate(-1)}
+                aria-label="חזרה אחורה"
+            >
+                ← חזרה
+            </button>
+
             <h1>העלאת ארוחה חדשה</h1>
             <p>צלמי או בחרי תמונה של הארוחה שלך, וה-AI שלנו ינתח אותה.</p>
 
             <div className="upload-box">
-                <input 
-                    type="file" 
-                    id="meal-upload" 
-                    accept="image/*" 
-                    onChange={handleFileChange} 
-                    style={{ display: 'none' }} 
+                <input
+                    type="file"
+                    id="meal-upload"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
                 />
                 <label htmlFor="meal-upload" className="upload-label">
                     {preview ? <img src={preview} alt="תצוגה מקדימה" className="image-preview" /> : <span>📷 לחצי כאן לבחירת תמונה</span>}

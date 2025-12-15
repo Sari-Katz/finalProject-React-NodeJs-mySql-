@@ -110,7 +110,7 @@ const AddActivity = () => {
                 </ul>
             </div>
 
-            <button className="back-to-dash-btn" onClick={() => navigate('/food-diary')}>
+            <button className="back-to-dash-btn" onClick={() => navigate('/calorie-dashboard')}>
                 חזרה למסך הראשי
             </button>
         </div>

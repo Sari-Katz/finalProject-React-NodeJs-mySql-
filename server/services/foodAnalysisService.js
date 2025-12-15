@@ -31,18 +31,37 @@ const analyzeMealWithGemini = async (file, description) => {
 });
 
 
-    const prompt = `
-        Analyze the following meal. Identify the food items and provide a realistic estimation of the total calories.
-        If there is an image, prioritize it. If there is also a description, use it for additional context.
+const prompt = `
+Analyze the following meal. Identify all visible food items and provide a realistic estimation
+of the total calories.
 
-        Your response MUST be a valid JSON object with the following structure:
-        {
-          "foodItems": ["item 1", "item 2", "item 3"],
-          "estimatedCalories": <total_calories_as_a_number>
-        }
+If there is an image, prioritize it. If there is also a description, use it for additional context.
 
-        Do not include any text outside of this JSON object.
-    `;
+IMPORTANT RULES:
+- All food names MUST be in Hebrew.
+- All quantity / size descriptions MUST be in Hebrew.
+- Use realistic, human-friendly portions (e.g. "פרוסה אחת", "כוס קטנה", "צלחת בינונית").
+- Provide an estimated calorie value for EACH food item.
+- The response language MUST be Hebrew.
+- JSON keys must remain in English exactly as specified.
+
+Your response MUST be a valid JSON object with the following structure:
+{
+  "foodItems": [
+    {
+      "name": "שם המאכל",
+      "amount": "תיאור כמות או גודל",
+      "calories": <number>
+    }
+  ],
+  "estimatedCalories": <number>
+}
+
+Do NOT include any text outside of this JSON object.
+`;
+
+
+
 
     const parts = [{ text: prompt }];
     if (file) {

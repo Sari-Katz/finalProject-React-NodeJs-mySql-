@@ -39,20 +39,20 @@ const CalorieDashboard = () => {
 
     // If goal is not set (e.g., 0 or null), redirect to setup page
     if (!dailyGoal) {
-        return <Navigate to="/calorie-setup" replace />;
+        return <Navigate to="/calorie-dashboard/calorie-setup" replace />;
     }
 
     const remainingCalories = dailyGoal - consumed;
     const progressPercentage = dailyGoal > 0 ? (consumed / dailyGoal) * 100 : 0;
 
     const handleAddMeal = () => {
-        navigate('/add-meal'); // ננווט לעמוד העלאת התמונה
+        navigate('/calorie-dashboard/add-meal'); // ננווט לעמוד העלאת התמונה
     };
       const handleCaloriesSetup = () => {
-        navigate('/calorie-setup'); // ננווט לעמוד הגדרת קלוריות
+        navigate('/calorie-dashboard/calorie-setup'); // ננווט לעמוד הגדרת קלוריות
     };
       const handleAddActivity  = () => {
-        navigate('/add-activity'); // ננווט לעמוד העלאת התמונה
+        navigate('/calorie-dashboard/add-activity'); // ננווט לעמוד העלאת התמונה
     };
 
     return (
