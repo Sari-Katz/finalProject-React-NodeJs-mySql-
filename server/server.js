@@ -13,7 +13,6 @@ const foodDiaryRoute = require('./routes/foodDiaryRoutes');
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // הוספת מידלוור לטיפול ב-form-data
 
 app.use(cors({
     origin: 'http://localhost:5173',

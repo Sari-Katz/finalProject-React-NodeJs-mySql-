@@ -137,16 +137,17 @@ await pool.query(`
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
-
         await pool.query(`
             CREATE TABLE daily_calorie_tracking (
-                user_id INT NOT NULL,
-                entry_date DATE NOT NULL,
-                consumed_calories INT DEFAULT 0,
-                PRIMARY KEY (user_id, entry_date),
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
+    user_id INT NOT NULL,
+    entry_date DATE NOT NULL,
+    consumed_calories INT DEFAULT 0,
+    burned_calories INT DEFAULT 0,
+    PRIMARY KEY (user_id, entry_date),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
         `);
+        
 
         logger.info('✅ Inserting data...');
 
@@ -226,6 +227,16 @@ if (db.comments) {
         await pool.query(
             'INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, ?)',
             [comment.post_id, comment.user_id, comment.content, comment.created_at]
+        );
+    }
+}
+
+// Insert daily calorie tracking
+if (db.daily_calorie_tracking) {
+    for (const tracking of db.daily_calorie_tracking) {
+        await pool.query(
+            'INSERT INTO daily_calorie_tracking (user_id, entry_date, consumed_calories, burned_calories) VALUES (?, ?, ?, ?)',
+            [tracking.user_id, tracking.entry_date, tracking.consumed_calories, tracking.burned_calories]
         );
     }
 }
