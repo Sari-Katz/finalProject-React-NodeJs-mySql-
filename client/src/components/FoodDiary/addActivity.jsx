@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AddActivity.css';
+import ApiUtils from '../../utils/ApiUtils';
 
 const AddActivity = () => {
     const location = useLocation();
@@ -8,34 +9,27 @@ const AddActivity = () => {
 
     // State for this component
     const [remainingCalories, setRemainingCalories] = useState(0);
-    const [todaysClasses, setTodaysClasses] = useState([]);
     const [workoutInput, setWorkoutInput] = useState('');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [burnedCalories, setBurnedCalories] = useState(null);
     const [error, setError] = useState('');
+    const [isLogging, setIsLogging] = useState(false);
 
     useEffect(() => {
-        // In a real app, you'd fetch this data from your backend
         const fetchData = async () => {
-            // 1. Fetch remaining calories
-            // const calorieStatus = await api.get('/api/food-diary/today');
-            // setRemainingCalories(calorieStatus.data.daily_calorie_goal - calorieStatus.data.consumed_calories);
-            
-            // 2. Fetch today's classes
-            // const classesResponse = await api.get('/api/classes/today');
-            // setTodaysClasses(classesResponse.data);
-
-            // Mock data for now
-            const mockRemaining = 2200 - 850 - (location.state?.addedCalories || 450);
-            setRemainingCalories(mockRemaining);
-            setTodaysClasses([
-                { id: 1, title: 'יוגה ויניאסה', start_time: '18:00' },
-                { id: 2, title: 'אימון HIIT', start_time: '19:00' },
-            ]);
+            try {
+                // Fetch current calorie status
+                const status = await ApiUtils.get('http://localhost:3000/food-diary/today');
+                const remaining = status.daily_calorie_goal - status.consumed_calories + status.burned_calories;
+                setRemainingCalories(remaining);
+            } catch (err) {
+                console.error("Failed to fetch initial data", err);
+                setError("שגיאה בטעינת הנתונים.");
+            }
         };
 
         fetchData();
-    }, [location.state]);
+    }, []);
 
     const handleAnalyzeWorkout = async () => {
         if (!workoutInput) {
@@ -47,22 +41,31 @@ const AddActivity = () => {
         setBurnedCalories(null);
 
         try {
-            // TODO: Replace with actual API call to Gemini via your backend
-            // const response = await api.post('/api/food-diary/analyze-workout', { description: workoutInput });
-            // const burned = response.data.burnedCalories;
-
-            console.log(`Analyzing workout: ${workoutInput}`);
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate AI analysis
-            const burned = Math.floor(Math.random() * (350 - 150 + 1)) + 150; // Simulate result
-
+            const response = await ApiUtils.post('http://localhost:3000/food-diary/analyze-activity', { description: workoutInput });
+            const burned = response.burnedCalories;
             setBurnedCalories(burned);
-            setRemainingCalories(prev => prev + burned); // Add to remaining calories
-
         } catch (err) {
             setError('שגיאה בניתוח הפעילות. נסי שוב.');
             console.error(err);
         } finally {
             setIsAnalyzing(false);
+        }
+    };
+
+    const handleLogActivity = async () => {
+        if (burnedCalories === null || burnedCalories <= 0) return;
+
+        setIsLogging(true);
+        setError('');
+        try {
+            await ApiUtils.post('http://localhost:3000/food-diary/log-activity', { burned_calories: burnedCalories });
+            // Navigate to dashboard after successful logging
+            navigate('/calorie-dashboard', { replace: true });
+        } catch (err) {
+            setError('שגיאה בתיעוד הפעילות. נסי שוב.');
+            console.error(err);
+        } finally {
+            setIsLogging(false);
         }
     };
 
@@ -89,25 +92,12 @@ const AddActivity = () => {
                 {error && <p className="error-message">{error}</p>}
                 {burnedCalories !== null && (
                     <div className="burn-result">
-                        🎉 כל הכבוד! שרפת כ-<strong>{burnedCalories}</strong> קלוריות, שהתווספו למאזן היומי שלך.
+                        🎉 כל הכבוד! הערכה היא ששרפת כ-<strong>{burnedCalories}</strong> קלוריות.
+                        <button onClick={handleLogActivity} disabled={isLogging} className="log-activity-btn">
+                            {isLogging ? 'מתעד...' : 'תעד פעילות ביומן'}
+                        </button>
                     </div>
                 )}
-            </div>
-
-            <div className="suggestions-card">
-                <h3>הצעות לאימון להיום</h3>
-                <ul>
-                    {todaysClasses.map(cls => (
-                        <li key={cls.id}>
-                            <span className="class-tag">שיעור במערכת</span>
-                            <strong>{cls.title}</strong> בשעה {cls.start_time}
-                        </li>
-                    ))}
-                    <li>
-                        <span className="idea-tag">רעיון</span>
-                        30 דקות הליכה מהירה בפארק
-                    </li>
-                </ul>
             </div>
 
             <button className="back-to-dash-btn" onClick={() => navigate('/calorie-dashboard')}>
@@ -118,4 +108,3 @@ const AddActivity = () => {
 };
 
 export default AddActivity;
-
