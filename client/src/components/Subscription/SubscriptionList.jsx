@@ -23,7 +23,9 @@ export default function SubscriptionList() {
   useEffect(() => {
     async function loadSubscriptions() {
       try {
-        const data = await ApiUtils.get("http://localhost:3000/subscription/plans");
+        const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/subscription/plans`);
         setSubscriptions(data);
 
         // אם יש paymentSubscription עם id, נעדכן את המנוי המלא מתוך הרשימה
@@ -61,7 +63,9 @@ export default function SubscriptionList() {
 
   const handlePaymentSuccess = async (subscriptionId) => {
     try {
-      await ApiUtils.post(`http://localhost:3000/subscription/${subscriptionId}/register`);
+      await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/subscription/${subscriptionId}/register`);
       alert('נרשמת בהצלחה!');
     } catch (error) {
       console.error("שגיאה בהרשמה:", error);

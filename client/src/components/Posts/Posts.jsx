@@ -18,7 +18,9 @@ function Posts() {
 
     const fetchPosts = async () => {
         try {
-            const data = await ApiUtils.get(`http://localhost:3000/posts`);
+            const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/posts`);
             setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -33,7 +35,9 @@ function Posts() {
                 content: newPostBody,
             };
             try {
-                const post = await ApiUtils.post('http://localhost:3000/posts', newPost);
+                const post = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/posts`, newPost);
                 setPosts([post, ...posts]);
                 setNewPostTitle('');
                 setNewPostBody('');

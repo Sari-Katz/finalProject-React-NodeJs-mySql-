@@ -19,7 +19,9 @@ const AddActivity = () => {
         const fetchData = async () => {
             try {
                 // Fetch current calorie status
-                const status = await ApiUtils.get('http://localhost:3000/food-diary/today');
+                const status = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/food-diary/today`);
                 const remaining = status.daily_calorie_goal - status.consumed_calories + status.burned_calories;
                 setRemainingCalories(remaining);
             } catch (err) {
@@ -41,7 +43,9 @@ const AddActivity = () => {
         setBurnedCalories(null);
 
         try {
-            const response = await ApiUtils.post('http://localhost:3000/food-diary/analyze-activity', { description: workoutInput });
+            const response = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/food-diary/analyze-activity`, { description: workoutInput });
             const burned = response.burnedCalories;
             setBurnedCalories(burned);
         } catch (err) {
@@ -58,7 +62,9 @@ const AddActivity = () => {
         setIsLogging(true);
         setError('');
         try {
-            await ApiUtils.post('http://localhost:3000/food-diary/log-activity', { burned_calories: burnedCalories });
+            await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/food-diary/log-activity`, { burned_calories: burnedCalories });
             // Navigate to dashboard after successful logging
             navigate('/calorie-dashboard', { replace: true });
         } catch (err) {

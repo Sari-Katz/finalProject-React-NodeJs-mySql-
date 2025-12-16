@@ -46,7 +46,9 @@ const AddMealPage = () => {
 
         try {
             // TODO: Replace with actual API call to your backend
-            const response = await ApiUtils.post('http://localhost:3000/food-diary/analyze', formData
+            const response = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/food-diary/analyze`, formData
 
             );
             console.log('Analysis response:', response);

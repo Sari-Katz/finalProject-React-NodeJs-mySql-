@@ -15,7 +15,9 @@ const DeleteClassModal = ({ onClose, onDeleteSuccess }) => {
         setSending(true);
         try {
             await ApiUtils.delete(
-                `http://localhost:3000/classes/${classId}?notify=${notifyParticipants}`
+                `${import.meta.env.VITE_API_URL
+
+}/classes/${classId}?notify=${notifyParticipants}`
             );
             onDeleteSuccess();
         } catch (err) {

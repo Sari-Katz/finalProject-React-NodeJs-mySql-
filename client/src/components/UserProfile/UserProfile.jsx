@@ -29,7 +29,9 @@ function UserProfile() {
           recentCompletedChallenges,
           completedWeeklyChallenge,
           weeklyChallenge
-        } = await ApiUtils.get(`http://localhost:3000/users/${userId}/dashboard`);
+        } = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/users/${userId}/dashboard`);
 
         setRecentClasses(recentClasses);
         setPastChallenges(recentCompletedChallenges);
@@ -47,7 +49,9 @@ function UserProfile() {
   const handleCompleteWeeklyChallenge = async (isComplete = true) => {
     try {
       await ApiUtils.patch(
-        `http://localhost:3000/challenges/${weeklyChallenge.id}/completed`,
+        `${import.meta.env.VITE_API_URL
+
+}/challenges/${weeklyChallenge.id}/completed`,
         { completed: isComplete }
       );
       setCompletedlyChallenge(isComplete);

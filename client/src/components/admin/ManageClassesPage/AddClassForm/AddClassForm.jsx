@@ -60,7 +60,9 @@ const AddClassForm = ({ onClassAdded }) => {
 
     setIsSubmitting(true);
     try {
-      const response = await ApiUtils.post("http://localhost:3000/classes", formData);
+      const response = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/classes`, formData);
       
       showMessage("קורס נוסף בהצלחה! 🎉", "success");
 

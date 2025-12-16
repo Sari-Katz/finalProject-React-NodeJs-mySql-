@@ -27,7 +27,9 @@ const MealAnalysisResult = () => {
         setError('');
         try {
             // Call the backend to log the calories
-            await ApiUtils.post('http://localhost:3000/food-diary/log', {
+            await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/food-diary/log`, {
                 calories: analysis.estimatedCalories
             });
 

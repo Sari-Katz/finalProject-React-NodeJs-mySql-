@@ -28,7 +28,9 @@ function Register() {
             role: 'user'
         };
         try {
-            const user = await ApiUtils.post(`http://localhost:3000/users/register`, newUser);
+            const user = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/users/register`, newUser);
             login(user);
             navigate(`/about`);
         } catch (error) {

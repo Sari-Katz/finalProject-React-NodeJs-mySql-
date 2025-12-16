@@ -43,7 +43,9 @@ const AddChallengeForm = () => {
         setIsSubmitting(true);
 
         try {
-            await ApiUtils.post("http://localhost:3000/challenges/create", formData);
+            await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/challenges/create`, formData);
       
             showMessage("אתגר נוסף בהצלחה! 🎉", "success");
             setFormData({
