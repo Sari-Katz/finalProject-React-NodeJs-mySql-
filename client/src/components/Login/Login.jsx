@@ -11,9 +11,7 @@ function Login() {
   const { login } = useContext(AuthContext);
   const handleLogin = async () => {
     try {
-      const data = await ApiUtils.post(`${import.meta.env.VITE_API_URL
-
-}/users/login`, { email, password });
+      const data = await ApiUtils.post(`${import.meta.env.VITE_API_URL}/users/login`, { email, password });
       if (data && data.user) {
         const user = {
           full_name: data.user.full_name,

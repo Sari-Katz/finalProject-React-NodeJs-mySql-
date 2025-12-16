@@ -6,8 +6,7 @@ services:
     container_name: my-mysql
     restart: always
     environment:
-      environment:
-       MYSQL_ROOT_PASSWORD: root123
+       DB_HOST: mysql
        MYSQL_DATABASE: ${DB_NAME}
        MYSQL_USER: ${DB_USER}
        MYSQL_PASSWORD: ${DB_PASSWORD}
