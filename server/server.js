@@ -13,6 +13,7 @@ const foodDiaryRoute = require('./routes/foodDiaryRoutes');
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Added to handle form-data text fields
 
 app.use(cors({
     origin: 'http://localhost:5173',

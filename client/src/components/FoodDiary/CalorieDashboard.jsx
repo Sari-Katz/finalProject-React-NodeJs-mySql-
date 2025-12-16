@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CalorieGoalSetup from './CalorieGoalSetup';
+import ApiUtils from '../../utils/ApiUtils';
 import MealAnalysisResult from './MealAnalysisResult';
 
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import './CalorieDashboard.css'; // ניצור קובץ CSS בסיסי לעיצ�
 const CalorieDashboard = () => {
     const [dailyGoal, setDailyGoal] = useState(null); // Start with null to indicate loading/not set
     const [consumed, setConsumed] = useState(0);
+    const[burned_calories,setBurned_calories]=useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -15,18 +17,17 @@ const CalorieDashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             setIsLoading(true);
-            // TODO: Replace with actual API call
-            // Example: const response = await api.get('/api/food-diary/today');
-            // const data = response.data;
-            // setDailyGoal(data.daily_calorie_goal);
-            // setConsumed(data.consumed_calories);
-
-            // Simulate fetching user data.
-            // A value of 0 or null for dailyGoal means it's not set.
-            const fetchedGoal = 2200; // Simulate a set goal. Change to 0 to test the redirect.
-            
-            setDailyGoal(fetchedGoal); 
-            setConsumed(850); 
+            try {
+                const data = await ApiUtils.get('http://localhost:3000/food-diary/today');
+                console.log("Fetched calorie data:", data);
+                setDailyGoal(data.daily_calorie_goal);
+                setConsumed(data.consumed_calories);
+                setBurned_calories(data.burned_calories);
+            } catch (error) {
+                console.error("Failed to fetch calorie data", error);
+                // Handle error, maybe show a message to the user
+                setDailyGoal(0); // Force redirect to setup on error
+            }
             setIsLoading(false);
         };
 
@@ -42,7 +43,7 @@ const CalorieDashboard = () => {
         return <Navigate to="/calorie-dashboard/calorie-setup" replace />;
     }
 
-    const remainingCalories = dailyGoal - consumed;
+    const remainingCalories = dailyGoal - consumed + burned_calories;
     const progressPercentage = dailyGoal > 0 ? (consumed / dailyGoal) * 100 : 0;
 
     const handleAddMeal = () => {
@@ -74,6 +75,7 @@ const CalorieDashboard = () => {
                 </div>
                 <div className="calorie-details">
                     <span>נצרכו: <strong>{consumed}</strong></span>
+                    <span>נשרפו: <strong>{burned_calories}</strong></span>
                     <span>נותרו: <strong>{remainingCalories}</strong></span>
                     <span>מטרה: <strong>{dailyGoal}</strong></span>
                 </div>
