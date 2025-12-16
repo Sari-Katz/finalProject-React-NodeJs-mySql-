@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: my-mysql
+    restart: always
+    environment:
+      environment:
+       MYSQL_ROOT_PASSWORD: root123
+       MYSQL_DATABASE: ${DB_NAME}
+       MYSQL_USER: ${DB_USER}
+       MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  server:
+    build: ./server
+    container_name: my-server
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: myuser
+      DB_PASSWORD: mypass
+      DB_NAME: mydb
+    depends_on:
+      - mysql
+
+  client:
+    build: ./client
+    container_name: my-client
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+volumes:
+  mysql_data:
