@@ -1,4 +1,4 @@
-const { analyzeMealWithGemini } = require('../services/foodAnalysisService');
+const { analyzeMealWithGemini, analyzeActivityWithGemini } = require('../services/foodAnalysisService');
 const foodDiaryService = require('../services/foodDiaryService');
 
 /**
@@ -55,5 +55,44 @@ exports.logMeal = async (req, res) => {
     } catch (error) {
         console.error("Error logging meal:", error);
         res.status(500).json({ message: 'שגיאה בתיעוד הארוחה.' });
+    }
+};
+
+/**
+ * Controller to handle workout analysis requests.
+ */
+exports.analyzeActivity = async (req, res) => {
+    const { description } = req.body;
+
+    if (!description) {
+        return res.status(400).json({ message: 'Please provide a description to analyze.' });
+    }
+
+    try {
+        const analysisResult = await analyzeActivityWithGemini(description);
+        res.status(200).json(analysisResult);
+    } catch (error) {
+        console.error('Error analyzing activity with Gemini:', error);
+        res.status(500).json({ message: 'Failed to analyze activity. Please try again.' });
+    }
+};
+
+/**
+ * Controller to log burned calories from an activity for the logged-in user.
+ */
+exports.logActivity = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { burned_calories } = req.body;
+
+        if (typeof burned_calories !== 'number' || burned_calories < 0) {
+            return res.status(400).json({ message: 'ערך קלוריות לא תקין.' });
+        }
+
+        await foodDiaryService.logActivity(userId, burned_calories);
+        res.status(200).json({ message: 'הפעילות תועדה בהצלחה.' });
+    } catch (error) {
+        console.error("Error logging activity:", error);
+        res.status(500).json({ message: 'שגיאה בתיעוד הפעילות.' });
     }
 };

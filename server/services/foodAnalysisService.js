@@ -81,4 +81,36 @@ Do NOT include any text outside of this JSON object.
     return JSON.parse(jsonString);
 };
 
-module.exports = { analyzeMealWithGemini };
+/**
+ * Analyzes a workout description with Google Gemini to estimate burned calories.
+ * @param {string} description - A text description of the workout.
+ * @returns {Promise<object>} A promise that resolves to the analysis result.
+ */
+const analyzeActivityWithGemini = async (description) => {
+    const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-flash" });
+
+    const prompt = `
+        Analyze the following workout description and provide a realistic estimation of the calories burned.
+        Base your analysis on the type of activity, duration, and intensity mentioned.
+
+        Description: "${description}"
+
+        Your response MUST be a valid JSON object with the following structure:
+        {
+          "burnedCalories": <estimated_calories_as_a_number>
+        }
+
+        Do not include any text outside of this JSON object.
+        If the description is not a workout, return { "burnedCalories": 0 }.
+    `;
+
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
+
+    // Clean up the response to ensure it's valid JSON
+    const jsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+    return JSON.parse(jsonString);
+};
+
+
+module.exports = { analyzeMealWithGemini, analyzeActivityWithGemini };

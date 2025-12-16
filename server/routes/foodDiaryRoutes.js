@@ -19,4 +19,10 @@ router.get('/today', authenticateToken, foodDiaryController.getTodaysStatus);
 // Define the route to log a meal's calories
 router.post('/log', authenticateToken, foodDiaryController.logMeal);
 
+// Define the route for workout analysis
+router.post('/analyze-activity', authenticateToken, foodDiaryController.analyzeActivity);
+
+// Define the route to log burned calories from an activity
+router.post('/log-activity', authenticateToken, foodDiaryController.logActivity);
+
 module.exports = router;
