@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './MealAnalysisResult.css';
+import ApiUtils from '../../utils/ApiUtils';
 
 const MealAnalysisResult = () => {
     const location = useLocation();
@@ -25,15 +26,13 @@ const MealAnalysisResult = () => {
         setIsLoading(true);
         setError('');
         try {
-            // TODO: Replace with actual API call to log the calories
-            // This endpoint will update the daily_calorie_tracking table
-            // await api.post('/api/food-diary/log', { calories: analysis.estimatedCalories });
-
-            console.log(`Confirming meal with ${analysis.estimatedCalories} calories.`);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+            // Call the backend to log the calories
+            await ApiUtils.post('http://localhost:3000/food-diary/log', {
+                calories: analysis.estimatedCalories
+            });
 
             // Redirect to the dashboard to see the updated progress
-            navigate('/calorie-dashboard/add-activity', { replace: true });
+            navigate('/calorie-dashboard', { replace: true });
 
         } catch (err) {
             setError('שגיאה ברישום הארוחה. נסי שוב.');
