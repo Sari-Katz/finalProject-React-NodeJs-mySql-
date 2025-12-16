@@ -9,7 +9,9 @@ function AuthProvider({ children }) {
 
     const logout = async () => {
     try {
-      await ApiUtils.post("http://localhost:3000/users/logout");
+      await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/users/logout`);
     } catch (err) {
       console.error("Failed to clear cookie on server:", err);
     }
@@ -21,7 +23,9 @@ useEffect(() => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await ApiUtils.get("http://localhost:3000/users/check-session");
+        const response = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/users/check-session`);
         if (response && response.id) {
           setUser(response);
         }

@@ -21,7 +21,9 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
           return;
         }
 
-        const res = await ApiUtils.get(`http://localhost:3000/classes/${course.id}/isRegistered`);
+        const res = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/classes/${course.id}/isRegistered`);
         setIsRegistered(res);
         setStatus("idle");
         
@@ -40,7 +42,9 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     setError(null);
     
     try {
-      await ApiUtils.post(`http://localhost:3000/classes/${course.id}/register`);
+      await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/classes/${course.id}/register`);
       setIsRegistered(true);
       setStatus("success");
     
@@ -59,7 +63,9 @@ export default function CourseSignupModal({ course, onClose, onUpdate }) {
     setError(null);
     
     try {
-      await ApiUtils.post(`http://localhost:3000/classes/${course.id}/unregister`);
+      await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/classes/${course.id}/unregister`);
       setIsRegistered(false);
       setStatus("success");
       

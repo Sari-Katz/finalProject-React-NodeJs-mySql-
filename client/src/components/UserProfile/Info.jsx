@@ -24,7 +24,9 @@ const Info = ({ onBack }) => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const data = await ApiUtils.get(`http://localhost:3000/users/me`);
+                const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/users/me`);
                 setUserInfo(data);   
                 setEditData(data);
             } catch (err) {
@@ -41,7 +43,9 @@ const Info = ({ onBack }) => {
         const handleSave = async () => {
             try {
                 const updated = await ApiUtils.put(
-                    `http://localhost:3000/users/me`,
+                    `${import.meta.env.VITE_API_URL
+
+}/users/me`,
                      editData 
                 );
                 setUserInfo({ ...editData });

@@ -15,7 +15,9 @@ function CommentsSection({ postId }) {
 
     const fetchComments = async () => {
         try {
-            const data = await ApiUtils.get(`http://localhost:3000/comments/${postId}`);
+            const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/comments/${postId}`);
             setComments(data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -33,7 +35,9 @@ function CommentsSection({ postId }) {
             };
 
             try {
-                const comment = await ApiUtils.post('http://localhost:3000/comments', newComment);
+                const comment = await ApiUtils.post(`${import.meta.env.VITE_API_URL
+
+}/comments`, newComment);
                 setComments([...comments, comment]);
                 setNewCommentBody("");
             } catch (error) {
@@ -48,7 +52,9 @@ function CommentsSection({ postId }) {
                 content: newBody,
             };
 
-            await ApiUtils.put(`http://localhost:3000/comments/${commentId}`, updatedComment);
+            await ApiUtils.put(`${import.meta.env.VITE_API_URL
+
+}/comments/${commentId}`, updatedComment);
             
             setComments(prevComments =>
                 prevComments.map(comment =>
@@ -64,7 +70,9 @@ function CommentsSection({ postId }) {
 
     const handleDeleteComment = async (commentId) => {
         try {
-            await ApiUtils.delete(`http://localhost:3000/comments/${commentId}`);
+            await ApiUtils.delete(`${import.meta.env.VITE_API_URL
+
+}/comments/${commentId}`);
             setComments(prevComments =>
                 prevComments.filter(comment => comment.comment_id !== commentId)
             );

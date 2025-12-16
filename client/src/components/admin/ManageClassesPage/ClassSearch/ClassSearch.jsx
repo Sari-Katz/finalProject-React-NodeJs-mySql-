@@ -17,7 +17,8 @@
 //     setError(null);
 //     try {
 //       const res = await ApiUtils.get(
-//         `http://localhost:3000/classes?limit=${limit}&offset=${page * limit}`
+//         `{import.meta.env.VITE_API_URL
+
 //       );
 //       setClasses(res);
 //     } catch (err) {
@@ -183,7 +184,9 @@ const ClassSearch = ({ refreshKey }) => {
     setError(null);
     try {
       const res = await ApiUtils.get(
-        `http://localhost:3000/classes?limit=${limit}&offset=${page * limit}`
+        `${import.meta.env.VITE_API_URL
+
+}/classes?limit=${limit}&offset=${page * limit}`
       );
       setClasses(res);
     } catch (err) {

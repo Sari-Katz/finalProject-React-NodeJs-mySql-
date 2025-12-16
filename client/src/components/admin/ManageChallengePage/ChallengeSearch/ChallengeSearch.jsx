@@ -18,7 +18,9 @@ const ChallengeSearch = ({ refreshKey }) => {
     setError(null);
     try {
       const res = await ApiUtils.get(
-        `http://localhost:3000/challenges?limit=${limit}&offset=${page * limit}`
+        `${import.meta.env.VITE_API_URL
+
+}/challenges?limit=${limit}&offset=${page * limit}`
       );
       setChallenges(res);
     } catch (err) {

@@ -1,70 +1,182 @@
-.food-diary-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    direction: rtl;
+
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
 }
 
+/* ===== Container ===== */
+.food-diary-container {
+    max-width: 950px; /* גדול יותר */
+    margin: 3rem auto;
+    padding: 3rem;
+    background-color: var(--tova-gray-light);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(45, 119, 56, 0.25);
+    text-align: center;
+    direction: rtl;
+    animation: fadeIn 0.6s ease;
+}
+
+/* ===== Header ===== */
 .diary-header h1 {
-    color: #333;
+    color: var(--tova-green);
+    font-size: 2.6rem;
     margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
 .diary-header p {
-    color: #666;
-    font-size: 1.1rem;
+    color: var(--tova-gray-medium);
+    font-size: 1.4rem;
 }
 
+/* ===== Summary Card ===== */
 .calorie-summary {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background-color: #fff;
-    border-radius: 8px;
+    margin-top: 3rem;
+    padding: 2.8rem;
+    background: linear-gradient(
+        135deg,
+        var(--tova-white) 0%,
+        var(--tova-green-light) 100%
+    );
+    border-radius: 26px;
+    border: 3px solid var(--tova-green);
+    box-shadow: 
+        0 15px 40px rgba(45, 119, 56, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+    animation: slideUp 0.6s ease;
 }
 
+/* ===== Progress Bar ===== */
 .progress-bar-container {
     width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 25px;
-    margin: 1rem 0;
+    background-color: var(--tova-green-light);
+    border-radius: 40px;
+    margin: 2rem 0;
+    overflow: hidden;
+    border: 2px solid var(--tova-green);
 }
 
 .progress-bar {
-    height: 30px;
-    line-height: 30px;
-    background-color: #4caf50;
-    color: white;
-    border-radius: 25px;
+    height: 42px; /* גדול */
+    line-height: 42px;
+    background: linear-gradient(
+        135deg,
+        var(--tova-green) 0%,
+        var(--tova-green-dark) 100%
+    );
+    color: var(--tova-white);
+    border-radius: 40px;
+    font-size: 1.25rem;
+    font-weight: 700;
     text-align: center;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: progressPulse 1.2s ease;
 }
 
+/* ===== Details ===== */
 .calorie-details {
     display: flex;
     justify-content: space-around;
-    margin-top: 1rem;
-    font-size: 1.1rem;
-}
-
-.actions {
+    gap: 20px;
     margin-top: 2rem;
+    font-size: 1.35rem;
 }
 
-.add-meal-btn {
-    padding: 15px 30px;
-    font-size: 1.2rem;
+.calorie-details span {
+    background: var(--tova-white);
+    padding: 18px 24px;
+    border-radius: 18px;
+    border: 2px solid var(--tova-green-light);
+    box-shadow: 0 6px 20px rgba(45, 119, 56, 0.15);
+    animation: fadeIn 0.8s ease;
+}
+
+.calorie-details strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.6rem;
+    color: var(--tova-green);
+}
+
+/* ===== Actions ===== */
+.actions {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* ===== Buttons ===== */
+.add-meal-btn,
+.setup-goal-btn,
+.add-activity-btn {
+    padding: 20px 46px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 40px;
     cursor: pointer;
-    background-color: #007bff;
-    color: white;
     border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Primary */
+.add-meal-btn {
+    background: linear-gradient(
+        135deg,
+        var(--tova-green) 0%,
+        var(--tova-green-dark) 100%
+    );
+    color: var(--tova-white);
+    box-shadow: 0 10px 30px rgba(45, 119, 56, 0.4);
 }
 
 .add-meal-btn:hover {
-    background-color: #0056b3;
+    transform: translateY(-4px) scale(1.06);
+}
+
+/* Secondary */
+.setup-goal-btn {
+    background: var(--tova-green-light);
+    color: var(--tova-green);
+    border: 2px solid var(--tova-green);
+}
+
+/* Activity */
+.add-activity-btn {
+    background: var(--tova-coral-light);
+    color: var(--tova-coral-dark);
+    border: 2px solid var(--tova-coral);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes progressPulse {
+    0% { box-shadow: 0 0 0 rgba(45,119,56,0.4); }
+    50% { box-shadow: 0 0 25px rgba(45,119,56,0.6); }
+    100% { box-shadow: 0 0 0 rgba(45,119,56,0.4); }
 }

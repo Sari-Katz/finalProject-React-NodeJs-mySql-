@@ -23,7 +23,9 @@ function SinglePostView() {
 
     const fetchPost = async () => {
         try {
-            const data = await ApiUtils.get(`http://localhost:3000/posts/${postId}`);
+            const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/posts/${postId}`);
             setPost(data);
             setLoading(false);
         } catch (error) {
@@ -35,7 +37,7 @@ function SinglePostView() {
     const handleUpdatePost = async (id, newBody) => {
         const updatedPost = { ...post, content: newBody };
         try {
-            const response = await ApiUtils.put(`http://localhost:3000/posts/${id}`, updatedPost);
+            const response = await ApiUtils.put(`/posts/${id}`, updatedPost);
             setPost(response);
             setIsEditingPost(false);
         } catch (error) {
@@ -50,7 +52,9 @@ function SinglePostView() {
 
     const handleDeletePostConfirm = async () => {
         try {
-            await ApiUtils.delete(`http://localhost:3000/posts/${postId}`);
+            await ApiUtils.delete(`${import.meta.env.VITE_API_URL
+
+}/posts/${postId}`);
             setShowDeleteModal(false);
             navigate('/posts');
         } catch (error) {

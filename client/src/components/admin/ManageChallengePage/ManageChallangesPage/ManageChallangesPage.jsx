@@ -43,7 +43,9 @@ const ManageChallangesPage = () => {
     
   setDeleting(true);
     try {
-      await ApiUtils.delete(`http://localhost:3000/challenges/${selectedChallenge.id}`);
+      await ApiUtils.delete(`${import.meta.env.VITE_API_URL
+
+}/challenges/${selectedChallenge.id}`);
       closeModals();
       refreshChallange();
     } catch (err) {

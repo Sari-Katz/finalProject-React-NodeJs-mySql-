@@ -18,7 +18,9 @@ const ParticipantsList = ({ onClose }) => {
       setLoading(true);
       try {
         const res = await ApiUtils.get(
-          `http://localhost:3000/classes/${classId}/participants`
+          `${import.meta.env.VITE_API_URL
+
+}/classes/${classId}/participants`
         );
         setParticipants(res);
       } catch (err) {

@@ -16,7 +16,9 @@ const CompleteChallengeList = ({ onClose }) => {
       setLoading(true);
       try {
         const res = await ApiUtils.get(
-          `http://localhost:3000/challenges/${challengeId}/completions`
+          `${import.meta.env.VITE_API_URL
+
+}/challenges/${challengeId}/completions`
         );
         setParticipants(res);
       } catch (err) {

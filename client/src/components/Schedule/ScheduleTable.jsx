@@ -22,7 +22,8 @@
 //     async function loadCourses() {
 //       try {
 //         const currentDate = new Date().toISOString().split("T")[0];
-//         const data = await ApiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+//         const data = await ApiUtils.get(`{import.meta.env.VITE_API_URL
+
 //         setCourses(data);
 //       } catch (err) {
 //         console.error("שגיאה בטעינת קורסים:", err);
@@ -37,7 +38,8 @@
 //     async function fetchUserSubscription() {
 //       try {
 //       const { isActive } = await ApiUtils.get(
-//           `http://localhost:3000/subscription/user/isActive`
+//           `{import.meta.env.VITE_API_URL
+
 //         );
 //         setActiveSubscription(isActive);
 //       } catch (err) {
@@ -174,7 +176,9 @@ export default function ScheduleTable() {
     async function loadCourses() {
       try {
         const currentDate = new Date().toISOString().split("T")[0];
-        const data = await ApiUtils.get(`http://localhost:3000/classes?week=${currentDate}`);
+        const data = await ApiUtils.get(`${import.meta.env.VITE_API_URL
+
+}/classes?week=${currentDate}`);
         setCourses(data);
       } catch (err) {
         console.error("שגיאה בטעינת קורסים:", err);
@@ -189,7 +193,9 @@ export default function ScheduleTable() {
     async function fetchUserSubscription() {
       try {
         const { isActive } = await ApiUtils.get(
-          `http://localhost:3000/subscription/user/isActive`
+          `${import.meta.env.VITE_API_URL
+
+}/subscription/user/isActive`
         );
         setActiveSubscription(isActive);
       } catch (err) {
