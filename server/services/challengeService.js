@@ -1,5 +1,5 @@
 
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 exports.getAllChallenges = async (limit, offset) => {
     const [rows] = await pool.query(
         'SELECT * FROM weekly_challenges LIMIT ? OFFSET ?',

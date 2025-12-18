@@ -2,15 +2,16 @@
 const pool = require('./Connection.js');
 const fs = require('fs/promises');
 const bcrypt = require('bcrypt');
-const logger = require('../server/utils/logger.js');
+const path = require('path');
+const logger = require('../utils/logger.js');
 
 const saltRounds = 10;
 
 async function initDb() {
     try {
-        const dbRaw = await fs.readFile('./../db/db.json', 'utf-8');
+        const dbJsonPath = path.join(__dirname, 'DB.json');
+        const dbRaw = await fs.readFile(dbJsonPath, 'utf-8');
         const db = JSON.parse(dbRaw);
-
         logger.info('⛔ Dropping existing tables...');
         await pool.query('SET FOREIGN_KEY_CHECKS = 0');
         await pool.query('DROP TABLE IF EXISTS challenge_completions');

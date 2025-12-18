@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 
 exports.createClass = async function createClass({ title, class_types, start_time, date_start, end_time }) {
     const dayOfWeek = new Date(date_start).getDay();

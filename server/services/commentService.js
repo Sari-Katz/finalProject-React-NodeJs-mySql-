@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 const db=pool;
 
 exports.createComment = async function createComment(commentData) {

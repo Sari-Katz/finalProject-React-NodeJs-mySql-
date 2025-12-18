@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 const db=pool;
 // Create new post
 exports.createPost = async function createPost(postData) {

@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 
 /**
  * Fetches the daily calorie status for a specific user.

@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 
 exports.getAllPlans = async () => {
   const [rows] = await pool.query('SELECT * FROM subscription_plans');

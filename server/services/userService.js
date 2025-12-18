@@ -1,4 +1,4 @@
-const pool = require('../../DB/Connection');
+const pool = require('../DB/Connection');
 const bcrypt = require('bcrypt');
 
 exports.createUser = async function createUser({ full_name, email, phone, password }) {
