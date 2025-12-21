@@ -9,7 +9,7 @@ const ChallengeSearch = ({ refreshKey }) => {
   const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   const limit = 10;
 

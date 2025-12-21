@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import  { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../AuthContext";
 import { useNavigate } from 'react-router-dom';
 import styles from './Posts.module.css';
@@ -87,7 +87,7 @@ function Posts() {
                         <p>היה הראשון להוסיף פוסט!</p>
                     </div>
                 ) : (
-                    posts.map((post, index) => {
+                    posts.map((post) => {
                         const isLongContent = post.content && post.content.length > 200;
 
                         return (

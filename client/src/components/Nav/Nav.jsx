@@ -13,7 +13,6 @@ function Nav() {
   };
   const location = useLocation();
 
-  const isActive = (path) => location.pathname === path;
   return (
     <nav className={styles.navContainer}>
       <div className={styles.navLeft}>
