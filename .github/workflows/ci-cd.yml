@@ -80,6 +80,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Docker Compose Build
-        run: docker-compose build
+        run: docker compose build
