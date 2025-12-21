@@ -42,6 +42,10 @@ jobs:
       - name: Install server dependencies
         working-directory: server
         run: npm install
+        
+      - name: Run server tests
+        working-directory: server
+        run: npm test
 
       - name: Server sanity check
         working-directory: server
