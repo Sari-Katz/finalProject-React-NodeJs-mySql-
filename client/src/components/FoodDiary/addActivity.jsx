@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import './AddActivity.css';
 import ApiUtils from '../../utils/ApiUtils';
 
