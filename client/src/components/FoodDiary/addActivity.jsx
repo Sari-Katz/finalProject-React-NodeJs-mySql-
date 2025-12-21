@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AddActivity.css';
 import ApiUtils from '../../utils/ApiUtils';
 
 const AddActivity = () => {
-    const location = useLocation();
     const navigate = useNavigate();
 
     // State for this component

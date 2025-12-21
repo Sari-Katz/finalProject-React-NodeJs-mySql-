@@ -1,69 +1,83 @@
-import React from 'react';
+import React from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function PaymentComponent({ price, onSuccess, onClose }) {
-  if (isNaN(Number(price))) {
+  const numericPrice = Number(price);
+
+  if (isNaN(numericPrice)) {
     console.error("Invalid price value:", price);
     return <div>מחיר לא תקין לתשלום</div>;
   }
 
   return (
     <>
-      {/* Overlay רקע כהה */}
+      {/* Overlay */}
       <div
         onClick={onClose}
         style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
           zIndex: 999,
         }}
       />
 
-      {/* חלון התשלום */}
+      {/* Payment Modal */}
       <div
         style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: 'white',
-          padding: '2rem',
-          borderRadius: '8px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "white",
+          padding: "2rem",
+          borderRadius: "8px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
           zIndex: 1000,
-          minWidth: '300px',
+          minWidth: "300px",
         }}
       >
         <button
           onClick={onClose}
-          style={{ float: 'right', fontSize: '1.5rem', border: 'none', background: 'none', cursor: 'pointer' }}
           aria-label="סגור תשלום"
+          style={{
+            float: "right",
+            fontSize: "1.5rem",
+            border: "none",
+            background: "none",
+            cursor: "pointer",
+          }}
         >
           &times;
         </button>
 
-        {/* כותרת מעל תשלום */}
-        <h3 style={{ marginTop: 0, marginBottom: '1rem', textAlign: 'center' }}>
+        <h3 style={{ textAlign: "center", marginBottom: "1rem" }}>
           תשלום מנוי באמצעות PayPal
         </h3>
 
-        <PayPalScriptProvider options={{ "client-id": "AeRU6LbdXU8NMXD8BzGvtIK9VSdRGMHqLS2D_9wCHjty0qmoHZOIBj3vLjcQAUzu3wU_MDPXZkTJXULX", currency: "ILS" }}>
+        <PayPalScriptProvider
+          options={{
+            "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
+            currency: "ILS",
+          }}
+        >
           <PayPalButtons
             style={{ layout: "vertical" }}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: { value: Number(price).toFixed(2) }
-                }]
-              });
-            }}
-            onApprove={(data, actions) => {
-              return actions.order.capture().then(function (details) {
+            createOrder={(data, actions) =>
+              actions.order.create({
+                purchase_units: [
+                  {
+                    amount: { value: numericPrice.toFixed(2) },
+                  },
+                ],
+              })
+            }
+            onApprove={(data, actions) =>
+              actions.order.capture().then(() => {
                 onSuccess();
                 onClose();
-              });
-            }}
+              })
+            }
             onError={(err) => {
               console.error("Payment error:", err);
               alert("שגיאה בתשלום, נסה שוב.");
