@@ -24,5 +24,11 @@ router.post('/analyze-activity', authenticateToken, foodDiaryController.analyzeA
 
 // Define the route to log burned calories from an activity
 router.post('/log-activity', authenticateToken, foodDiaryController.logActivity);
+router.get(
+  '/meal-recommendations',
+  authenticateToken,
+  foodDiaryController.getMealRecommendations
+);
+
 
 module.exports = router;

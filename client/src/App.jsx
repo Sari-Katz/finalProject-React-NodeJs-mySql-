@@ -21,7 +21,7 @@ import Nav from './components/Nav/Nav.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import SinglePostView from './components/Posts/SinglePostView.jsx';
 import PageNotFound from './components/PageNotFound/PageNotFound';
-
+import MealRecommenations from './components/FoodDiary/MealRecommendations.jsx';
 import './App.css';
 
 function App() {
@@ -125,6 +125,16 @@ function AppRoutes() {
           <PrivateRoute>
             <WithLayout>
               <MealAnalysisResult />
+            </WithLayout>
+          </PrivateRoute>
+        }
+      />
+       <Route
+        path='/calorie-dashboard/meal-recommendations'
+        element={
+          <PrivateRoute>
+            <WithLayout>
+              <MealRecommenations/>
             </WithLayout>
           </PrivateRoute>
         }

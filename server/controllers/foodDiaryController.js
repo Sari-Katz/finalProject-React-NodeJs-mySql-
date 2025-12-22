@@ -1,4 +1,4 @@
-const { analyzeMealWithGemini, analyzeActivityWithGemini } = require('../services/foodAnalysisService');
+const {  analyzeMealWithGemini, analyzeActivityWithGemini, getMealRecommendationsWithGemini} = require('../services/foodAnalysisService');
 const foodDiaryService = require('../services/foodDiaryService');
 
 /**
@@ -101,3 +101,29 @@ exports.logActivity = async (req, res) => {
         res.status(500).json({ message: 'שגיאה בתיעוד הפעילות.' });
     }
 };
+exports.getMealRecommendations = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const userId = req.user.id;
+
+        const status = await foodDiaryService.getTodaysStatus(userId);
+        const currentHour = new Date().getHours();
+
+        const recommendations =
+            await getMealRecommendationsWithGemini({
+                dailyGoal: status.daily_calorie_goal,
+                consumedCalories: status.consumed_calories,
+                burnedCalories: status.burned_calories,
+                currentHour
+            });
+
+        res.status(200).json(recommendations);
+    } catch (error) {
+        console.error('Meal recommendation error:', error);
+        res.status(500).json({ message: 'Failed to get meal recommendations' });
+    }
+};
+

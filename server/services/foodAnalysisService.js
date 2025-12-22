@@ -111,6 +111,74 @@ const analyzeActivityWithGemini = async (description) => {
     const jsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(jsonString);
 };
+/**
+ * Provides meal recommendations based on remaining calories and time of day.
+ */
+const getMealRecommendationsWithGemini = async ({
+    dailyGoal,
+    consumedCalories,
+    burnedCalories,
+    currentHour
+}) => {
+    const remainingCalories =
+        dailyGoal - consumedCalories + burnedCalories;
+
+    const model = genAI.getGenerativeModel({
+        model: "models/gemini-2.5-flash"
+    });
+
+const prompt = `
+You are a professional nutritionist AI.
+
+USER DAILY DATA:
+- Daily calorie goal: ${dailyGoal}
+- Calories consumed today: ${consumedCalories}
+- Calories burned today: ${burnedCalories}
+- Remaining calories for today: ${remainingCalories}
+- Current hour (0–23): ${currentHour}
+
+TASK:
+Recommend 2 to 3 meal ideas that fit the remaining calories.
+The meal type MUST match the current time of day:
+- Morning (05–10) → Breakfast
+- Midday (11–16) → Lunch
+- Evening (17–22) → Dinner
+- Late hours (23–04) → Light meal / Snack
+
+RULES (VERY IMPORTANT):
+- ALL text values must be in Hebrew
+- Use realistic, human-sized portions
+- Estimated calories must NOT exceed remaining calories
+- Be practical and healthy
+- Do NOT add explanations outside JSON
+- Do NOT use markdown
+- Do NOT wrap the response in \`\`\`
+- Return VALID JSON ONLY
+
+RESPONSE FORMAT (MUST MATCH EXACTLY):
+
+{
+  "mealType": "בוקר | צהריים | ערב | נשנוש",
+  "recommendations": [
+    {
+      "name": "שם הארוחה",
+      "estimatedCalories": 0,
+      "description": "תיאור קצר של הארוחה"
+    }
+  ]
+}
+
+If remaining calories are very low, suggest lighter meals.
+If remaining calories are high, suggest balanced full meals.
+`;
 
 
-module.exports = { analyzeMealWithGemini, analyzeActivityWithGemini };
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const clean = text.replace(/```json|```/g, '').trim();
+    console.log("Gemini Meal Recommendations Response:", clean);
+    return JSON.parse(clean);
+};
+
+
+module.exports = { analyzeMealWithGemini, analyzeActivityWithGemini, getMealRecommendationsWithGemini };
