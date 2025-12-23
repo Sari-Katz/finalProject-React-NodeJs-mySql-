@@ -1,0 +1,545 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap');
+
+/* Variables */
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Main Wrapper */
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
+}
+
+/* Back Button */
+.backButton {
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  border: 2px solid var(--tova-green);
+  color: var(--tova-green);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-family: 'Heebo', sans-serif;
+}
+
+.backButton:hover {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  transform: translateX(5px);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  padding: 30px 20px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.15);
+  margin-bottom: 30px;
+  animation: fadeIn 0.6s ease;
+}
+
+.headerIcon {
+  font-size: 60px;
+  margin-bottom: 15px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.mainTitle {
+  color: var(--tova-green);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+}
+
+.subtitle {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Content Section */
+.contentSection {
+  animation: fadeIn 0.8s ease;
+}
+
+/* Analysis Card */
+.analysisCard {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f9fdfb 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.12);
+  margin-bottom: 25px;
+}
+
+.cardTitle {
+  color: var(--tova-green);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titleIcon {
+  font-size: 28px;
+}
+
+/* Food Items List */
+.foodItemsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.foodItem {
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+  border: 2px solid var(--tova-green);
+  border-radius: 15px;
+  padding: 18px 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease backwards;
+}
+
+.foodItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.foodItem:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.foodItem:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.foodItem:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.foodItem:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 8px 20px rgba(45, 119, 56, 0.15);
+  border-color: var(--tova-green-dark);
+}
+
+.foodItemContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.foodAmount {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.foodName {
+  color: var(--tova-gray-dark);
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.foodCalories {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+/* Summary Section */
+.summarySection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.summaryCard {
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(45, 119, 56, 0.12);
+  transition: all 0.3s ease;
+}
+
+.summaryCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(45, 119, 56, 0.2);
+}
+
+.summaryLabel {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.summaryValue {
+  color: var(--tova-green);
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+}
+
+.summaryUnit {
+  color: var(--tova-green);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 8px 0 0 0;
+}
+
+/* Confirmation Section */
+.confirmationSection {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f9fdfb 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.12);
+}
+
+.confirmTitle {
+  color: var(--tova-green);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.confirmIcon {
+  font-size: 28px;
+}
+
+/* Error Message */
+.errorMessage {
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, #fff0f0 100%);
+  color: var(--tova-coral-dark);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--tova-coral);
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Confirmation Buttons */
+.confirmationButtons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.btnCancel,
+.btnConfirm {
+  padding: 16px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid;
+}
+
+.btnCancel {
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, #e9ecef 100%);
+  color: var(--tova-gray-dark);
+  border-color: var(--tova-gray-medium);
+}
+
+.btnCancel:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-gray-medium) 0%, var(--tova-gray-dark) 100%);
+  color: var(--tova-white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+.btnConfirm {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  border-color: var(--tova-green-dark);
+}
+
+.btnConfirm:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-green-dark) 0%, #1a4521 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(45, 119, 56, 0.4);
+}
+
+.btnCancel:disabled,
+.btnConfirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnIcon {
+  font-size: 20px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--tova-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Error Container (for missing analysis) */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-coral-light) 100%);
+  border: 3px solid var(--tova-coral);
+  border-radius: 20px;
+  padding: 40px 20px;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+}
+
+.errorIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.errorTitle {
+  color: var(--tova-coral-dark);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+}
+
+.errorText {
+  color: var(--tova-gray-dark);
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.errorBtn {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-coral-dark);
+  padding: 14px 30px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+}
+
+.errorBtn:hover {
+  background: linear-gradient(135deg, var(--tova-coral-dark) 0%, #cc4444 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 15px;
+  }
+
+  .header {
+    padding: 25px 20px;
+  }
+
+  .headerIcon {
+    font-size: 50px;
+  }
+
+  .mainTitle {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .analysisCard,
+  .confirmationSection {
+    padding: 25px 20px;
+  }
+
+  .cardTitle,
+  .confirmTitle {
+    font-size: 20px;
+  }
+
+  .summarySection {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryValue {
+    font-size: 42px;
+  }
+
+  .foodItemContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .confirmationButtons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
+
+  .header {
+    padding: 20px 15px;
+  }
+
+  .headerIcon {
+    font-size: 40px;
+  }
+
+  .mainTitle {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .analysisCard,
+  .confirmationSection {
+    padding: 20px 15px;
+  }
+
+  .cardTitle,
+  .confirmTitle {
+    font-size: 18px;
+  }
+
+  .foodItem {
+    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .foodAmount {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .foodName {
+    font-size: 15px;
+  }
+
+  .foodCalories {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  .summaryValue {
+    font-size: 36px;
+  }
+
+  .summaryLabel,
+  .summaryUnit {
+    font-size: 14px;
+  }
+}

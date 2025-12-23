@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './MealAnalysisResult.css';
+import styles from './MealAnalysisResult.module.css';
 import ApiUtils from '../../utils/ApiUtils';
 
 const MealAnalysisResult = () => {
@@ -14,10 +14,18 @@ const MealAnalysisResult = () => {
 
     if (!analysis) {
         return (
-            <div className="result-container">
-                <h2>שגיאה</h2>
-                <p>לא נמצאו נתוני ניתוח. אנא חזרי אחורה ונסה שוב.</p>
-                <button onClick={() => navigate('/calorie-dashboard/add-meal')}>חזרה להעלאת תמונה</button>
+            <div className={styles.wrapper}>
+                <div className={styles.errorContainer}>
+                    <div className={styles.errorIcon}>😢</div>
+                    <h2 className={styles.errorTitle}>שגיאה</h2>
+                    <p className={styles.errorText}>לא נמצאו נתוני ניתוח. אנא חזרי אחורה ונסי שוב.</p>
+                    <button 
+                        onClick={() => navigate('/calorie-dashboard/add-meal')}
+                        className={styles.errorBtn}
+                    >
+                        חזרה להעלאת תמונה
+                    </button>
+                </div>
             </div>
         );
     }
@@ -27,9 +35,7 @@ const MealAnalysisResult = () => {
         setError('');
         try {
             // Call the backend to log the calories
-            await ApiUtils.post(`${import.meta.env.VITE_API_URL
-
-}/food-diary/log`, {
+            await ApiUtils.post(`${import.meta.env.VITE_API_URL}/food-diary/log`, {
                 calories: analysis.estimatedCalories
             });
 
@@ -45,53 +51,102 @@ const MealAnalysisResult = () => {
     };
 
     const handleCancel = () => {
-        navigate('/calorie-dashboard'); // Go back to the dashboard
+        navigate('/calorie-dashboard');
     };
 
     return (
-        <div className="result-container">
+        <div className={styles.wrapper}>
             <button
-                className="back-button"
+                className={styles.backButton}
                 onClick={() => navigate(-1)}
                 aria-label="חזרה אחורה"
             >
                 ← חזרה
             </button>
-            <h2>תוצאות ניתוח ה-AI</h2>
-            <div className="analysis-card">
-                <h3>ה-AI זיהה את הפריטים הבאים:</h3>
-                <ul className="food-items-list">
-                    {analysis.foodItems.map((item, index) => (
-                        <li key={index} className="food-item">
-                            <div className="food-amount">{item.amount}</div>
-                            <div className="food-name">{item.name}</div>
-                            {item.calories && (
-                                <div className="food-calories">{item.calories} קלוריות</div>
+
+            <header className={styles.header}>
+                <div className={styles.headerIcon}>🤖</div>
+                <h2 className={styles.mainTitle}>תוצאות ניתוח ה-AI</h2>
+                <p className={styles.subtitle}>ה-AI שלנו סיים לנתח את הארוחה שלך!</p>
+            </header>
+
+            <div className={styles.contentSection}>
+                {/* Analysis Card */}
+                <div className={styles.analysisCard}>
+                    <h3 className={styles.cardTitle}>
+                        <span className={styles.titleIcon}>🍽️</span>
+                        ה-AI זיהה את הפריטים הבאים:
+                    </h3>
+                    
+                    <ul className={styles.foodItemsList}>
+                        {analysis.foodItems.map((item, index) => (
+                            <li key={index} className={styles.foodItem}>
+                                <div className={styles.foodItemContent}>
+                                    <div className={styles.foodAmount}>{item.amount}</div>
+                                    <div className={styles.foodName}>{item.name}</div>
+                                </div>
+                                {item.calories && (
+                                    <div className={styles.foodCalories}>
+                                        🔥 {item.calories} קלוריות
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* Calories Summary */}
+                <div className={styles.summarySection}>
+                    <div className={styles.summaryCard}>
+                        <p className={styles.summaryLabel}>הערכה קלורית כוללת:</p>
+                        <div className={styles.summaryValue}>{analysis.estimatedCalories}</div>
+                        <p className={styles.summaryUnit}>קלוריות</p>
+                    </div>
+
+                    <div className={styles.summaryCard}>
+                        <p className={styles.summaryLabel}>אם תאכלי את המנה ישארו לך:</p>
+                        <div className={styles.summaryValue}>
+                            {analysis.remainingCalories || analysis.estimatedCalories}
+                        </div>
+                        <p className={styles.summaryUnit}>קלוריות</p>
+                    </div>
+                </div>
+
+                {/* Confirmation Prompt */}
+                <div className={styles.confirmationSection}>
+                    <h3 className={styles.confirmTitle}>
+                        <span className={styles.confirmIcon}>✨</span>
+                        האם לתעד את הארוחה הזו ביומן שלך?
+                    </h3>
+                    
+                    {error && <p className={styles.errorMessage}>{error}</p>}
+                    
+                    <div className={styles.confirmationButtons}>
+                        <button 
+                            onClick={handleCancel} 
+                            className={styles.btnCancel} 
+                            disabled={isLoading}
+                        >
+                            ביטול
+                        </button>
+                        <button 
+                            onClick={handleConfirm} 
+                            className={styles.btnConfirm} 
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <span className={styles.spinner}></span>
+                                    מתעד...
+                                </>
+                            ) : (
+                                <>
+                                    <span className={styles.btnIcon}>✓</span>
+                                    כן, תעדי ארוחה
+                                </>
                             )}
-                        </li>
-                    ))}
-                </ul>
-
-                <div className="calories-estimation">
-                    <p>הערכה קלורית כוללת:</p>
-                    <span>{analysis.estimatedCalories}</span>
-                    <p>קלוריות</p>
-                </div>
-                <div className="calories-estimation">
-                    <p>אם תאכל את המנה ישארו לך:</p>
-                    <span>{analysis.estimatedCalories}</span>
-                    <p>קלוריות</p>
-                </div>
-            </div>
-
-            <div className="confirmation-prompt">
-                <h3>האם לתעד את הארוחה הזו ביומן שלך?</h3>
-                {error && <p className="error-message">{error}</p>}
-                <div className="confirmation-buttons">
-                    <button onClick={handleCancel} className="btn-cancel" disabled={isLoading}>ביטול</button>
-                    <button onClick={handleConfirm} className="btn-confirm" disabled={isLoading}>
-                        {isLoading ? 'מתעד...' : 'כן, תעד ארוחה'}
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

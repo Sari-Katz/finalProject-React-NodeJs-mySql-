@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap');
+
+/* Variables */
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Main Wrapper */
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
+}
+
+/* Loading State */
+.loadingState {
+  text-align: center;
+  padding: 40px;
+  font-size: 20px;
+  color: var(--tova-green);
+  font-weight: 600;
+}
+
+/* Header Section */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  padding: 30px 20px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.15);
+  animation: fadeIn 0.6s ease;
+}
+
+.headerContent {
+  position: relative;
+}
+
+.mainTitle {
+  color: var(--tova-green);
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: var(--tova-gray-dark);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Summary Section */
+.summarySection {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f0f8f1 100%);
+  padding: 35px 25px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 12px 35px rgba(45, 119, 56, 0.15);
+  margin-bottom: 25px;
+  animation: fadeIn 0.8s ease;
+}
+
+.sectionTitle {
+  color: var(--tova-green);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Progress Circle */
+.progressCircleContainer {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 30px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.progressCircle {
+  transform: rotate(-90deg);
+}
+
+.progressCircleBar {
+  transition: stroke-dashoffset 1s ease, stroke 0.3s ease;
+}
+
+.progressText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.calorieNumber {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 5px;
+  color: var(--tova-green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.calorieNumberOver {
+  color: var(--tova-coral);
+}
+
+.calorieLabel {
+  font-size: 16px;
+  color: var(--tova-gray-dark);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.calorieSubtext {
+  font-size: 12px;
+  color: var(--tova-gray-medium);
+  font-weight: 500;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.statCard {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #fafbfc 100%);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 2px solid;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.statCardConsumed {
+  border-color: var(--tova-green);
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+}
+
+.statCardBurned {
+  border-color: var(--tova-coral);
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, var(--tova-white) 100%);
+}
+
+.statCardRemaining {
+  border-color: var(--tova-green);
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+}
+
+.statCardOverLimit {
+  border-color: var(--tova-coral);
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, #fff0f0 100%);
+}
+
+.statIcon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--tova-green);
+  margin-bottom: 5px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--tova-gray-dark);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Warning Message */
+.warningMessage {
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, #fff0f0 100%);
+  color: var(--tova-coral-dark);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--tova-coral);
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Actions Section */
+.actionsSection {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f0f8f1 100%);
+  padding: 30px 25px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 12px 35px rgba(45, 119, 56, 0.15);
+  animation: fadeIn 1s ease;
+}
+
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+/* Action Buttons */
+.actionBtn {
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Heebo', sans-serif;
+}
+
+.actionBtn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.actionBtn:active {
+  transform: translateY(-2px);
+}
+
+.actionBtnPrimary {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  border-color: var(--tova-green-dark);
+}
+
+.actionBtnPrimary:hover {
+  background: linear-gradient(135deg, var(--tova-green-dark) 0%, #1a4521 100%);
+}
+
+.actionBtnSecondary {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  border-color: var(--tova-coral-dark);
+}
+
+.actionBtnSecondary:hover {
+  background: linear-gradient(135deg, var(--tova-coral-dark) 0%, #cc4444 100%);
+}
+
+.actionBtnTertiary {
+  background: linear-gradient(135deg, var(--tova-gray-medium) 0%, var(--tova-gray-dark) 100%);
+  color: var(--tova-white);
+  border-color: var(--tova-gray-dark);
+}
+
+.actionBtnTertiary:hover {
+  background: linear-gradient(135deg, var(--tova-gray-dark) 0%, #343a40 100%);
+}
+
+.actionBtnSpecial {
+  background: linear-gradient(135deg, var(--tova-green) 0%, #1a4521 100%);
+  color: var(--tova-white);
+  border-color: #1a4521;
+}
+
+.actionBtnSpecial:hover {
+  background: linear-gradient(135deg, #1a4521 0%, #0f2e14 100%);
+}
+
+.btnIcon {
+  font-size: 32px;
+}
+
+.btnText {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 15px 10px;
+  }
+
+  .header {
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+
+  .mainTitle {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .summarySection,
+  .actionsSection {
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .progressCircleContainer {
+    width: 180px;
+    height: 180px;
+  }
+
+  .calorieNumber {
+    font-size: 36px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .statCard {
+    padding: 15px 10px;
+  }
+
+  .statIcon {
+    font-size: 28px;
+  }
+
+  .statValue {
+    font-size: 24px;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
+
+  .actionsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .actionBtn {
+    padding: 18px;
+  }
+
+  .btnIcon {
+    font-size: 28px;
+  }
+
+  .btnText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
+
+  .header {
+    padding: 15px 10px;
+    margin-bottom: 20px;
+  }
+
+  .mainTitle {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .summarySection,
+  .actionsSection {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .progressCircleContainer {
+    width: 160px;
+    height: 160px;
+  }
+
+  .calorieNumber {
+    font-size: 32px;
+  }
+
+  .calorieLabel {
+    font-size: 14px;
+  }
+
+  .statsGrid {
+    gap: 8px;
+  }
+
+  .statCard {
+    padding: 12px 8px;
+  }
+
+  .statIcon {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .statLabel {
+    font-size: 10px;
+  }
+
+  .warningMessage {
+    padding: 12px 15px;
+    font-size: 13px;
+  }
+
+  .actionBtn {
+    padding: 15px;
+  }
+
+  .btnIcon {
+    font-size: 24px;
+  }
+
+  .btnText {
+    font-size: 12px;
+  }
+}

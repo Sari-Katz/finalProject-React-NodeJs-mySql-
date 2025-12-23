@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap');
+
+/* Variables */
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main Wrapper */
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
+}
+
+/* Back Button */
+.backButton {
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  border: 2px solid var(--tova-green);
+  color: var(--tova-green);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-family: 'Heebo', sans-serif;
+}
+
+.backButton:hover {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  transform: translateX(5px);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  padding: 30px 20px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.15);
+  animation: fadeIn 0.6s ease;
+}
+
+.mainTitle {
+  color: var(--tova-green);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+}
+
+.subtitle {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Meal Type Section */
+.mealTypeSection {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease;
+}
+
+.mealTypeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(45, 119, 56, 0.3);
+  border: 2px solid var(--tova-green-dark);
+}
+
+.mealTypeIcon {
+  font-size: 28px;
+}
+
+.mealTypeText {
+  letter-spacing: 0.5px;
+}
+
+/* Recommendations Grid */
+.recommendationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  animation: fadeIn 1s ease;
+}
+
+.recommendationCard {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f9fdfb 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(45, 119, 56, 0.12);
+  transition: all 0.3s ease;
+  animation: slideUp 0.6s ease backwards;
+}
+
+.recommendationCard:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.recommendationCard:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.recommendationCard:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.recommendationCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(45, 119, 56, 0.25);
+  border-color: var(--tova-green-dark);
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.mealName {
+  color: var(--tova-green);
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.caloriesBadge {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+/* Description */
+.description {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  font-weight: 500;
+}
+
+/* Card Footer */
+.cardFooter {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.selectBtn {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-green-dark);
+  padding: 12px 30px;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  width: 100%;
+}
+
+.selectBtn:hover {
+  background: linear-gradient(135deg, var(--tova-green-dark) 0%, #1a4521 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(45, 119, 56, 0.4);
+}
+
+.selectBtn:active {
+  transform: translateY(0);
+}
+
+/* Loading Container */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
+  font-family: 'Heebo', sans-serif;
+  direction: rtl;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid var(--tova-green-light);
+  border-top: 5px solid var(--tova-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.loadingText {
+  color: var(--tova-green);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Error Container */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-coral-light) 100%);
+  font-family: 'Heebo', sans-serif;
+  direction: rtl;
+  padding: 20px;
+}
+
+.errorIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.errorText {
+  color: var(--tova-coral-dark);
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.retryBtn {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-coral-dark);
+  padding: 12px 30px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+}
+
+.retryBtn:hover {
+  background: linear-gradient(135deg, var(--tova-coral-dark) 0%, #cc4444 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 15px;
+  }
+
+  .header {
+    padding: 20px 15px;
+  }
+
+  .mainTitle {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .mealTypeBadge {
+    padding: 12px 25px;
+    font-size: 18px;
+  }
+
+  .recommendationsGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .recommendationCard {
+    padding: 20px;
+  }
+
+  .mealName {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainTitle {
+    font-size: 24px;
+  }
+
+  .mealTypeBadge {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  .mealTypeIcon {
+    font-size: 24px;
+  }
+
+  .recommendationCard {
+    padding: 18px;
+  }
+
+  .mealName {
+    font-size: 18px;
+  }
+
+  .caloriesBadge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

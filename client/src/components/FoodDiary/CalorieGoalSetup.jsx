@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CalorieGoalSetup.css';
+import styles from './CalorieGoalSetup.module.css';
 import ApiUtils from '../../utils/ApiUtils';
 
 const CalorieGoalSetup = () => {
@@ -102,9 +102,7 @@ const CalorieGoalSetup = () => {
         setCalculatedGoal(tdee);
 
         try {
-            await ApiUtils.put(`${import.meta.env.VITE_API_URL
-
-}/users/set_calorie_goal`, {
+            await ApiUtils.put(`${import.meta.env.VITE_API_URL}/users/set_calorie_goal`, {
                 daily_calorie_goal: tdee
             });
         } catch (err) {
@@ -120,114 +118,151 @@ const CalorieGoalSetup = () => {
     };
 
     return (
-        <div className="setup-container">
-            <h2>הגדרת יעד קלורי יומי</h2>
-            <p>מלאי את הפרטים כדי לחשב את כמות הקלוריות היומית המותאמת לך.</p>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <header className={styles.header}>
+                    <div className={styles.headerIcon}>🎯</div>
+                    <h2 className={styles.mainTitle}>הגדרת יעד קלורי יומי</h2>
+                    <p className={styles.subtitle}>מלאי את הפרטים כדי לחשב את כמות הקלוריות היומית המותאמת לך</p>
+                </header>
 
-            <form onSubmit={handleSubmit} className="setup-form">
-                <div className="form-group">
-                    <label>גיל</label>
-                    <input
-                        type="number"
-                        name="age"
-                        min="1"
-                        max="120"
-                        value={formData.age}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className={styles.setupForm}>
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>גיל</label>
+                            <input
+                                type="number"
+                                name="age"
+                                min="1"
+                                max="120"
+                                value={formData.age}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder="הכניסי את הגיל שלך"
+                                required
+                            />
+                        </div>
 
-                <div className="form-group">
-                    <label>משקל (ק"ג)</label>
-                    <input
-                        type="number"
-                        name="weight"
-                        min="1"
-                        max="500"
-                        step="0.1"
-                        value={formData.weight}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>משקל (ק"ג)</label>
+                            <input
+                                type="number"
+                                name="weight"
+                                min="1"
+                                max="500"
+                                step="0.1"
+                                value={formData.weight}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder="המשקל שלך"
+                                required
+                            />
+                        </div>
+                    </div>
 
-                <div className="form-group">
-                    <label>גובה (ס"מ)</label>
-                    <input
-                        type="number"
-                        name="height"
-                        min="50"
-                        max="250"
-                        value={formData.height}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>גובה (ס"מ)</label>
+                            <input
+                                type="number"
+                                name="height"
+                                min="50"
+                                max="250"
+                                value={formData.height}
+                                onChange={handleChange}
+                                className={styles.input}
+                                placeholder="הגובה שלך"
+                                required
+                            />
+                        </div>
 
-                <div className="form-group">
-                    <label>מין</label>
-                    <select name="gender" value={formData.gender} onChange={handleChange}>
-                        <option value="female">אישה</option>
-                        <option value="male">גבר</option>
-                    </select>
-                </div>
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>מין</label>
+                            <select 
+                                name="gender" 
+                                value={formData.gender} 
+                                onChange={handleChange}
+                                className={styles.select}
+                            >
+                                <option value="female">אישה</option>
+                                <option value="male">גבר</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <div className="form-group">
-                    <label>מטרה</label>
-                    <select name="goal" value={formData.goal} onChange={handleChange}>
-                        <option value="lose">ירידה במשקל</option>
-                        <option value="maintain">שמירה על משקל</option>
-                        <option value="gain">עלייה במשקל</option>
-                    </select>
-                </div>
-
-                {formData.gender === 'female' && (
-                    <div className="form-group">
-                        <label>האם את מניקה?</label>
-                        <select
-                            name="breastfeeding"
-                            value={formData.breastfeeding}
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>מטרה</label>
+                        <select 
+                            name="goal" 
+                            value={formData.goal} 
                             onChange={handleChange}
+                            className={styles.select}
                         >
-                            <option value="no">לא</option>
-                            <option value="yes">כן</option>
+                            <option value="lose">ירידה במשקל</option>
+                            <option value="maintain">שמירה על משקל</option>
+                            <option value="gain">עלייה במשקל</option>
                         </select>
                     </div>
-                )}
 
-                <div className="form-group">
-                    <label>רמת פעילות</label>
-                    <select
-                        name="activityLevel"
-                        value={formData.activityLevel}
-                        onChange={handleChange}
-                    >
-                        <option value="sedentary">מעט מאוד</option>
-                        <option value="light">קלה (1–3 אימונים)</option>
-                        <option value="moderate">בינונית (3–5 אימונים)</option>
-                        <option value="active">גבוהה</option>
-                        <option value="veryActive">גבוהה מאוד</option>
-                    </select>
-                </div>
+                    {formData.gender === 'female' && (
+                        <div className={styles.formGroup}>
+                            <label className={styles.label}>האם את מניקה?</label>
+                            <select
+                                name="breastfeeding"
+                                value={formData.breastfeeding}
+                                onChange={handleChange}
+                                className={styles.select}
+                            >
+                                <option value="no">לא</option>
+                                <option value="yes">כן</option>
+                            </select>
+                        </div>
+                    )}
 
-                {error && <p className="error-message">{error}</p>}
-
-                {calculatedGoal && (
-                    <div className="result-box">
-                        <h3>היעד היומי שלך:</h3>
-                        <p className="goal-number">{calculatedGoal} קלוריות ליום</p>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>רמת פעילות</label>
+                        <select
+                            name="activityLevel"
+                            value={formData.activityLevel}
+                            onChange={handleChange}
+                            className={styles.select}
+                        >
+                            <option value="sedentary">מעט מאוד</option>
+                            <option value="light">קלה (1–3 אימונים)</option>
+                            <option value="moderate">בינונית (3–5 אימונים)</option>
+                            <option value="active">גבוהה</option>
+                            <option value="veryActive">גבוהה מאוד</option>
+                        </select>
                     </div>
-                )}
 
-                <button type="submit" disabled={isLoading} className="submit-btn">
-                    {isLoading ? 'מחשב...' : 'חשב יעד'}
+                    {error && <p className={styles.errorMessage}>{error}</p>}
+
+                    {calculatedGoal && (
+                        <div className={styles.resultBox}>
+                            <div className={styles.resultIcon}>✨</div>
+                            <h3 className={styles.resultTitle}>היעד היומי שלך:</h3>
+                            <p className={styles.goalNumber}>{calculatedGoal}</p>
+                            <p className={styles.goalLabel}>קלוריות ליום</p>
+                        </div>
+                    )}
+
+                    <button 
+                        type="submit" 
+                        disabled={isLoading} 
+                        className={styles.submitBtn}
+                    >
+                        {isLoading ? 'מחשב...' : 'חשב יעד'}
+                    </button>
+                </form>
+
+                <button 
+                    onClick={goNext} 
+                    className={styles.continueBtn}
+                    disabled={!calculatedGoal}
+                >
+                    המשיכי ליומן האכילה →
                 </button>
-            </form>
-
-            <button onClick={goNext} className="continue-btn">
-                המשיכי ליומן האכילה
-            </button>
+            </div>
         </div>
     );
 };

@@ -1,0 +1,438 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap');
+
+/* Variables */
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Main Wrapper */
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
+}
+
+/* Back Button */
+.backButton {
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  border: 2px solid var(--tova-green);
+  color: var(--tova-green);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-family: 'Heebo', sans-serif;
+}
+
+.backButton:hover {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  transform: translateX(5px);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  padding: 30px 20px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.15);
+  margin-bottom: 30px;
+  animation: fadeIn 0.6s ease;
+}
+
+.headerIcon {
+  font-size: 60px;
+  margin-bottom: 15px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.mainTitle {
+  color: var(--tova-green);
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+}
+
+.subtitle {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Content Section */
+.contentSection {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f9fdfb 100%);
+  padding: 35px 30px;
+  border-radius: 20px;
+  border: 3px solid var(--tova-green);
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.12);
+  animation: fadeIn 0.8s ease;
+}
+
+/* Upload Box */
+.uploadBox {
+  margin-bottom: 30px;
+}
+
+.uploadLabel {
+  display: block;
+  cursor: pointer;
+  border: 3px dashed var(--tova-green);
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploadLabel:hover {
+  border-color: var(--tova-green-dark);
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, #d5f0d9 100%);
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(45, 119, 56, 0.2);
+}
+
+.uploadPlaceholder {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.uploadIcon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.uploadText {
+  display: block;
+  color: var(--tova-green);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.uploadHint {
+  display: block;
+  color: var(--tova-gray-medium);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Preview Container */
+.previewContainer {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.imagePreview {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 15px;
+  object-fit: contain;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.removeBtn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-coral-dark);
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  z-index: 10;
+}
+
+.removeBtn:hover {
+  background: linear-gradient(135deg, var(--tova-coral-dark) 0%, #cc4444 100%);
+  transform: scale(1.05);
+}
+
+/* Divider */
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--tova-green-light), transparent);
+}
+
+.dividerText {
+  position: relative;
+  background: var(--tova-white);
+  padding: 0 20px;
+  color: var(--tova-green);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Description Box */
+.descriptionBox {
+  margin-bottom: 25px;
+}
+
+.descriptionLabel {
+  display: block;
+  color: var(--tova-green);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid var(--tova-green-light);
+  border-radius: 15px;
+  font-size: 15px;
+  font-family: 'Heebo', sans-serif;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease;
+  background: var(--tova-white);
+  color: var(--tova-gray-dark);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--tova-green);
+  box-shadow: 0 0 0 4px rgba(45, 119, 56, 0.1);
+}
+
+.textarea::placeholder {
+  color: var(--tova-gray-medium);
+  font-weight: 400;
+}
+
+/* Error Message */
+.errorMessage {
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, #fff0f0 100%);
+  color: var(--tova-coral-dark);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--tova-coral);
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Analyze Button */
+.analyzeBtn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-green-dark);
+  padding: 18px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.analyzeBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-green-dark) 0%, #1a4521 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(45, 119, 56, 0.35);
+}
+
+.analyzeBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnIcon {
+  font-size: 24px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--tova-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 15px;
+  }
+
+  .header {
+    padding: 25px 20px;
+  }
+
+  .headerIcon {
+    font-size: 50px;
+  }
+
+  .mainTitle {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .contentSection {
+    padding: 25px 20px;
+  }
+
+  .uploadLabel {
+    min-height: 200px;
+  }
+
+  .uploadIcon {
+    font-size: 60px;
+  }
+
+  .uploadText {
+    font-size: 18px;
+  }
+
+  .imagePreview {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
+
+  .header {
+    padding: 20px 15px;
+  }
+
+  .headerIcon {
+    font-size: 40px;
+  }
+
+  .mainTitle {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .contentSection {
+    padding: 20px 15px;
+  }
+
+  .uploadLabel {
+    min-height: 180px;
+  }
+
+  .uploadIcon {
+    font-size: 50px;
+  }
+
+  .uploadText {
+    font-size: 16px;
+  }
+
+  .uploadHint {
+    font-size: 13px;
+  }
+
+  .textarea {
+    font-size: 14px;
+    padding: 14px;
+  }
+
+  .analyzeBtn {
+    padding: 16px;
+    font-size: 16px;
+  }
+}

@@ -120,6 +120,7 @@ const getMealRecommendationsWithGemini = async ({
     burnedCalories,
     currentHour
 }) => {
+  console.log('🔥 CALLING GEMINI 🔥', new Date().toISOString());
     const remainingCalories =
         dailyGoal - consumedCalories + burnedCalories;
 
