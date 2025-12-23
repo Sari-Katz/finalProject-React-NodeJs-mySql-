@@ -102,7 +102,7 @@ const AddMealPage = () => {
                                     onClick={handleRemoveImage} 
                                     className={styles.removeBtn}
                                 >
-                                    ✕ הסר תמונה
+                                      ✕ 
                                 </button>
                             </div>
                         ) : (

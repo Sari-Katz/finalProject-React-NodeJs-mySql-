@@ -1,139 +1,621 @@
-.post-meal-activity-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    direction: rtl;
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap');
+
+/* Variables */
+:root {
+  --tova-green: #2d7738;
+  --tova-green-dark: #245c2e;
+  --tova-green-light: #e8f5ea;
+  --tova-coral: #ff6b6b;
+  --tova-coral-light: #ffe5e5;
+  --tova-coral-dark: #e55555;
+  --tova-white: #ffffff;
+  --tova-gray-light: #f8f9fa;
+  --tova-gray-medium: #6c757d;
+  --tova-gray-dark: #495057;
+  --tova-purple: #9b59b6;
+  --tova-purple-light: #f3e5f5;
+  --tova-purple-dark: #7d3c98;
 }
 
-.status-card, .workout-card, .suggestions-card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-    text-align: center;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.status-card h2 {
-    color: #2ecc71;
-    margin-top: 0;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.status-card p {
-    font-size: 1.2rem;
-    color: #555;
-    margin: 0.5rem 0;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.calories-highlight {
-    font-size: 4rem;
-    font-weight: 700;
-    color: #007bff;
-    display: block;
-    line-height: 1;
-    margin: 1rem 0;
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.workout-card h3 {
-    color: #34495e;
-    margin-top: 0;
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
-.workout-card p {
-    color: #7f8c8d;
-    margin-bottom: 1.5rem;
+/* Main Wrapper */
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Heebo', 'Segoe UI', sans-serif;
+  direction: rtl;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
 }
 
-.workout-card textarea {
-    width: 100%;
-    min-height: 80px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    resize: vertical;
+/* Back Button */
+.backButton {
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  border: 2px solid var(--tova-green);
+  color: var(--tova-green);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-family: 'Heebo', sans-serif;
 }
 
-.workout-card button {
-    background-color: #e67e22;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background-color 0.3s;
+.backButton:hover {
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  transform: translateX(5px);
 }
 
-.workout-card button:hover {
-    background-color: #d35400;
+/* Status Card */
+.statusCard {
+  background: linear-gradient(135deg, var(--tova-white) 0%, var(--tova-green-light) 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 35px 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.15);
+  margin-bottom: 30px;
+  animation: fadeIn 0.6s ease;
 }
 
-.burn-result {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 8px;
-    font-size: 1.1rem;
+.statusIcon {
+  font-size: 70px;
+  margin-bottom: 15px;
+  animation: bounce 2s ease-in-out infinite;
 }
 
-.suggestions-card ul {
-    list-style: none;
-    padding: 0;
-    text-align: right;
+.statusTitle {
+  color: var(--tova-green);
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
 }
 
-.suggestions-card li {
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    border-right: 5px solid #3498db;
+.statusText {
+  color: var(--tova-gray-dark);
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
 }
 
-.class-tag, .idea-tag {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-left: 10px;
-    color: white;
+.caloriesHighlight {
+  color: var(--tova-green);
+  font-size: 56px;
+  font-weight: 800;
+  display: block;
+  margin: 15px 0;
+  animation: pulse 2s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
 }
 
-.class-tag {
-    background-color: #9b59b6;
+.statusSubtext {
+  color: var(--tova-gray-dark);
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
 }
 
-.idea-tag {
-    background-color: #1abc9c;
+/* Section Styles */
+.studioSection,
+.quickSection,
+.workoutCard {
+  background: linear-gradient(135deg, var(--tova-white) 0%, #f9fdfb 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(45, 119, 56, 0.12);
+  margin-bottom: 25px;
+  animation: fadeIn 0.8s ease;
 }
 
-.back-to-dash-btn {
-    background-color: #34495e;
-    color: white;
-    border: none;
+.sectionTitle {
+  color: var(--tova-green);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titleIcon {
+  font-size: 28px;
+}
+
+.sectionSubtitle {
+  color: var(--tova-gray-dark);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+/* Studio Classes */
+.studioBtn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--tova-purple) 0%, var(--tova-purple-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-purple-dark);
+  padding: 16px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.studioBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-purple-dark) 0%, #5e2570 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(155, 89, 182, 0.4);
+}
+
+.studioBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.classesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.classCard {
+  background: linear-gradient(135deg, var(--tova-purple-light) 0%, var(--tova-white) 100%);
+  border: 2px solid var(--tova-purple);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease;
+}
+
+.classCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(155, 89, 182, 0.3);
+  border-color: var(--tova-purple-dark);
+}
+
+.classIcon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.className {
+  color: var(--tova-purple-dark);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.classTime {
+  color: var(--tova-gray-dark);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.classCalories {
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.emptyIcon {
+  font-size: 60px;
+  margin-bottom: 15px;
+}
+
+/* Quick Activities */
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.quickCard {
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+  border: 2px solid var(--tova-green);
+  border-radius: 15px;
+  padding: 20px 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+}
+
+.quickCard:hover:not(:disabled) {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(45, 119, 56, 0.25);
+  border-color: var(--tova-green-dark);
+}
+
+.quickCard:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quickIcon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.quickName {
+  color: var(--tova-green);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.quickCalories {
+  color: var(--tova-coral-dark);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid var(--tova-green-light);
+  border-radius: 15px;
+  font-size: 15px;
+  font-family: 'Heebo', sans-serif;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  background: var(--tova-white);
+  color: var(--tova-gray-dark);
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--tova-green);
+  box-shadow: 0 0 0 4px rgba(45, 119, 56, 0.1);
+}
+
+.textarea::placeholder {
+  color: var(--tova-gray-medium);
+  font-weight: 400;
+}
+
+/* Analyze Button */
+.analyzeBtn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--tova-green) 0%, var(--tova-green-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-green-dark);
+  padding: 16px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.analyzeBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-green-dark) 0%, #1a4521 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(45, 119, 56, 0.35);
+}
+
+.analyzeBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.errorMessage {
+  background: linear-gradient(135deg, var(--tova-coral-light) 0%, #fff0f0 100%);
+  color: var(--tova-coral-dark);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid var(--tova-coral);
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+/* Burn Result */
+.burnResult {
+  background: linear-gradient(135deg, var(--tova-green-light) 0%, var(--tova-white) 100%);
+  border: 3px solid var(--tova-green);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.resultIcon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.resultText {
+  color: var(--tova-gray-dark);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.resultCalories {
+  color: var(--tova-green);
+  font-size: 48px;
+  font-weight: 800;
+  margin: 10px 0;
+  text-shadow: 0 2px 4px rgba(45, 119, 56, 0.1);
+}
+
+.resultUnit {
+  color: var(--tova-green);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+/* Log Button */
+.logBtn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--tova-coral) 0%, var(--tova-coral-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-coral-dark);
+  padding: 14px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--tova-coral-dark) 0%, #cc4444 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+.logBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dashboard Button */
+.dashBtn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--tova-gray-medium) 0%, var(--tova-gray-dark) 100%);
+  color: var(--tova-white);
+  border: 2px solid var(--tova-gray-dark);
+  padding: 16px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+  margin-top: 25px;
+}
+
+.dashBtn:hover {
+  background: linear-gradient(135deg, var(--tova-gray-dark) 0%, #343a40 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(73, 80, 87, 0.3);
+}
+
+/* Spinner */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--tova-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.btnIcon {
+  font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wrapper {
     padding: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 600;
-    transition: background-color 0.3s;
-    margin: 1rem auto;
-    width: 50%;
+  }
+
+  .statusCard {
+    padding: 25px 20px;
+  }
+
+  .statusIcon {
+    font-size: 50px;
+  }
+
+  .statusTitle {
+    font-size: 28px;
+  }
+
+  .caloriesHighlight {
+    font-size: 48px;
+  }
+
+  .statusText,
+  .statusSubtext {
+    font-size: 16px;
+  }
+
+  .studioSection,
+  .quickSection,
+  .workoutCard {
+    padding: 25px 20px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .titleIcon {
+    font-size: 24px;
+  }
+
+  .classesGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .quickGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .resultCalories {
+    font-size: 42px;
+  }
 }
 
-.back-to-dash-btn:hover {
-    background-color: #2c3e50;
-}
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
 
-.error-message {
-    color: #e74c3c;
-    margin-top: 1rem;
-    font-weight: 500;
+  .statusCard {
+    padding: 20px 15px;
+  }
+
+  .statusIcon {
+    font-size: 40px;
+  }
+
+  .statusTitle {
+    font-size: 24px;
+  }
+
+  .caloriesHighlight {
+    font-size: 42px;
+  }
+
+  .statusText,
+  .statusSubtext {
+    font-size: 15px;
+  }
+
+  .studioSection,
+  .quickSection,
+  .workoutCard {
+    padding: 20px 15px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+
+  .sectionSubtitle {
+    font-size: 14px;
+  }
+
+  .classesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .quickGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .classCard,
+  .quickCard {
+    padding: 18px 15px;
+  }
+
+  .textarea {
+    font-size: 14px;
+    padding: 14px;
+  }
+
+  .resultCalories {
+    font-size: 36px;
+  }
 }
