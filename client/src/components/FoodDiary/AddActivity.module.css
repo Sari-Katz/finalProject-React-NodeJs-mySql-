@@ -98,6 +98,10 @@
   color: var(--tova-white);
   transform: translateX(5px);
 }
+body, #root, ._wrapper_1q3uu_141 {
+  width: 100%;
+  max-width: none;
+}
 
 /* Status Card */
 .statusCard {
