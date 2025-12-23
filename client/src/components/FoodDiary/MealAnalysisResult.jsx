@@ -18,9 +18,7 @@ const MealAnalysisResult = () => {
             ? remainingCalories - analysis.estimatedCalories
             : null;
 
-    const isOverLimit = caloriesAfterMeal < 0;
-
-
+    const isOverLimit = remainingCalories >= 0 && caloriesAfterMeal < 0;
     console.log('Received analysis data:', analysis);
     if (!analysis) {
         return (
@@ -133,14 +131,12 @@ const MealAnalysisResult = () => {
                         <p className={styles.summaryUnit}>קלוריות</p>
                     </div>
                 </div>
-
                 {/* Confirmation Prompt */}
                 <div className={styles.confirmationSection}>
                     <h3 className={styles.confirmTitle}>
                         <span className={styles.confirmIcon}>✨</span>
                         האם לתעד את הארוחה הזו ביומן שלך?
                     </h3>
-
                     {error && <p className={styles.errorMessage}>{error}</p>}
 
                     <div className={styles.confirmationButtons}>

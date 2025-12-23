@@ -4,10 +4,11 @@ import styles from './AddMealPage.module.css';
 import ApiUtils from '../../utils/ApiUtils';
 import { useLocation } from 'react-router-dom';
 
-const location = useLocation();
-const { remainingCalories } = location.state || {};
+
 
 const AddMealPage = () => {
+    const location = useLocation();
+    const { remainingCalories } = location.state || {}; 
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [description, setDescription] = useState('');
