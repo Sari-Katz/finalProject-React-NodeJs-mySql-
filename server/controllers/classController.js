@@ -278,4 +278,16 @@ function addWeekFilter(query) {
       lte: endOfWeek.toISOString().slice(0, 10)
     }
   };
+  
 }
+exports.getTodayClasses = async (req, res) => {
+  try {
+    const dateToday = new Date().toISOString().split('T')[0];
+
+    const todayClasses = await classService.getTodayClasses(dateToday);
+    res.status(200).json(todayClasses)
+  } catch (error) {
+    console.error('Error getting today classes:', error);
+    res.status(500).json({ message: 'שגיאה בקבלת כיתות להיום', error: error.message });
+  }   
+};

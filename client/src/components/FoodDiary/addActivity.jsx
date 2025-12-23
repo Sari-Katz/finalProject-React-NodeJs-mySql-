@@ -44,7 +44,7 @@ const AddActivity = () => {
         setError('');
         try {
             const response = await ApiUtils.get(
-                `${import.meta.env.VITE_API_URL}/studio/classes/today`
+                `${import.meta.env.VITE_API_URL}/classes/today`
             );
             setStudioClasses(response.classes || []);
             setShowStudioClasses(true);
@@ -112,7 +112,6 @@ const AddActivity = () => {
         { name: 'יוגה 45 דקות', icon: '🧘‍♀️', calories: 180 },
         { name: 'שחייה 30 דקות', icon: '🏊‍♀️', calories: 250 },
         { name: 'רכיבה על אופניים', icon: '🚴‍♀️', calories: 220 },
-        { name: 'אימון כוח', icon: '💪', calories: 180 }
     ];
 
     return (
