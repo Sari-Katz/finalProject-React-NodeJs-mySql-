@@ -14,4 +14,5 @@ router.delete('/:id',authenticateToken, requireRole('admin'), classController.de
 router.post('/:classId/register', authenticateToken, classController.registerToClass);
 router.post('/:classId/unregister', authenticateToken, classController.unregisterFromClass);
 router.get('/:classId/isRegistered', authenticateToken, classController.isUserRegistered);
+router.get('/today', authenticateToken, classController.getTodayClasses);
 module.exports = router;

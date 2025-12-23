@@ -149,7 +149,13 @@ exports.getParticipantsByClassId = async function getParticipantsByClassId(class
     const [rows] = await pool.query(query, [classId]);
     return rows;
 };
-
+exports.getTodayClasses = async function getTodayClasses(today) {
+    const [rows] = await pool.query(
+        'SELECT id, title, class_types, day_of_week, start_time, date_start, end_time FROM classes WHERE date_start = ?',
+        [today]
+    );
+    return rows;
+};
 exports.getParticipantEmails = async function getParticipantEmails(classId) {
     const [rows] = await pool.query(
         `

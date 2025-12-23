@@ -62,7 +62,7 @@
       "class_types": "שיעור פילאטיס קלאסי",
       "day_of_week": "ראשון",
       "start_time": "20:00:00",
-      "date_start": "2025-06-15",
+      "date_start": "2025-12-23",
       "end_time": "21:00:00"
     },
     {
@@ -71,7 +71,7 @@
       "class_types": "פילאטיס עם דגש על נשימה",
       "day_of_week": "שני",
       "start_time": "21:00:00",
-      "date_start": "2025-06-16",
+      "date_start": "2025-12-16",
       "end_time": "22:00:00"
     },
     {
@@ -80,7 +80,7 @@
       "class_types": "אימון אינטרוולים בעצימות גבוהה",
       "day_of_week": "שלישי",
       "start_time": "21:00:00",
-      "date_start": "2025-06-17",
+      "date_start": "2025-12-17",
       "end_time": "22:00:00"
     },
     {
@@ -89,7 +89,7 @@
       "class_types": "שילוב של היפ הופ ופילאטיס",
       "day_of_week": "רביעי",
       "start_time": "20:00:00",
-      "date_start": "2025-06-18",
+      "date_start": "2025-12-18",
       "end_time": "21:00:00"
     },
     {
@@ -98,7 +98,7 @@
       "class_types": "תרגול נשימה ומתיחות לשחרור הבוקר",
       "day_of_week": "חמישי",
       "start_time": "08:00:00",
-      "date_start": "2025-06-19",
+      "date_start": "2025-12-19",
       "end_time": "09:00:00"
     },
     {
@@ -107,34 +107,34 @@
       "class_types": "חיזוק פלג גוף עליון ותחתון",
       "day_of_week": "ראשון",
       "start_time": "09:30:00",
-      "date_start": "2025-06-20",
+      "date_start": "2025-12-24",
       "end_time": "10:30:00"
     }
   ],
   "weekly_challenges": [
     {
       "id": 1,
-      "week_start_date": "2025-06-09",
+      "week_start_date": "2025-12-09",
       "description": "לשתות 8 כוסות מים ביום, במשך 5 ימים השבוע."
     },
     {
       "id": 2,
-      "week_start_date": "2025-06-09",
+      "week_start_date": "2025-12-20",
       "description": "לאכול ארוחת בוקר בריאה, מזינה ומסודרת – לפחות 3 פעמים השבוע."
     },
     {
       "id": 3,
-      "week_start_date": "2025-06-09",
+      "week_start_date": "2025-12-28",
       "description": "5 דקות ביום של נשימות עמוקות – רק לנשום ולהיות נוכחת."
     },
     {
       "id": 4,
-      "week_start_date": "2025-06-16",
+      "week_start_date": "2025-12-16",
       "description": "לפחות 30 דקות הליכה רצופה, פעמיים בשבוע."
     },
     {
       "id": 5,
-      "week_start_date": "2025-06-23",
+      "week_start_date": "2026-01-01",
       "description": "יום אחד ללא סוכר מוסף כלל – נסו!"
     }
   ],
