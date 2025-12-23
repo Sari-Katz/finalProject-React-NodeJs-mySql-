@@ -23,9 +23,7 @@ useEffect(() => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await ApiUtils.get(`${import.meta.env.VITE_API_URL
-
-}/users/check-session`);
+        const response = await ApiUtils.get(`${import.meta.env.VITE_API_URL}/users/check-session`);
         if (response && response.id) {
           setUser(response);
         }

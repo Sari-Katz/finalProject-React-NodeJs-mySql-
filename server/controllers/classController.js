@@ -280,10 +280,11 @@ function addWeekFilter(query) {
   };
   
 }
+
 exports.getTodayClasses = async (req, res) => {
   try {
     const dateToday = new Date().toISOString().split('T')[0];
-
+    console.log('Date Today:', dateToday);
     const todayClasses = await classService.getTodayClasses(dateToday);
     res.status(200).json(todayClasses)
   } catch (error) {

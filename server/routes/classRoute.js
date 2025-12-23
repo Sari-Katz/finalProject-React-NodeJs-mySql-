@@ -3,6 +3,7 @@ const classController = require('../controllers/classController');
 const { authenticateToken, requireRole } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
+router.get('/today', authenticateToken, classController.getTodayClasses);
 router.post('/', authenticateToken, requireRole('admin'), classController.createClass);
 router.get('/', authenticateToken,classController.getClasses);
 router.get('/week/:currentDate', authenticateToken,classController.getClassesByWeekInternal);
@@ -14,5 +15,4 @@ router.delete('/:id',authenticateToken, requireRole('admin'), classController.de
 router.post('/:classId/register', authenticateToken, classController.registerToClass);
 router.post('/:classId/unregister', authenticateToken, classController.unregisterFromClass);
 router.get('/:classId/isRegistered', authenticateToken, classController.isUserRegistered);
-router.get('/today', authenticateToken, classController.getTodayClasses);
 module.exports = router;

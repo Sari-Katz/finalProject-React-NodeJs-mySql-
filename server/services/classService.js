@@ -154,8 +154,10 @@ exports.getTodayClasses = async function getTodayClasses(today) {
         'SELECT id, title, class_types, day_of_week, start_time, date_start, end_time FROM classes WHERE date_start = ?',
         [today]
     );
+    console.log('Today Classes Rows:', rows);
     return rows;
 };
+
 exports.getParticipantEmails = async function getParticipantEmails(classId) {
     const [rows] = await pool.query(
         `
