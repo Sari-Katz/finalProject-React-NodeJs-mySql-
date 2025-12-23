@@ -57,13 +57,12 @@
 
 /* Main Wrapper */
 .wrapper {
-  max-width: 900px;
+  max-width: 70%;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Heebo', 'Segoe UI', sans-serif;
   direction: rtl;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
 }
 
 /* Back Button */

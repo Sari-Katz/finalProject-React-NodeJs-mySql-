@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './AddMealPage.module.css';
 import ApiUtils from '../../utils/ApiUtils';
+import { useLocation } from 'react-router-dom';
+
+const location = useLocation();
+const { remainingCalories } = location.state || {};
 
 const AddMealPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -50,9 +54,13 @@ const AddMealPage = () => {
             );
             console.log('Analysis response:', response);
 
-            navigate('/calorie-dashboard/meal-analysis-result', { 
-                state: { analysis: response } 
+            navigate('/calorie-dashboard/meal-analysis-result', {
+                state: {
+                    analysis: response,
+                    remainingCalories
+                }
             });
+
 
         } catch (err) {
             setError('אופס, משהו השתבש בניתוח התמונה. נסי שוב.');
@@ -97,12 +105,12 @@ const AddMealPage = () => {
                         {preview ? (
                             <div className={styles.previewContainer}>
                                 <img src={preview} alt="תצוגה מקדימה" className={styles.imagePreview} />
-                                <button 
+                                <button
                                     type="button"
-                                    onClick={handleRemoveImage} 
+                                    onClick={handleRemoveImage}
                                     className={styles.removeBtn}
                                 >
-                                      ✕ 
+                                    ✕
                                 </button>
                             </div>
                         ) : (
@@ -139,9 +147,9 @@ const AddMealPage = () => {
                 {error && <p className={styles.errorMessage}>{error}</p>}
 
                 {/* Analyze Button */}
-                <button 
-                    onClick={handleAnalyze} 
-                    disabled={isLoading || (!selectedFile && !description)} 
+                <button
+                    onClick={handleAnalyze}
+                    disabled={isLoading || (!selectedFile && !description)}
                     className={styles.analyzeBtn}
                 >
                     {isLoading ? (

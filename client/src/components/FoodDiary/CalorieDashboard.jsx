@@ -45,7 +45,10 @@ const CalorieDashboard = () => {
   const isOverLimit = netCalories > dailyGoal;
 
   // Navigation handlers
-  const goToAddMeal = () => navigate('/calorie-dashboard/add-meal');
+const goToAddMeal = () =>
+  navigate('/calorie-dashboard/add-meal', {
+    state: { remainingCalories }
+  });
   const goToCalorieSetup = () => navigate('/calorie-dashboard/calorie-setup');
   const goToAddActivity = () => navigate('/calorie-dashboard/add-activity');
   const goToMealRecommendations = () =>

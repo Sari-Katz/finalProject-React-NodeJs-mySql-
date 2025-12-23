@@ -49,10 +49,10 @@
 /* Main Wrapper */
 .wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--tova-gray-light) 0%, var(--tova-green-light) 100%);
   padding: 20px;
   font-family: 'Heebo', 'Segoe UI', sans-serif;
   direction: rtl;
+  max-width: 70%;
 }
 
 .container {

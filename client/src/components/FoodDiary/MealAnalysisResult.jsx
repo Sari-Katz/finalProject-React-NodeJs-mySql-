@@ -8,10 +8,20 @@ const MealAnalysisResult = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [dailyGoal, setDailyGoal] = useState(null);
+
 
     // Get analysis data passed from the previous page
-    const { analysis } = location.state || {};
+    const { analysis, remainingCalories } = location.state || {};
+    const caloriesAfterMeal =
+        remainingCalories != null
+            ? remainingCalories - analysis.estimatedCalories
+            : null;
 
+    const isOverLimit = caloriesAfterMeal < 0;
+
+
+    console.log('Received analysis data:', analysis);
     if (!analysis) {
         return (
             <div className={styles.wrapper}>
@@ -19,7 +29,7 @@ const MealAnalysisResult = () => {
                     <div className={styles.errorIcon}>😢</div>
                     <h2 className={styles.errorTitle}>שגיאה</h2>
                     <p className={styles.errorText}>לא נמצאו נתוני ניתוח. אנא חזרי אחורה ונסי שוב.</p>
-                    <button 
+                    <button
                         onClick={() => navigate('/calorie-dashboard/add-meal')}
                         className={styles.errorBtn}
                     >
@@ -77,7 +87,7 @@ const MealAnalysisResult = () => {
                         <span className={styles.titleIcon}>🍽️</span>
                         ה-AI זיהה את הפריטים הבאים:
                     </h3>
-                    
+
                     <ul className={styles.foodItemsList}>
                         {analysis.foodItems.map((item, index) => (
                             <li key={index} className={styles.foodItem}>
@@ -105,9 +115,21 @@ const MealAnalysisResult = () => {
 
                     <div className={styles.summaryCard}>
                         <p className={styles.summaryLabel}>אם תאכלי את המנה ישארו לך:</p>
-                        <div className={styles.summaryValue}>
-                            {analysis.remainingCalories || analysis.estimatedCalories}
+                        <div
+                            className={`${styles.summaryValue} ${isOverLimit ? styles.overLimit : ''
+                                }`}
+                        >
+                            {caloriesAfterMeal !== null
+                                ? isOverLimit
+                                    ? `חריגה של ${Math.abs(caloriesAfterMeal)}`
+                                    : caloriesAfterMeal
+                                : '—'}
                         </div>
+
+                        <p className={styles.summaryUnit}>
+                            {isOverLimit ? 'קלוריות' : 'קלוריות'}
+                        </p>
+
                         <p className={styles.summaryUnit}>קלוריות</p>
                     </div>
                 </div>
@@ -118,20 +140,20 @@ const MealAnalysisResult = () => {
                         <span className={styles.confirmIcon}>✨</span>
                         האם לתעד את הארוחה הזו ביומן שלך?
                     </h3>
-                    
+
                     {error && <p className={styles.errorMessage}>{error}</p>}
-                    
+
                     <div className={styles.confirmationButtons}>
-                        <button 
-                            onClick={handleCancel} 
-                            className={styles.btnCancel} 
+                        <button
+                            onClick={handleCancel}
+                            className={styles.btnCancel}
                             disabled={isLoading}
                         >
                             ביטול
                         </button>
-                        <button 
-                            onClick={handleConfirm} 
-                            className={styles.btnConfirm} 
+                        <button
+                            onClick={handleConfirm}
+                            className={styles.btnConfirm}
                             disabled={isLoading}
                         >
                             {isLoading ? (
