@@ -123,11 +123,6 @@ const MealAnalysisResult = () => {
                                     : caloriesAfterMeal
                                 : '—'}
                         </div>
-
-                        <p className={styles.summaryUnit}>
-                            {isOverLimit ? 'קלוריות' : 'קלוריות'}
-                        </p>
-
                         <p className={styles.summaryUnit}>קלוריות</p>
                     </div>
                 </div>

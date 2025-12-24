@@ -87,7 +87,6 @@ const AddMealPage = () => {
             </button>
 
             <header className={styles.header}>
-                <div className={styles.headerIcon}>📸</div>
                 <h1 className={styles.mainTitle}>העלאת ארוחה חדשה</h1>
                 <p className={styles.subtitle}>צלמי או בחרי תמונה של הארוחה שלך, וה-AI שלנו ינתח אותה</p>
             </header>

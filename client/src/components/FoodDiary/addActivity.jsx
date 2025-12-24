@@ -95,7 +95,6 @@ const AddActivity = () => {
     const quickActivities = [
         { name: 'הליכה 30 דקות', icon: '🚶‍♀️', calories: 150 },
         { name: 'ריצה 20 דקות', icon: '🏃‍♀️', calories: 200 },
-        { name: 'יוגה 45 דקות', icon: '🧘‍♀️', calories: 180 },
         { name: 'שחייה 30 דקות', icon: '🏊‍♀️', calories: 250 },
         { name: 'רכיבה על אופניים', icon: '🚴‍♀️', calories: 220 },
         { name: 'אימון כוח', icon: '💪', calories: 180 }
@@ -232,13 +231,7 @@ const AddActivity = () => {
                 </div>
             </div>
 
-            <button
-                className={styles.dashBtn}
-                onClick={() => navigate('/calorie-dashboard')}
-            >
-                חזרה למסך הראשי
-            </button>
-        </div>
+              </div>
     );
 };
 
